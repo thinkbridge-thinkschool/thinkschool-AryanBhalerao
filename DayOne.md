@@ -34,7 +34,8 @@ hello
 
 ## Piece 3
 Built a Minimal Login API using ASP .NET 10. 
-API Endpoints: 
+API Endpoints:
+
 POST /login 
 ![alt text](Day1/piece3/login.png)
 GET /secure
@@ -43,6 +44,7 @@ GET /secure
 ## Piece 4
 Built a minimal Login API using Node.js with typescript strict.
 API Endpoints:
+
 POST /login
 ![alt text](Day1/piece4/login.png)
 GET /secure
