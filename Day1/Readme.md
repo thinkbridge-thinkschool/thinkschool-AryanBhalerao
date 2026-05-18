@@ -1,4 +1,4 @@
-#Day One
+# Day One
 
 ## Piece 1
 ![alt text](Day1/piece1/output.png)
