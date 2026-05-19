@@ -1,4 +1,0 @@
-PS C:\Users\aryan\Desktop\Thinkbridge\D1P2> node hello.js
-hello
-PS C:\Users\aryan\Desktop\Thinkbridge\D1P2> dotnet run hello.cs
-hello
