@@ -12,7 +12,7 @@ using System.IO;
 namespace RefactoringExercise.OriginalCode
 {
     // Deliberately bad file combining Entities, DTOs, DbContext, and a monolithic controller
-
+    
     public class OrderRequest
     {
         public string CustomerName { get; set; }
@@ -89,41 +89,48 @@ namespace RefactoringExercise.OriginalCode
         [Route("create-order")]
         public async Task<object> CreateOrder([FromBody] OrderRequest request)
         {
-            // 1. Log request start to a file.
+            // 1. Log request start to a file. 
             // Anti-pattern: Empty catch block swallowing file I/O exceptions
             try
             {
                 System.IO.File.AppendAllText("order_requests_log.txt", $"[{DateTime.UtcNow}] Order started for {request.CustomerName}\n");
             }
             catch { }
-
-            // 2. Inline validation logic (Should be using FluentValidation or DataAnnotations)
+            // Test: validation rejects orders with nothing in the request body
             if (request == null)
             {
                 return new { success = false, message = "Request is null" };
             }
+            // Test: validation rejects orders without customer name
             if (string.IsNullOrEmpty(request.CustomerName))
             {
                 return new { success = false, message = "CustomerName is required" };
             }
+            // Test: validation rejects orders without customer email
             if (string.IsNullOrEmpty(request.CustomerEmail) || !request.CustomerEmail.Contains("@"))
             {
                 return new { success = false, message = "Invalid email" };
             }
+            // Test: validation rejects orders with no items in order
             if (request.Items == null || request.Items.Count == 0)
             {
                 return new { success = false, message = "No items in order" };
             }
+            // Test: validation rejects orders with invalid credit card
             if (string.IsNullOrEmpty(request.CreditCardNumber) || request.CreditCardNumber.Length < 16)
             {
                 return new { success = false, message = "Invalid Credit Card" };
             }
-
-            // Anti-pattern: Synchronous EF call inside an async action
+            // Test: validation rejects owhen too many pending orders
             var userHasPendingOrders = _dbContext.Orders.Where(o => o.CustomerEmail == request.CustomerEmail && o.Status == "Pending").ToList();
             if (userHasPendingOrders.Count > 3)
             {
                 return new { success = false, message = "Too many pending orders" };
+            }
+            // Test: validation rejects orders with negative quantity
+            if (request.Items.Any(i => i.Quantity <= 0))
+            {
+                return new { success = false, message = "Invalid quantity in order items" };
             }
 
             decimal totalAmount = 0;
@@ -137,10 +144,10 @@ namespace RefactoringExercise.OriginalCode
 
                 // Anti-pattern: Synchronous database call in a loop
                 var product = _dbContext.Products.FirstOrDefault(p => p.Id == item.ProductId);
-
-                // Anti-pattern: Null reference dereference.
+                
+                // Anti-pattern: Null reference dereference. 
                 // If product is not found, product is null. We access .Price without checking!
-                decimal itemPrice = product.Price;
+                decimal itemPrice = product.Price; 
 
                 if (product.StockQuantity < item.Quantity)
                 {
@@ -210,11 +217,11 @@ namespace RefactoringExercise.OriginalCode
             {
                 // Fake payment processing
                 var paymentClient = new HttpClient();
-                var paymentPayload = new StringContent(JsonSerializer.Serialize(new {
-                    cc = request.CreditCardNumber,
-                    exp = request.ExpiryDate,
-                    cvv = request.Cvv,
-                    amount = totalWithTax
+                var paymentPayload = new StringContent(JsonSerializer.Serialize(new { 
+                    cc = request.CreditCardNumber, 
+                    exp = request.ExpiryDate, 
+                    cvv = request.Cvv, 
+                    amount = totalWithTax 
                 }), Encoding.UTF8, "application/json");
 
                 // Anti-pattern: Sync over async
@@ -267,7 +274,7 @@ namespace RefactoringExercise.OriginalCode
                 var mailMessage = new System.Net.Mail.MailMessage("noreply@ourstore.com", request.CustomerEmail);
                 mailMessage.Subject = $"Order Confirmation #{newOrder.Id}";
                 mailMessage.Body = $"Thank you for your order! Total amount: {totalWithTax}";
-
+                
                 // Anti-pattern: Sync network call
                 smtpClient.Send(mailMessage);
             }
