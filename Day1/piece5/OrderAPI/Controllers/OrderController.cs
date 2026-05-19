@@ -12,7 +12,7 @@ using System.IO;
 namespace RefactoringExercise.OriginalCode
 {
     // Deliberately bad file combining Entities, DTOs, DbContext, and a monolithic controller
-
+    
     public class OrderRequest
     {
         public string CustomerName { get; set; }
@@ -89,7 +89,7 @@ namespace RefactoringExercise.OriginalCode
         [Route("create-order")]
         public async Task<object> CreateOrder([FromBody] OrderRequest request)
         {
-            // 1. Log request start to a file.
+            // 1. Log request start to a file. 
             // Anti-pattern: Empty catch block swallowing file I/O exceptions
             try
             {
@@ -137,10 +137,10 @@ namespace RefactoringExercise.OriginalCode
 
                 // Anti-pattern: Synchronous database call in a loop
                 var product = _dbContext.Products.FirstOrDefault(p => p.Id == item.ProductId);
-
-                // Anti-pattern: Null reference dereference.
+                
+                // Anti-pattern: Null reference dereference. 
                 // If product is not found, product is null. We access .Price without checking!
-                decimal itemPrice = product.Price;
+                decimal itemPrice = product.Price; 
 
                 if (product.StockQuantity < item.Quantity)
                 {
@@ -210,11 +210,11 @@ namespace RefactoringExercise.OriginalCode
             {
                 // Fake payment processing
                 var paymentClient = new HttpClient();
-                var paymentPayload = new StringContent(JsonSerializer.Serialize(new {
-                    cc = request.CreditCardNumber,
-                    exp = request.ExpiryDate,
-                    cvv = request.Cvv,
-                    amount = totalWithTax
+                var paymentPayload = new StringContent(JsonSerializer.Serialize(new { 
+                    cc = request.CreditCardNumber, 
+                    exp = request.ExpiryDate, 
+                    cvv = request.Cvv, 
+                    amount = totalWithTax 
                 }), Encoding.UTF8, "application/json");
 
                 // Anti-pattern: Sync over async
@@ -267,7 +267,7 @@ namespace RefactoringExercise.OriginalCode
                 var mailMessage = new System.Net.Mail.MailMessage("noreply@ourstore.com", request.CustomerEmail);
                 mailMessage.Subject = $"Order Confirmation #{newOrder.Id}";
                 mailMessage.Body = $"Thank you for your order! Total amount: {totalWithTax}";
-
+                
                 // Anti-pattern: Sync network call
                 smtpClient.Send(mailMessage);
             }
