@@ -1,15 +1,15 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\aryan\\Desktop\\thinkschool-AryanBhalerao\\Day1\\piece5\\OrderApi\\OrderApi.csproj": {}
+    "C:\\Users\\aryan\\Desktop\\thinkschool-AryanBhalerao\\Day1\\piece5\\OrderApi\\OrderAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\aryan\\Desktop\\thinkschool-AryanBhalerao\\Day1\\piece5\\OrderApi\\OrderApi.csproj": {
+    "C:\\Users\\aryan\\Desktop\\thinkschool-AryanBhalerao\\Day1\\piece5\\OrderApi\\OrderAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\aryan\\Desktop\\thinkschool-AryanBhalerao\\Day1\\piece5\\OrderApi\\OrderApi.csproj",
-        "projectName": "OrderApi",
-        "projectPath": "C:\\Users\\aryan\\Desktop\\thinkschool-AryanBhalerao\\Day1\\piece5\\OrderApi\\OrderApi.csproj",
+        "projectUniqueName": "C:\\Users\\aryan\\Desktop\\thinkschool-AryanBhalerao\\Day1\\piece5\\OrderApi\\OrderAPI.csproj",
+        "projectName": "OrderAPI",
+        "projectPath": "C:\\Users\\aryan\\Desktop\\thinkschool-AryanBhalerao\\Day1\\piece5\\OrderApi\\OrderAPI.csproj",
         "packagesPath": "C:\\Users\\aryan\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\aryan\\Desktop\\thinkschool-AryanBhalerao\\Day1\\piece5\\OrderApi\\obj\\",
         "projectStyle": "PackageReference",
