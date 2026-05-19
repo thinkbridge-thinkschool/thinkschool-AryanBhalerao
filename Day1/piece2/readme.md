@@ -22,5 +22,5 @@ console.log("Hello, Aryan");
 
 Output:
 
-PS C:\Users\aryan\Desktop\thinkschool-AryanBhalerao\Day1\piece2> node hello.ts         
+PS C:\Users\aryan\Desktop\thinkschool-AryanBhalerao\Day1\piece2\hello-ts> node hello.ts         
 Hello, Aryan
