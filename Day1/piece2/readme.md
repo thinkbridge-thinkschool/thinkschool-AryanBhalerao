@@ -1,4 +1,4 @@
-Dotnet Program
+# Dotnet Program
 
 Setup:
 PS C:\Users\aryan\Desktop\thinkschool-AryanBhalerao\Day1\piece2> dotnet new console --name hello-cs
@@ -11,7 +11,7 @@ Output:
 PS C:\Users\aryan\Desktop\thinkschool-AryanBhalerao\Day1\piece2\hello-cs> dotnet run
 Hello, Aryan
 
-Typescript Program:
+# Typescript Program:
 
 hello.ts
 console.log("Hello, Aryan");
