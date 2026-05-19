@@ -1,7 +1,30 @@
 # Collection invariant violation — duplicate QuoteId (400 Bad Request)
 
-trying to add "quoteId": 42 when it already exists,
+1. Create a collection and add QuoteId 42 to it.
 
+```bash
+curl -s -X POST http://localhost:5051/api/collections \
+  -H "Content-Type: application/json" \
+  -d '{"name":"My Favourites","ownerId":"user1"}'
+```
+
+```json
+{"id":1,"name":"My Favourites","ownerId":"user1","items":[]}
+```
+
+```bash
+curl -s -X POST http://localhost:5051/api/collections/1/items \
+  -H "Content-Type: application/json" \
+  -d '{"quoteId":42}'
+```
+
+```
+HTTP 204 No Content
+```
+
+2. Trying adding the same QuoteId a second time:
+
+```bash
 curl -s -X POST http://localhost:5051/api/collections/1/items \
   -H "Content-Type: application/json" \
   -d '{"quoteId":42}'
