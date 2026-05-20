@@ -20,7 +20,7 @@
   - QuotesApi - ASP .NET Web project
   - curlResults.md - Endpoint testing using curl. Commands and output.
 
-### Piece 4 — 
+### Piece 4 — Refactor a god-method controller
 - Generated a badly refactored project using claude.
 - Successfully refactored the project.
 - Delievarables:
@@ -34,8 +34,8 @@
     - [![.NET Tests](https://github.com/thinkbridge-thinkschool/thinkschool-AryanBhalerao/actions/workflows/dotnet-tests.yml/badge.svg)](https://github.com/thinkbridge-thinkschool/thinkschool-AryanBhalerao/actions/workflows/dotnet-tests.yml)
   - output.md
 
-### Piece 5 - 
-- Successfully tested and analyzed the use cases for Claude and Copilot.
+### Piece 5 - Real AI Assisted Work, Not Toys
+- Successfully tested and analyzed the both for Claude and Copilot.
 - Compared Claude and Copilots. Analyzed merits and demerits of Claude and Copilot.
 - Delievarables:
   - main branch
@@ -45,3 +45,9 @@
     - OrderAPI - claude case
   - copilot_workspace branch
     - OrderAPI - copilot case
+
+### Piece 7 - Build a Real Aggregate
+- Added a aggregate Collection and endpoints in the QuotesAPI created in a prior piece.
+- Contents:
+  - QuotesApi - ASP .NET Web project
+  - curl.md - curl test showing 400 Problem Details
