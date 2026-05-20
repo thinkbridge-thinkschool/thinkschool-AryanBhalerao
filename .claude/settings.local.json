@@ -22,7 +22,10 @@
       "Bash(curl -s -X POST http://localhost:5051/api/collections/1/items -H 'Content-Type: application/json' -d '{\"quoteId\":99}' -w '\\\\nHTTP %{http_code}')",
       "Bash(curl -s -X DELETE http://localhost:5051/api/collections/1/items/999 -w \"\\\\nHTTP %{http_code}\")",
       "Bash(curl -s -X POST http://localhost:5051/api/collections -H 'Content-Type: application/json' -d '{\"name\":\"ab\",\"ownerId\":\"u\"}' -w '\\\\nHTTP %{http_code}')",
-      "Bash(kill %1)"
+      "Bash(kill %1)",
+      "Bash(dotnet test *)",
+      "Bash(Select-String -Pattern \"Passed|Failed|Error|Test Run|Total\")",
+      "Bash(Out-String)"
     ]
   }
 }
