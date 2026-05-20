@@ -1,1 +1,12 @@
-Day1/
+//to avoid checking built artifacts after first commit
+
+Day1/piece4/RefactoringExercise/tests/OrderApi.Tests/bin/
+Day1/piece4/RefactoringExercise/src/OrderApi/obj/
+Day1/piece4/RefactoringExercise/src/OrderApi/bin/
+Day1/piece4/RefactoringExercise/tests/OrderApi.Tests/obj/
+Day1/piece3/QuotesApi/bin/
+Day1/piece3/QuotesApi/obj/
+Day2/piece1/QuotesApi/bin/
+Day2/piece1/QuotesApi/obj/
+Day2/piece2/QuotesApi.Tests/bin/
+Day2/piece2/QuotesApi.Tests/obj/
