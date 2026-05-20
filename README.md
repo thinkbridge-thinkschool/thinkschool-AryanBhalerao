@@ -13,12 +13,13 @@
 - Delievarables:
   - hello-cs - C# program 
   - hello-ts - typescript program
+  - readme.md - Output
 
 ### Piece 3 — ASP.NET Core 10 Minimal API
 - Implmented minimal QuotesAPI in ASP .NET 10.
 - Delievarables:
   - QuotesApi - ASP .NET Web project
-  - curlResults.md - Endpoint testing using curl. Commands and output.
+  - curlResults.txt - Endpoint testing using curl. Commands and output.
 
 ### Piece 4 — Refactor a god-method controller
 - Generated a badly refactored project using claude.
