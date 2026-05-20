@@ -92,7 +92,12 @@
 - Reviewed code, made edits where necessary and merged with main.
 - Contents:
   - main branch
-    - QuotesApi - Main branch code with reviewed changes pushed from Claude branch 
-    - WHY.ms
-  - claude_workspace branch
-    - QuotesApi - Unreviewed changes made entirely by Claude
+    - QuotesApi - Main branch code with reviewed changes merged from rich branch 
+    - output.md
+    - WHY.md
+  - anemic branch
+    - QuotesApi - Unmodified with anemic Quote entity
+    - output.md
+  - rich branch
+    - QuotesApi - Refactored with rich Quote entity using Claude
+    - output.md
