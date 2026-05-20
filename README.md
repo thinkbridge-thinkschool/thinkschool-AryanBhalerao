@@ -105,3 +105,11 @@
   - QuotesApi
   - curl.md - curl commands and outputs to test given endpoints
   - endpoint.md - code for login endpoint
+
+#### Piece 7 - Refresh tokens with rotation
+- In the Quotes API, added refresh tokens with rotation.
+- Contents:
+  - QuotesApi
+  - QuotesApi.Tests
+  - endpoint.md - code for refresh endpoint
+  - test.md - code and output for tests for given cases
