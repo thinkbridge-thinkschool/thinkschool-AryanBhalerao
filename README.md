@@ -98,3 +98,10 @@
   - rich branch
     - QuotesApi - Refactored with rich Quote entity using Claude
     - output.md
+
+#### Piece 6 - Implement JWT auth (your own issuer)
+- In the Quotes API, added a minimal POST /api/auth/login endpoint that takes {email, password} and returns {access_token, refresh_token, expires_in}.
+- Contents:
+  - QuotesApi
+  - curl.md - curl commands and outputs to test given endpoints
+  - endpoint.md - code for login endpoint
