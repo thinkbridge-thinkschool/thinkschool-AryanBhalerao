@@ -95,9 +95,6 @@
     - QuotesApi - Main branch code with reviewed changes merged from rich branch 
     - output.md
     - WHY.md
-  - anemic branch
-    - QuotesApi - Unmodified with anemic Quote entity
-    - output.md
   - rich branch
     - QuotesApi - Refactored with rich Quote entity using Claude
     - output.md
