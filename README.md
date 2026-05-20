@@ -77,3 +77,22 @@
   - QuotesApi.Tests - Tests to verify the listed cases
   - outputs.md - Output of build and tests.
   - cancellation-aware-service.md
+
+#### Piece 3 - Test the domain layer
+- Set up xUnit + Fluent Assertions Tests project to test listed cases for QuotesApi.
+- Tests successfully returned pass.
+- Contents:
+  - QuotesApi - Quotes project from Day 2 Piece 2 to run tests on. 
+  - Tests.Domain - Tests to very given cases
+  - outputs.md
+  - tests.md
+
+#### Piece 4 - AI-assisted refactor: anemic to rich
+- Converted QuotesApi's quotes entity from anemic to rich using Claude.
+- Reviewed code, made edits where necessary and merged with main.
+- Contents:
+  - main branch
+    - QuotesApi - Main branch code with reviewed changes pushed from Claude branch 
+    - WHY.ms
+  - claude_workspace branch
+    - QuotesApi - Unreviewed changes made entirely by Claude
