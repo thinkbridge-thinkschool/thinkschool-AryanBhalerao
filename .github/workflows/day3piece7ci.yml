@@ -46,12 +46,15 @@ jobs:
           docker save mcr.microsoft.com/mssql/server:2022-latest -o /tmp/mssql-2022.tar
 
       - name: Restore
+        working-directory: Day3/piece7
         run: dotnet restore QuotesApi.IntegrationTests/QuotesApi.IntegrationTests.csproj
 
       - name: Build
+        working-directory: Day3/piece7
         run: dotnet build QuotesApi.IntegrationTests/QuotesApi.IntegrationTests.csproj --no-restore -c Release
 
       - name: Test
+        working-directory: Day3/piece7
         run: >
           dotnet test QuotesApi.IntegrationTests/QuotesApi.IntegrationTests.csproj
           --no-build -c Release
