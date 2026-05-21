@@ -25,7 +25,12 @@
       "Bash(kill %1)",
       "Bash(dotnet test *)",
       "Bash(Select-String -Pattern \"Passed|Failed|Error|Test Run|Total\")",
-      "Bash(Out-String)"
+      "Bash(Out-String)",
+      "Bash(Get-ChildItem -Recurse -Force)",
+      "Bash(Select-Object -Property FullName, PSIsContainer)",
+      "PowerShell(cd \"c:\\\\Users\\\\aryan\\\\Desktop\\\\thinkschool-AryanBhalerao\" && dotnet build Day3/piece3/QuotesApi.Tests/QuotesApi.Tests.csproj --configuration Release 2>&1 | Where-Object { $_ -match \"error CS\\\\d+|Build succeeded|Build FAILED\" } | Select-Object -Unique -First 20)",
+      "PowerShell(cd \"c:\\\\Users\\\\aryan\\\\Desktop\\\\thinkschool-AryanBhalerao\" && dotnet test Day3/piece3/QuotesApi.Tests/QuotesApi.Tests.csproj --configuration Release --no-build --verbosity normal 2>&1 | Where-Object { $_ -match \"Passed|Failed|Skipped|Test Run|passed|failed|xUnit\" })",
+      "PowerShell(cd \"c:\\\\Users\\\\aryan\\\\Desktop\\\\thinkschool-AryanBhalerao\" && dotnet test Day3/piece3/QuotesApi.Tests/QuotesApi.Tests.csproj --configuration Release --verbosity normal 2>&1 | Where-Object { $_ -match \"Passed|Failed|Skipped|Test Run|passed|failed|xUnit|cleanup\" })"
     ]
   }
 }
