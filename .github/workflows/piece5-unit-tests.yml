@@ -1,0 +1,35 @@
+name: Piece 5 Unit Tests
+
+on:
+  push:
+    branches: ["main", "master"]
+    paths:
+      - "Day3/piece5/**"
+      - ".github/workflows/piece5-unit-tests.yml"
+  pull_request:
+    branches: ["main", "master"]
+    paths:
+      - "Day3/piece5/**"
+      - ".github/workflows/piece5-unit-tests.yml"
+
+jobs:
+  unit-test:
+    name: Build & Unit Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+
+      - name: Restore
+        run: dotnet restore Day3/piece5/Quotes.Tests.Unit/Quotes.Tests.Unit.csproj
+
+      - name: Build
+        run: dotnet build Day3/piece5/Quotes.Tests.Unit/Quotes.Tests.Unit.csproj --no-restore --configuration Release
+
+      - name: Test
+        run: dotnet test Day3/piece5/Quotes.Tests.Unit/Quotes.Tests.Unit.csproj --no-build --configuration Release --verbosity normal
