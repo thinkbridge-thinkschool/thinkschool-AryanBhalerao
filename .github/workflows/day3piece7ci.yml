@@ -1,0 +1,66 @@
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+
+jobs:
+  integration-tests:
+    name: Integration Tests (SQL Server 2022)
+    runs-on: ubuntu-latest   # Docker is pre-installed on ubuntu-latest; no extra setup needed.
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 10
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.x"
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+          restore-keys: ${{ runner.os }}-nuget-
+
+      # Cache the SQL Server image so repeated runs skip the ~1.5 GB pull.
+      # Cache is keyed on the image tag; bump the key to force a fresh pull.
+      - name: Cache SQL Server 2022 Docker image
+        id: sql-image-cache
+        uses: actions/cache@v4
+        with:
+          path: /tmp/mssql-2022.tar
+          key: docker-mssql-server-2022-latest-v1
+
+      - name: Load SQL Server image from cache
+        if: steps.sql-image-cache.outputs.cache-hit == 'true'
+        run: docker load -i /tmp/mssql-2022.tar
+
+      - name: Pull SQL Server image and save to cache
+        if: steps.sql-image-cache.outputs.cache-hit != 'true'
+        run: |
+          docker pull mcr.microsoft.com/mssql/server:2022-latest
+          docker save mcr.microsoft.com/mssql/server:2022-latest -o /tmp/mssql-2022.tar
+
+      - name: Restore
+        run: dotnet restore QuotesApi.IntegrationTests/QuotesApi.IntegrationTests.csproj
+
+      - name: Build
+        run: dotnet build QuotesApi.IntegrationTests/QuotesApi.IntegrationTests.csproj --no-restore -c Release
+
+      - name: Test
+        run: >
+          dotnet test QuotesApi.IntegrationTests/QuotesApi.IntegrationTests.csproj
+          --no-build -c Release
+          --logger "trx;LogFileName=test-results.trx"
+          --verbosity normal
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: "**/*.trx"
