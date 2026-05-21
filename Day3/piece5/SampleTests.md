@@ -1,4 +1,6 @@
-**QuoteTests.cs**
+# 3 Sample tests
+
+# QuoteTests.cs
 ```csharp
 [Theory]
 [InlineData(null)]
@@ -13,7 +15,7 @@ public void Create_AuthorNullOrWhiteSpace_ReturnsFailure(string? author)
 }
 ```
 
-**RefreshTokenTests.cs**
+# RefreshTokenTests.cs
 ```csharp
 [Fact]
 public void Revoke_WithReplacedByToken_ExposesReuseDetectionSignal()
@@ -27,7 +29,7 @@ public void Revoke_WithReplacedByToken_ExposesReuseDetectionSignal()
 }
 ```
 
-**QuoteOwnerHandlerTests.cs**
+# QuoteOwnerHandlerTests.cs
 ```csharp
 [Fact]
 public async Task HandleRequirement_UserOwnsQuote_ContextSucceeds()
@@ -43,12 +45,3 @@ public async Task HandleRequirement_UserOwnsQuote_ContextSucceeds()
     context.HasSucceeded.Should().BeTrue();
 }
 ```
-
-```
-Test Run Successful.
-Total tests: 44
-     Passed: 44
- Total time: 0.7913 Seconds
-```
-
-[![QuotesAPI CI](https://github.com/thinkbridge-thinkschool/thinkschool-AryanBhalerao/actions/workflows/quotes-api-ci.yml/badge.svg)](https://github.com/thinkbridge-thinkschool/thinkschool-AryanBhalerao/actions/workflows/quotes-api-ci.yml)

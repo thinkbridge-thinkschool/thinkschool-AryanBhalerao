@@ -1,9 +1,5 @@
 # Tests
 
-```
-dotnet test QuotesApi.Tests/QuotesApi.Tests.csproj
-```
-
 ## QuotesApi.Tests/PolicyTests.cs
 
 ```csharp
@@ -40,6 +36,9 @@ public async Task DeleteQuote_ByNonOwner_Returns403()
 
 ## Test output
 
+```
+dotnet test QuotesApi.Tests/QuotesApi.Tests.csproj
+```
 ```
 Passed  PostQuote_AuthenticatedWithoutScopeClaim_Returns403
 Passed  DeleteQuote_ByNonOwner_Returns403
