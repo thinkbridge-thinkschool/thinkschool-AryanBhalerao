@@ -1,7 +1,3 @@
-# CIRun.md
-
-[![Piece 5 Unit Tests](https://github.com/thinkbridge-thinkschool/thinkschool-AryanBhalerao/actions/workflows/day3piece7ci.yml/badge.svg)](https://github.com/thinkbridge-thinkschool/thinkschool-AryanBhalerao/actions/workflows/day3piece7ci.yml)
-
 ## Test List
 
 ### QuotesEndpointTests (`QuotesApi.IntegrationTests`)
