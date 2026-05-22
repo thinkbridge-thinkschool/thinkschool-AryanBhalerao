@@ -113,3 +113,59 @@
   - QuotesApi.Tests
   - endpoint.md - code for refresh endpoint
   - test.md - code and output for tests for given cases
+
+### Day 3
+
+#### Piece 1 - Bring your API behind Entra ID
+- Tested QuotesApi endpoint access using Microsoft Entra ID bearer token.
+- Verified authenticated POST request returns `201 Created`.
+- Contents:
+  - QuotesApi - API project configured for token-based access.
+  - curl.md - token retrieval, curl command, and successful response output.
+
+#### Piece 2 - Layer authorization with policies
+- Added policy-based authorization for scope claim (`quotes.write`) and quote ownership.
+- Verified `403 Forbidden` for missing scope and non-owner delete attempts.
+- Contents:
+  - QuotesApi - policy configuration and authorization handler integration.
+  - policies.md - policy setup and relevant code snippets.
+  - tests.md - policy test cases and test output.
+
+#### Piece 3 - CI hardening for auth paths
+- Added CI coverage for key auth and token lifecycle scenarios.
+- Included checks for anonymous access, insufficient permissions, valid policy access, token expiry, and revoked refresh chain.
+- Contents:
+  - QuotesApi
+  - QuotesApi.Tests
+  - CIrun.md - workflow badge and covered scenarios.
+
+#### Piece 5 - Expand unit test depth
+- Added comprehensive unit test coverage for domain models and authorization logic.
+- Verified all listed tests pass in local run and CI.
+- Contents:
+  - QuotesApi
+  - Quotes.Tests.Unit
+  - SampleTests.md - representative tests.
+  - testsOutput.md - local test run output (`44/44` passed).
+  - CIRun.md - [![Piece 5 Unit Tests](https://github.com/thinkbridge-thinkschool/thinkschool-AryanBhalerao/actions/workflows/day3piece5ci.yml/badge.svg)](https://github.com/thinkbridge-thinkschool/thinkschool-AryanBhalerao/actions/workflows/day3piece5ci.yml) 
+
+#### Piece 6 - Integration test infrastructure with WebApplicationFactory
+- Implemented reusable integration test setup using `WebApplicationFactory` and SQLite test database isolation.
+- Added representative happy-path and error-path integration tests.
+- Contents:
+  - QuotesApi
+  - Quotes.Tests.Integration
+  - factory.md - test factory implementation.
+  - tests.md - representative integration tests.
+  - TestsOutput.md - integration test run output (`25/25` passed).
+
+#### Piece 7 - Testcontainers + SQL Server integration in CI
+- Added Testcontainers-based SQL Server fixture for realistic integration test execution.
+- Configured GitHub Actions workflow to run integration suite with SQL Server 2022 container.
+- Contents:
+  - QuotesApi
+  - Quotes.Tests.Integration
+  - actions.md - CI workflow for container-backed integration tests.
+  - TestContainers.md - fixture and factory setup details.
+  - TestsList.md - list of integration test cases.
+  - CIRun.md - [![Piece 7 Integration Tests](https://github.com/thinkbridge-thinkschool/thinkschool-AryanBhalerao/actions/workflows/day3piece7ci.yml/badge.svg)](https://github.com/thinkbridge-thinkschool/thinkschool-AryanBhalerao/actions/workflows/day3piece7ci.yml)  
