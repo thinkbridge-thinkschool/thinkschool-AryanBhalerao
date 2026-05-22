@@ -30,7 +30,12 @@
       "Bash(Select-Object -Property FullName, PSIsContainer)",
       "PowerShell(cd \"c:\\\\Users\\\\aryan\\\\Desktop\\\\thinkschool-AryanBhalerao\" && dotnet build Day3/piece3/QuotesApi.Tests/QuotesApi.Tests.csproj --configuration Release 2>&1 | Where-Object { $_ -match \"error CS\\\\d+|Build succeeded|Build FAILED\" } | Select-Object -Unique -First 20)",
       "PowerShell(cd \"c:\\\\Users\\\\aryan\\\\Desktop\\\\thinkschool-AryanBhalerao\" && dotnet test Day3/piece3/QuotesApi.Tests/QuotesApi.Tests.csproj --configuration Release --no-build --verbosity normal 2>&1 | Where-Object { $_ -match \"Passed|Failed|Skipped|Test Run|passed|failed|xUnit\" })",
-      "PowerShell(cd \"c:\\\\Users\\\\aryan\\\\Desktop\\\\thinkschool-AryanBhalerao\" && dotnet test Day3/piece3/QuotesApi.Tests/QuotesApi.Tests.csproj --configuration Release --verbosity normal 2>&1 | Where-Object { $_ -match \"Passed|Failed|Skipped|Test Run|passed|failed|xUnit|cleanup\" })"
+      "PowerShell(cd \"c:\\\\Users\\\\aryan\\\\Desktop\\\\thinkschool-AryanBhalerao\" && dotnet test Day3/piece3/QuotesApi.Tests/QuotesApi.Tests.csproj --configuration Release --verbosity normal 2>&1 | Where-Object { $_ -match \"Passed|Failed|Skipped|Test Run|passed|failed|xUnit|cleanup\" })",
+      "Bash(cd \"c:\\\\Users\\\\aryan\\\\Desktop\\\\thinkschool-AryanBhalerao\\\\Day4\\\\piece6\\\\QuotesApi\")",
+      "Bash(curl -s http://localhost:5000/api/quotes?page=1)",
+      "Bash(size=1 2>&1)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:5051/api/quotes?page=1)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" \"http://localhost:5051/api/quotes?page=1&size=1\")"
     ]
   }
 }

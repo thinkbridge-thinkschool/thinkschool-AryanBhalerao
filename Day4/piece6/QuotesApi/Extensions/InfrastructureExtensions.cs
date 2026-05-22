@@ -37,7 +37,7 @@ public static class InfrastructureExtensions
         // Transient: new instance per injection — validation is stateless and cheap to allocate
         services.AddTransient<IQuoteValidator, QuoteValidator>();
 
-        services.AddOpenTelemetry()
+        var otel = services.AddOpenTelemetry()
             .WithTracing(t => t
                 .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("QuotesApi"))
                 .AddSource(QuoteEndpoints.ActivitySourceName)
@@ -45,9 +45,11 @@ public static class InfrastructureExtensions
                 .AddAspNetCoreInstrumentation()
                 .AddEntityFrameworkCoreInstrumentation()
                 .AddHttpClientInstrumentation()
-                .AddOtlpExporter())
-            .UseAzureMonitor(options =>
-                options.ConnectionString = configuration["ApplicationInsights:ConnectionString"]);
+                .AddOtlpExporter());
+
+        var appInsightsCs = configuration["ApplicationInsights:ConnectionString"];
+        if (!string.IsNullOrEmpty(appInsightsCs))
+            otel.UseAzureMonitor(options => options.ConnectionString = appInsightsCs);
 
         services.AddExceptionHandler<GlobalExceptionHandler>();
         services.AddProblemDetails();
