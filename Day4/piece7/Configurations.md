@@ -15,8 +15,7 @@ public record JwtOptions
 }
 ```
 
-`SigningKey` is a secret. it never goes in `appsettings.json`.
-
+`SigningKey` is a secret. 
 - **Local dev**: `dotnet user-secrets set Jwt:SigningKey "your-dev-key-min-32-bytes-here"`
 - **Production**: set `Jwt__SigningKey` stored it in Azure Key Vault and referenced via Key Vault reference in the app configuration.
 
