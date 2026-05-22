@@ -1,6 +1,3 @@
 # Ignore build output directories everywhere in the repo
 **/bin/
 **/obj/
-# Ignore build output directories everywhere in the repo
-**/bin/
-**/obj/
