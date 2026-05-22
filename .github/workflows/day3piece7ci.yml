@@ -4,11 +4,11 @@ on:
   push:
     paths:
       - 'Day3/piece7/**'
-      - '.github/workflows/day3piece7ci.yml'
+      - '.github\workflows\day3piece7ci.yml'
   pull_request:
     paths:
       - 'Day3/piece7/**'
-      - '.github/workflows/day3piece7ci.yml'
+      - '.github\workflows\day3piece7ci.yml'
 
 jobs:
   integration-tests:
@@ -28,18 +28,17 @@ jobs:
           restore-keys: |
             docker-mssql-2022-
 
+      - name: Pre-pull SQL Server image (populate cache on first run)
+        run: |
+          docker pull mcr.microsoft.com/mssql/server:2022-latest
+          docker save mcr.microsoft.com/mssql/server:2022-latest \
+            -o /tmp/.docker-cache/mssql-2022.tar || true
+
       - name: Load SQL Server image from cache (if available)
         run: |
           if [ -f /tmp/.docker-cache/mssql-2022.tar ]; then
             docker load -i /tmp/.docker-cache/mssql-2022.tar
           fi
-
-      - name: Pre-pull SQL Server image (populate cache on first run)
-        run: |
-          docker pull mcr.microsoft.com/mssql/server:2022-latest
-          mkdir -p /tmp/.docker-cache
-          docker save mcr.microsoft.com/mssql/server:2022-latest \
-            -o /tmp/.docker-cache/mssql-2022.tar || true
 
       - name: Setup .NET 10
         uses: actions/setup-dotnet@v4

@@ -103,7 +103,8 @@ public static class AuthEndpoints
             claims:
             [
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-                new Claim(JwtRegisteredClaimNames.Email, user.Email)
+                new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                new Claim("scope", "quotes.write")
             ],
             expires: DateTime.UtcNow.AddMinutes(config.GetValue<int>("Jwt:ExpiresInMinutes", 15)),
             signingCredentials: creds);

@@ -34,3 +34,6 @@ app.MapAuthEndpoints();
 app.MapQuoteEndpoints();
 
 app.Run();
+
+// Needed so WebApplicationFactory<Program> in integration tests can reference this type.
+public partial class Program { }

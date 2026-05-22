@@ -1,3 +1,5 @@
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using QuotesApi.Models;
 using QuotesApi.Repositories;
 using QuotesApi.Services;
@@ -26,21 +28,38 @@ public static class QuoteEndpoints
             CreateQuoteRequest request,
             IQuoteRepository repository,
             IQuoteValidator validator,
+            ClaimsPrincipal user,
             CancellationToken ct) =>
         {
             var errors = validator.Validate(request);
             if (errors.Count > 0)
                 return Results.ValidationProblem(errors);
 
-            var quote = new Quote { Author = request.Author, Text = request.Text };
+            var sub = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var ownerId = sub is not null && int.TryParse(sub, out var id) ? (int?)id : null;
+
+            var quote = new Quote { Author = request.Author, Text = request.Text, OwnerId = ownerId };
             var created = await repository.CreateAsync(quote, ct);
             return Results.Created($"/api/quotes/{created.Id}", created);
-        }).RequireAuthorization();
+        }).RequireAuthorization("can-edit-quotes");
 
-        group.MapDelete("/{id:int}", async (int id, IQuoteRepository repository, CancellationToken ct) =>
+        group.MapDelete("/{id:int}", async (
+            int id,
+            IQuoteRepository repository,
+            IAuthorizationService authService,
+            ClaimsPrincipal user,
+            CancellationToken ct) =>
         {
-            var deleted = await repository.DeleteAsync(id, ct);
-            return deleted ? Results.NoContent() : Results.NotFound();
+            var quote = await repository.GetByIdAsync(id, ct);
+            if (quote is null)
+                return Results.NotFound();
+
+            var result = await authService.AuthorizeAsync(user, quote, "can-delete-own-quote");
+            if (!result.Succeeded)
+                return Results.Forbid();
+
+            await repository.DeleteAsync(id, ct);
+            return Results.NoContent();
         }).RequireAuthorization();
 
         return app;
