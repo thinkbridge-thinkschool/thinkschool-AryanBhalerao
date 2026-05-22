@@ -1,0 +1,72 @@
+name: CI – Day4/Piece1
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    name: Build & Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 10
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+
+      - name: Restore
+        run: dotnet restore Day4/Piece1/QuotesApi.Tests/QuotesApi.Tests.csproj
+
+      - name: Build
+        run: dotnet build Day4/Piece1/QuotesApi.Tests/QuotesApi.Tests.csproj --no-restore
+
+      - name: Test
+        run: >
+          dotnet test Day4/Piece1/QuotesApi.Tests/QuotesApi.Tests.csproj
+          --no-build
+          --logger "trx;LogFileName=test-results.trx"
+          --collect:"XPlat Code Coverage"
+          --results-directory ./TestResults
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: ./TestResults/**/*.trx
+
+      - name: Upload coverage
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: ./TestResults/**/coverage.cobertura.xml
+
+      - name: Check coverage threshold (≥ 70 %)
+        run: |
+          python3 - <<'EOF'
+          import glob, xml.etree.ElementTree as ET, sys
+
+          files = glob.glob("TestResults/**/coverage.cobertura.xml", recursive=True)
+          if not files:
+              print("No coverage.cobertura.xml found — did the test step produce coverage?")
+              sys.exit(1)
+
+          tree = ET.parse(files[0])
+          root = tree.getroot()
+          line_rate = float(root.attrib.get("line-rate", 0))
+          pct = round(line_rate * 100, 1)
+          print(f"Line coverage: {pct}%")
+
+          if pct < 70:
+              print(f"ERROR: {pct}% is below the 70% threshold.")
+              sys.exit(1)
+
+          print("Coverage check passed.")
+          EOF
