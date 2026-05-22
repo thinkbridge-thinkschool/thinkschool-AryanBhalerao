@@ -1,0 +1,5 @@
+# Coverage Exercise
+
+## Most surprising uncovered branch
+
+The most surprising gap was `Quote.Create` — a static factory method in `Models/Quote.cs` with thorough validation that sits at 0% line coverage in integration tests because no endpoint ever calls it. The endpoints construct `Quote` objects directly with C# object initializers and delegate all validation to the separate `QuoteValidator` service, which only checks for null or whitespace. Seeing that entire block show up as uncovered made me find what was callined it. I learned if a code path can't be reached from any application entry point, the instinct is to write a test for it — but the right call is to treat it as a design smell first. Here, validation logic was duplicated across two abstractions, with the more complete version completely disconnected from the request pipeline. Eventually I learnt that the factory and the validator should not coexist with overlapping but divergent rules; eventually one of them will drift and the application will silently stop enforcing the stricter constraints.

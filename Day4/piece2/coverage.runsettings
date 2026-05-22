@@ -1,0 +1,16 @@
+<RunSettings>
+  <DataCollectionRunSettings>
+    <DataCollectors>
+      <DataCollector friendlyName="XPlat Code Coverage">
+        <Configuration>
+          <!-- Exclude EF Core migrations (generated, not hand-written logic) -->
+          <Exclude>[QuotesApi]QuotesApi.Migrations.*</Exclude>
+          <!-- Exclude OpenAPI source-generator output and its compiler support types -->
+          <ExcludeByAttribute>System.CodeDom.Compiler.GeneratedCodeAttribute,System.Runtime.CompilerServices.CompilerGeneratedAttribute</ExcludeByAttribute>
+          <!-- Also exclude by file glob -->
+          <ExcludeByFile>**/Migrations/*.cs,**/Migrations/**/*.cs</ExcludeByFile>
+        </Configuration>
+      </DataCollector>
+    </DataCollectors>
+  </DataCollectionRunSettings>
+</RunSettings>
