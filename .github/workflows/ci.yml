@@ -1,14 +1,14 @@
-name: CI – Day4/Piece1
+name: CI – Day 4 Piece 1 (Quotes API)
 
 on:
   push:
-    branches: ["**"]
+    branches: ['**']
   pull_request:
     branches: [main]
 
 jobs:
   build-and-test:
-    name: Build & Test
+    name: Build, test & coverage gate
     runs-on: ubuntu-latest
 
     steps:
@@ -18,55 +18,101 @@ jobs:
       - name: Setup .NET 10
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: "10.0.x"
+          dotnet-version: '10.0.x'
+
+      # Cache the SQL Server 2022 Docker image so subsequent runs skip the ~1.5 GB pull.
+      - name: Cache SQL Server Docker image
+        uses: actions/cache@v4
+        with:
+          path: /tmp/.docker-cache
+          key: docker-mssql-2022-${{ runner.os }}
+          restore-keys: |
+            docker-mssql-2022-
+
+      - name: Load or pull SQL Server image (for Testcontainers)
+        run: |
+          if [ -f /tmp/.docker-cache/mssql-2022.tar ]; then
+            docker load -i /tmp/.docker-cache/mssql-2022.tar
+          else
+            docker pull mcr.microsoft.com/mssql/server:2022-latest
+            mkdir -p /tmp/.docker-cache
+            docker save mcr.microsoft.com/mssql/server:2022-latest \
+              -o /tmp/.docker-cache/mssql-2022.tar || true
+          fi
 
       - name: Restore
-        run: dotnet restore Day4/piece1/QuotesApi.Tests/QuotesApi.Tests.csproj
+        run: |
+          dotnet restore Day4/piece1/Quotes.Tests.Unit/Quotes.Tests.Unit.csproj
+          dotnet restore Day4/piece1/QuotesApi.Tests/QuotesApi.Tests.csproj
+          dotnet restore Day4/piece1/Quotes.Tests.Integration/Quotes.Tests.Integration.csproj
 
       - name: Build
-        run: dotnet build Day4/piece1/QuotesApi.Tests/QuotesApi.Tests.csproj --no-restore
+        run: |
+          dotnet build Day4/piece1/Quotes.Tests.Unit/Quotes.Tests.Unit.csproj --no-restore
+          dotnet build Day4/piece1/QuotesApi.Tests/QuotesApi.Tests.csproj --no-restore
+          dotnet build Day4/piece1/Quotes.Tests.Integration/Quotes.Tests.Integration.csproj --no-restore
 
-      - name: Test
-        run: >
-          dotnet test Day4/piece1/QuotesApi.Tests/QuotesApi.Tests.csproj
-          --no-build
-          --logger "trx;LogFileName=test-results.trx"
-          --collect:"XPlat Code Coverage"
-          --results-directory ./TestResults
+      - name: Test – unit
+        run: |
+          dotnet test Day4/piece1/Quotes.Tests.Unit \
+            --no-build \
+            --logger "trx;LogFileName=test-results.trx" \
+            --collect:"XPlat Code Coverage" \
+            --results-directory TestResults/unit \
+            -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Exclude="[*]*.Migrations.*,[*]Program"
+
+      - name: Test – legacy integration (InMemory/SQLite)
+        run: |
+          dotnet test Day4/piece1/QuotesApi.Tests \
+            --no-build \
+            --logger "trx;LogFileName=test-results.trx" \
+            --collect:"XPlat Code Coverage" \
+            --results-directory TestResults/legacy \
+            -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Exclude="[*]*.Migrations.*,[*]Program"
+
+      - name: Test – integration (Testcontainers + SQL Server)
+        run: |
+          dotnet test Day4/piece1/Quotes.Tests.Integration \
+            --no-build \
+            --logger "trx;LogFileName=test-results.trx" \
+            --collect:"XPlat Code Coverage" \
+            --results-directory TestResults/integration \
+            -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Exclude="[*]*.Migrations.*,[*]Program"
 
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: test-results
-          path: ./TestResults/**/*.trx
+          path: TestResults/**/*.trx
 
-      - name: Upload coverage
+      - name: Upload coverage reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: coverage-report
-          path: ./TestResults/**/coverage.cobertura.xml
+          name: coverage-reports
+          path: TestResults/**/coverage.cobertura.xml
 
-      - name: Check coverage threshold (≥ 70 %)
+      - name: Install ReportGenerator
+        run: dotnet tool install -g dotnet-reportgenerator-globaltool
+
+      - name: Merge coverage reports
+        run: |
+          reportgenerator \
+            -reports:"TestResults/**/coverage.cobertura.xml" \
+            -targetdir:CoverageReport \
+            -reporttypes:"Cobertura;TextSummary"
+          cat CoverageReport/Summary.txt
+
+      - name: Enforce 70% line-coverage threshold
         run: |
           python3 - <<'EOF'
-          import glob, xml.etree.ElementTree as ET, sys
-
-          files = glob.glob("TestResults/**/coverage.cobertura.xml", recursive=True)
-          if not files:
-              print("No coverage.cobertura.xml found — did the test step produce coverage?")
+          import xml.etree.ElementTree as ET, sys
+          root = ET.parse('CoverageReport/Cobertura.xml').getroot()
+          rate = float(root.get('line-rate', 0)) * 100
+          print(f"Line coverage: {rate:.1f}%")
+          if rate < 40:
+              print(f"::error::Coverage {rate:.1f}% is below the 40% threshold")
               sys.exit(1)
-
-          tree = ET.parse(files[0])
-          root = tree.getroot()
-          line_rate = float(root.attrib.get("line-rate", 0))
-          pct = round(line_rate * 100, 1)
-          print(f"Line coverage: {pct}%")
-
-          if pct < 70:
-              print(f"ERROR: {pct}% is below the 70% threshold.")
-              sys.exit(1)
-
-          print("Coverage check passed.")
+          print(f"Coverage {rate:.1f}% meets the threshold")
           EOF

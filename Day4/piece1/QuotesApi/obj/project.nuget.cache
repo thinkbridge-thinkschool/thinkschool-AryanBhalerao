@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "B2glAp8mM0I=",
+  "dgSpecHash": "Z20R6W8uiLI=",
   "success": true,
-  "projectFilePath": "C:\\Users\\aryan\\Desktop\\thinkschool-AryanBhalerao\\Day4\\Piece1\\QuotesApi\\QuotesApi.csproj",
+  "projectFilePath": "C:\\Users\\aryan\\Desktop\\thinkschool-AryanBhalerao\\Day4\\piece1\\QuotesApi\\QuotesApi.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\aryan\\.nuget\\packages\\bcrypt.net-next\\4.2.0\\bcrypt.net-next.4.2.0.nupkg.sha512",
     "C:\\Users\\aryan\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
