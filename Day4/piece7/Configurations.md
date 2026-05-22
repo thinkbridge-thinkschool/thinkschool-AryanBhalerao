@@ -2,6 +2,7 @@
 
 ## JwtOptions class
 
+`Options/JwtOptions.cs`
 ```csharp
 namespace QuotesApi.Options;
 
@@ -23,6 +24,7 @@ public record JwtOptions
 
 ## appsettings.json section
 
+`appsettings.json`
 ```json
 {
   "ConnectionStrings": {
@@ -68,8 +70,9 @@ public record JwtOptions
 
 ```
 
-## DI registration (`InfrastructureExtensions.cs`)
+## DI registration 
 
+`InfrastructureExtensions.cs`
 ```csharp
 services.Configure<JwtOptions>(configuration.GetSection("Jwt"));
 
@@ -80,8 +83,9 @@ if (string.IsNullOrEmpty(jwtOpts.SigningKey))
         "Jwt:SigningKey is not configured. Run: dotnet user-secrets set Jwt:SigningKey <value>");
 ```
 
-## Injecting in a service (endpoint handler)
+## Injecting in a service 
 
+`Endpoints/AuthEndpoints.cs`
 ```csharp
 app.MapPost("/api/auth/login", async (
     LoginRequest request,
