@@ -1,4 +1,7 @@
 # Thinkbridge Thinkschool Submissions - Aryan Bhalerao
+
+NOTE: All pieces are commited on time. Only the day and projects directory's modified time has changed while removing /bin and /obj files for faster CI runs. The modified time for the content remains the same.
+
 ## Week 1
 ### Day 1
 #### Piece 1 - Tools Check
