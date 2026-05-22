@@ -1,3 +1,3 @@
 Screenshot: Merging after status check:
 
-![alt text](image.png)
+![alt text](Screenshot.png)
