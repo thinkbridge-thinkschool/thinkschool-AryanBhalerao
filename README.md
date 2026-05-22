@@ -172,3 +172,78 @@ NOTE: All pieces are commited on time. Only the day and projects directory's mod
   - TestContainers.md - fixture and factory setup details.
   - TestsList.md - list of integration test cases.
   - CIRun.md - [![Piece 7 Integration Tests](https://github.com/thinkbridge-thinkschool/thinkschool-AryanBhalerao/actions/workflows/day3piece7ci.yml/badge.svg)](https://github.com/thinkbridge-thinkschool/thinkschool-AryanBhalerao/actions/workflows/day3piece7ci.yml)  
+
+### Day 4
+
+#### Piece 1 - Status Check Requirement
+- Configured the Day 3 Piece 7 CI workflow as a required status check for merging to main.
+- Verified a passing CI run before merge.
+- Contents:
+  - QuotesApi
+  - QuotesApi.Tests
+  - Quotes.Tests.Integration
+  - Quotes.Tests.Unit
+  - CIRun.md - [![Status Check Requirement](https://github.com/thinkbridge-thinkschool/thinkschool-AryanBhalerao/actions/workflows/day3piece7ci.yml/badge.svg)](https://github.com/thinkbridge-thinkschool/thinkschool-AryanBhalerao/actions/workflows/day3piece7ci.yml)
+  - screenshot.md - merge screenshot after status check validation.
+
+#### Piece 2 - Code Coverage Analysis
+- Measured and analysed code coverage across integration and unit test suites using `dotnet test --collect:"XPlat Code Coverage"`.
+- Combined coverage: ~99% line coverage, >80% branch coverage across 65 tests (23 integration + 42 unit).
+- Most surprising gap: `Quote.Create` static factory sat at 0% in integration tests because endpoints bypass it entirely using object initializers; treated as a design smell — validation logic was duplicated across two abstractions with divergent rules.
+- Contents:
+  - QuotesApi
+  - QuotesApi.Tests
+  - Quotes.Tests.Integration
+  - Quotes.Tests.Unit
+  - coverage.runsettings - excludes migrations and compiler-generated code.
+  - coverageReport.md - per-class line and branch rates for both test projects.
+  - Exercise.md - analysis of the most surprising uncovered branch.
+
+#### Piece 4 - Structured Logging with Serilog
+- Added Serilog with a two-stage bootstrap so startup exceptions are captured before configuration is read.
+- Enabled request correlation: `LogContext.PushProperty("TraceId", ctx.TraceIdentifier)` links all log events in a request by a shared TraceId.
+- Used structured (indexed key-value) logging throughout; EF Core SQL logging enabled in Development via `appsettings.Development.json`.
+- Contents:
+  - QuotesApi
+  - QuotesApi.Tests
+  - Quotes.Tests.Integration
+  - Quotes.Tests.Unit
+  - SerilogSetup.md - package list, Program.cs bootstrap, appsettings Serilog section, structured vs interpolated logging rules.
+  - LogOutput.md - sample correlated log output showing TraceId across EF Core, application, and middleware lines.
+
+#### Piece 5 - Distributed Tracing with OpenTelemetry + Jaeger
+- Instrumented QuotesApi with OpenTelemetry tracing for ASP.NET Core, EF Core, and HttpClient.
+- Added a custom `ActivitySource` (`QuotesApi.Quotes`) with a hand-crafted `authorize-delete-quote` span carrying `quote.id`, `user.id`, `quote.owner_id`, and `authorized` tags.
+- Wired log–trace correlation: the same TraceId pushed by Serilog middleware appears on every Jaeger span.
+- Contents:
+  - QuotesApi
+  - QuotesApi.Tests
+  - Quotes.Tests.Integration
+  - Quotes.Tests.Unit
+  - OTel.md - package list, tracing configuration, custom span code.
+  - jaeger.md - Jaeger setup notes.
+  - jaeger.png / jaegerSpans.png - Jaeger UI screenshots.
+
+#### Piece 6 - Azure Application Insights + KQL Monitoring
+- Deployed QuotesApi to Azure App Service; connected Application Insights (workspace-based) via OpenTelemetry's `UseAzureMonitor()`.
+- Stored the App Insights connection string as a Key Vault secret (`ApplicationInsights--ConnectionString`) and retrieved it at startup via `DefaultAzureCredential` / managed identity.
+- Created a KQL query for the top 10 slowest requests and an alert rule on `requests/duration` > 500 ms for `POST /api/quotes`.
+- Contents:
+  - QuotesApi
+  - QuotesApi.Tests
+  - Quotes.Tests.Integration
+  - Quotes.Tests.Unit
+  - InsightsSetup.md - package references and OpenTelemetry wiring in Program.cs / InfrastructureExtensions.cs.
+  - cloudSetup.md - Azure portal steps for App Insights, Key Vault, RBAC access, App Service config, and alert rule.
+  - KQLquery.md - KQL query used to surface slow requests.
+  - KQIOutput.md / KQIOutput.png - query results screenshot.
+
+#### Piece 7 - Configuration Management
+- Introduced a typed `JwtOptions` record bound via `IOptions<JwtOptions>` with startup validation that throws if `Jwt:SigningKey` is absent.
+- Layered configuration: defaults in `appsettings.json`, signing key via `dotnet user-secrets` locally, and Key Vault reference in production via `KeyVault__Uri`.
+- Contents:
+  - QuotesApi
+  - QuotesApi.Tests
+  - Quotes.Tests.Integration
+  - Quotes.Tests.Unit
+  - Configurations.md - JwtOptions record, appsettings.json excerpt, DI registration with startup validation, and injection example in AuthEndpoints.
