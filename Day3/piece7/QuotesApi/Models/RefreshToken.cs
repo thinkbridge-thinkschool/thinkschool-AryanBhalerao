@@ -1,27 +1,21 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace QuotesApi.Models;
 
 public class RefreshToken
 {
-    public int Id { get; private set; }
-    public string Token { get; private set; } = null!;      // SHA-256 hash of the raw token
-    public int UserId { get; private set; }
-    public User User { get; private set; } = null!;
-    public string Family { get; private set; } = null!;     // groups the rotation chain
-    public DateTime ExpiresAt { get; private set; }
-    public DateTime? RevokedAt { get; private set; }
-    public string? ReplacedByToken { get; private set; }    // hash of successor token
+    public int Id { get; set; }
 
-    private RefreshToken() { }
+    [Required]
+    public string TokenHash { get; set; } = string.Empty;
 
-    public static RefreshToken Create(string tokenHash, int userId, string family, DateTime expiresAt) =>
-        new() { Token = tokenHash, UserId = userId, Family = family, ExpiresAt = expiresAt };
+    public int UserId { get; set; }
+    public User User { get; set; } = null!;
 
-    public bool IsRevoked => RevokedAt.HasValue;
-    public bool IsActive => !IsRevoked && DateTime.UtcNow < ExpiresAt;
+    [Required]
+    public string FamilyId { get; set; } = string.Empty;
 
-    public void Revoke(string? replacedByTokenHash = null)
-    {
-        RevokedAt = DateTime.UtcNow;
-        ReplacedByToken = replacedByTokenHash;
-    }
+    public DateTimeOffset ExpiresAt { get; set; }
+    public DateTimeOffset? RevokedAt { get; set; }
+    public string? ReplacedByToken { get; set; }
 }

@@ -1,50 +1,48 @@
 using Microsoft.EntityFrameworkCore;
 using QuotesApi.Models;
+using QuotesApi.Repositories;
+using QuotesApi.Services;
 
 namespace QuotesApi.Data;
 
 public class QuoteRepository : IQuoteRepository
 {
-    private readonly QuoteDbContext _dbContext;
-    private readonly ILogger<QuoteRepository> _logger;
+    private readonly AppDbContext _db;
+    private readonly IClock _clock;
 
-    public QuoteRepository(QuoteDbContext dbContext, ILogger<QuoteRepository> logger)
+    public QuoteRepository(AppDbContext db, IClock clock)
     {
-        _dbContext = dbContext;
-        _logger = logger;
+        _db = db;
+        _clock = clock;
     }
 
-    public async Task<(IEnumerable<Quote> Quotes, int TotalCount)> GetPaginatedAsync(int page, int size, CancellationToken ct)
+    public async Task<List<Quote>> GetPagedAsync(int page, int size, CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Fetching quotes page {Page} with size {Size}", page, size);
-        var query = _dbContext.Quotes.AsNoTracking();
-        var total = await query.CountAsync(ct);
-        var quotes = await query.Skip((page - 1) * size).Take(size).ToListAsync(ct);
-        return (quotes, total);
+        return await _db.Quotes
+            .Skip((page - 1) * size)
+            .Take(size)
+            .ToListAsync(cancellationToken);
     }
 
-    public async Task<Quote?> GetByIdAsync(int id, CancellationToken ct)
+    public async Task<Quote?> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Fetching quote {Id}", id);
-        return await _dbContext.Quotes.FirstOrDefaultAsync(q => q.Id == id, ct);
+        return await _db.Quotes.FirstOrDefaultAsync(q => q.Id == id, cancellationToken);
     }
 
-    public async Task<Quote> AddAsync(Quote quote, CancellationToken ct)
+    public async Task<Quote> CreateAsync(Quote quote, CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Adding new quote by {Author}", quote.Author);
-        _dbContext.Quotes.Add(quote);
-        await _dbContext.SaveChangesAsync(ct);
+        quote.CreatedAt = _clock.UtcNow;
+        _db.Quotes.Add(quote);
+        await _db.SaveChangesAsync(cancellationToken);
         return quote;
     }
 
-    public async Task<bool> DeleteAsync(int id, CancellationToken ct)
+    public async Task<bool> DeleteAsync(int id, CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Soft-deleting quote {Id}", id);
-        var quote = await _dbContext.Quotes.FirstOrDefaultAsync(q => q.Id == id, ct);
+        var quote = await _db.Quotes.FirstOrDefaultAsync(q => q.Id == id, cancellationToken);
         if (quote is null) return false;
-
-        quote.SoftDelete();
-        await _dbContext.SaveChangesAsync(ct);
+        _db.Quotes.Remove(quote);
+        await _db.SaveChangesAsync(cancellationToken);
         return true;
     }
 }

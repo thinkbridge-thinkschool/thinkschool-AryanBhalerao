@@ -14,27 +14,24 @@ public class GlobalExceptionHandler : IExceptionHandler
 
     public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
     {
-        if (exception is OperationCanceledException)
-        {
-            _logger.LogInformation("Request cancelled by client.");
-            httpContext.Response.StatusCode = 499;
-            return true;
-        }
-
         _logger.LogError(exception, "An unhandled exception occurred.");
+        
+        // Preserve the status code from BadHttpRequestException (e.g. 400 for bad JSON body)
+        // so it doesn't get swallowed as a 500.
+        var statusCode = exception is BadHttpRequestException badHttp
+            ? badHttp.StatusCode
+            : StatusCodes.Status500InternalServerError;
 
         var problemDetails = new ProblemDetails
         {
-            Status = StatusCodes.Status500InternalServerError,
-            Title = "Server Error",
+            Status = statusCode,
+            Title = statusCode == StatusCodes.Status500InternalServerError ? "Server Error" : "Bad Request",
             Detail = exception.Message
         };
 
         httpContext.Response.StatusCode = problemDetails.Status.Value;
-        // CancellationToken.None: the request token may already be cancelled; a secondary
-        // OperationCanceledException here would swallow the real error response.
-        await httpContext.Response.WriteAsJsonAsync(problemDetails, CancellationToken.None);
-
+        await httpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken);
+        
         return true;
     }
 }
