@@ -3,8 +3,14 @@ name: CI – Day 4 Piece 1 (Quotes API)
 on:
   push:
     branches: ['**']
+    paths:
+      - 'Day4/piece1/**'
+      - '.github/workflows/ci.yml'
   pull_request:
     branches: [main]
+    paths:
+      - 'Day4/piece1/**'
+      - '.github/workflows/ci.yml'
 
 jobs:
   build-and-test:
