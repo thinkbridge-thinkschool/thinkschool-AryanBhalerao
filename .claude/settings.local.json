@@ -35,7 +35,11 @@
       "Bash(curl -s http://localhost:5000/api/quotes?page=1)",
       "Bash(size=1 2>&1)",
       "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:5051/api/quotes?page=1)",
-      "Bash(curl -s -o /dev/null -w \"%{http_code}\" \"http://localhost:5051/api/quotes?page=1&size=1\")"
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" \"http://localhost:5051/api/quotes?page=1&size=1\")",
+      "Bash(az group *)",
+      "Bash(az resource *)",
+      "Bash(az containerapp *)",
+      "Bash(curl -s -X POST https://ca-api-nb3bgcnwnlpwe.lemoncliff-d4727121.southeastasia.azurecontainerapps.io/api/auth/login -H 'Content-Type: application/json' -d '{\"email\":\"test@example.com\",\"password\":\"password123\"}')"
     ]
   }
 }
