@@ -6,8 +6,6 @@
 https://ca-api-nb3bgcnwnlpwe.lemoncliff-d4727121.southeastasia.azurecontainerapps.io
 ```
 
----
-
 ## azure.yaml
 
 ```yaml
@@ -21,8 +19,6 @@ services:
     language: dotnet
     host: containerapp
 ```
-
----
 
 ## azd up output
 
@@ -64,8 +60,6 @@ SUCCESS: Your application was provisioned and deployed to Azure in 2 minutes 43 
   Provisioning: 2 minutes
   Deploying:    42 seconds
 ```
-
----
 
 ## Notes
 
