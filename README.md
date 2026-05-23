@@ -247,3 +247,68 @@ NOTE: All pieces are commited on time. Only the day and projects directory's mod
   - Quotes.Tests.Integration
   - Quotes.Tests.Unit
   - Configurations.md - JwtOptions record, appsettings.json excerpt, DI registration with startup validation, and injection example in AuthEndpoints.
+
+### Day 5
+
+#### Piece 1 - Performance Analysis with Jaeger
+- Identified an N+1 query pattern in `GET /api/quotes` using Jaeger trace spans — endpoint fetched all quotes then fired a separate DB query per owner plus a 150 ms simulated sleep per iteration.
+- Fixed by replacing the N+1 loop with the existing `GetPagedAsync` single query, dropping response time from ~1.27 s to ~7 ms.
+- Contents:
+  - QuotesApi
+  - Jaegar.md - Jaeger trace screenshots showing the slow span before and after.
+  - KQLQuery.md - KQL query used to identify slow endpoints.
+  - Note.md - explanation of the N+1 pattern and the fix.
+
+#### Piece 2 - Containerize the API
+- Built a Docker image for QuotesApi using `dotnet publish` container support (`ContainerImageName`, `ContainerImageTag`, `ContainerBaseImage` set in csproj).
+- Ran the container locally with `docker run`, injecting `Jwt__SigningKey` and `ConnectionStrings__Default` as environment variables.
+- Verified `GET /health` returned `200 Healthy` from the running container.
+- Contents:
+  - QuotesApi
+  - csproj.md - container property configuration in QuotesApi.csproj.
+  - dockerOutput.md - `docker run` command, startup log output, and required runtime env vars.
+  - curl.md - health check curl command and response.
+
+#### Piece 3 - Azure Container Apps Environment Setup
+- Created an Azure Container Apps Environment via `az CLI` in `southeastasia` region (required by subscription policy — `centralindia` blocked).
+- Contents:
+  - QuotesApi
+  - AzureSetup.md - `az group create` and `az containerapp env create` commands.
+  - Output.md - `az containerapp env show` output with key fields (provisioningState, defaultDomain, staticIp).
+
+#### Piece 4 - Deploy to Azure Container Apps with azd
+- Deployed QuotesApi to Azure Container Apps using Azure Developer CLI (`azd up`) with an `azure.yaml` service definition.
+- `Jwt__SigningKey` injected as a Container Apps secret; Key Vault skipped for the container deployment; SQLite DB is ephemeral (re-seeded on each start).
+- Live URL: `https://ca-api-nb3bgcnwnlpwe.lemoncliff-d4727121.southeastasia.azurecontainerapps.io`
+- Contents:
+  - QuotesApi
+  - AzureSetup.md - `azure.yaml`, `azd up` output, region and subscription notes.
+  - curl.md - curl test against the live deployment.
+
+#### Piece 5 - App Insights KQL Monitoring on Production
+- Queried Application Insights for request metrics (count, p50, p99) on the deployed app using KQL.
+- Most surprising finding: `GET /health` had a 575× p50/p99 gap (0.48 ms vs 279 ms) — the no-op health route had the worst tail latency because the single-replica Container Apps instance can be parked in a low-priority CPU slot between requests.
+- Contents:
+  - QuotesApi
+  - Observations.md - KQL query results table and analysis of the health endpoint anomaly.
+  - KQLResults.md - full KQL query output.
+
+#### Piece 6 - Polly Resilience for Entra ID HttpClient
+- Added retry (exponential backoff with jitter, up to 3 retries) and circuit breaker (50% failure ratio over 30 s, 30 s break) to the Entra ID `HttpClient` using `Microsoft.Extensions.Http.Resilience`.
+- Wired the resilient handler into `JwtBearerOptions.BackchannelHttpHandler` via `IHttpMessageHandlerFactory`.
+- Wrote unit tests verifying retry count, structured log output per attempt, and that exhausted retries surface the last bad response.
+- Contents:
+  - QuotesApi
+  - Quotes.Tests.Unit
+  - config.md - package reference, `AddResilienceHandler` configuration, retry delay schedule, and logging contract.
+  - tests.md - two representative unit tests (`succeeds after two transient failures`, `exhausts all retries`) and test run output (`44/44` passed).
+
+#### Piece 7 - End-to-End Smoke Tests
+- Ran 20 smoke tests against the deployed Azure Container Apps instance covering health, auth (login/refresh/logout), anonymous reads, authenticated writes, and deletes.
+- All 20 checks passed; 1 skipped (cross-user delete — only one user exists in the deployed DB).
+- Documented 10 fragility notes including: 500 on wrong `refresh_token` field name, inconsistent request/response field casing, no pagination defaults, ephemeral SQLite DB, and missing rate limiting on auth endpoints.
+- Contents:
+  - ResultsSummary.md - pass/fail table for all 20 checks with request/response details.
+  - SmokeTests.md - smoke test script.
+  - Outputs.md - raw curl output.
+  - FragilityNotes.md - 10 identified fragility issues with severity ratings and fix suggestions.
