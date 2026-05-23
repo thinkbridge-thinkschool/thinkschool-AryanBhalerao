@@ -39,7 +39,9 @@
       "Bash(az group *)",
       "Bash(az resource *)",
       "Bash(az containerapp *)",
-      "Bash(curl -s -X POST https://ca-api-nb3bgcnwnlpwe.lemoncliff-d4727121.southeastasia.azurecontainerapps.io/api/auth/login -H 'Content-Type: application/json' -d '{\"email\":\"test@example.com\",\"password\":\"password123\"}')"
+      "Bash(curl -s -X POST https://ca-api-nb3bgcnwnlpwe.lemoncliff-d4727121.southeastasia.azurecontainerapps.io/api/auth/login -H 'Content-Type: application/json' -d '{\"email\":\"test@example.com\",\"password\":\"password123\"}')",
+      "Bash(Get-ChildItem -Path \"c:\\\\Users\\\\aryan\\\\Desktop\\\\thinkschool-AryanBhalerao\\\\Day5\\\\piece6\" -Recurse -Force)",
+      "Bash(Select-Object FullName)"
     ]
   }
 }
