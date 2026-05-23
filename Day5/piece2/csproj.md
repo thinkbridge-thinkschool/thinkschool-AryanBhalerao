@@ -11,13 +11,3 @@
   <ContainerBaseImage>mcr.microsoft.com/dotnet/aspnet:10.0</ContainerBaseImage>
 </PropertyGroup>
 ```
-
-## Notes
-
-- `ContainerBaseImage` uses the standard Debian-based runtime instead of Alpine because
-  `Microsoft.EntityFrameworkCore.Sqlite` ships a glibc-compiled `libe_sqlite3.so` that fails
-  to load on Alpine (musl libc — missing `fcntl64` symbol). Alpine would require a custom
-  SQLite provider or a base image with `libc6-compat`.
-- Build command: `dotnet publish --os linux --arch x64 -p:PublishProfile=DefaultContainer`
-- The SDK tooling warns that `ContainerImageName` is obsolete; the replacement property is
-  `ContainerRepository`. Both produce the same local image tag.
