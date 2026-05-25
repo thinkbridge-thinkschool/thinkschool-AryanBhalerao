@@ -1,4 +1,4 @@
-# Window Functions — Per-Author Quote Timeline
+## Query that returns, per author, each quote with a running count and the gap in days since their previous quote (LAG)
 
 ```sql
 SELECT

@@ -1,4 +1,4 @@
-# Query:
+# Query -  Each author with their quote count and their most-recent quote using a CTE
 
 ```sql
 WITH AuthorStats AS (

@@ -1,12 +1,4 @@
-# Set Operators — Solution Notes
-
-## Changes in Database
-- Added Tables Categories, Tags, QuoteCategories, QuoteTags
-- Added Tags to all quotes bar quotes of Henry Ford, Nelson Mandela and Theodore Roosevelt.
-- Added Categories to all quotes. Most authors having quotes in either Classic or Modern. Only Benjamin Franklin, Friedrich Nietzsche, Mark Twain and Oscar Wilde having quotes in both.
----
-
-## Q1 — Authors with quotes but no tags
+## Query 1 — Authors with quotes but no tags
 
 ```sql
 SELECT DISTINCT Author AS "Authors with no quotes with Tags"
@@ -29,7 +21,7 @@ Output:
 
 ---
 
-## Q2 — Authors in both 'classic' and 'modern'
+## Query 2 — Authors in both 'classic' and 'modern'
 
 ```sql
 SELECT DISTINCT q.Author AS "Authors with both Classic and Modern quotes."
@@ -58,7 +50,7 @@ Output:
 
 ---
 
-## Q3 — Combined distinct tag list across 'classic' and 'modern'
+## Query 3 — Combined distinct tag list across 'classic' and 'modern'
 
 ```sql
 SELECT DISTINCT t.Name AS "Distinct Tags"
