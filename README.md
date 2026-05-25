@@ -311,6 +311,8 @@ NOTE: All pieces are commited on time. Only the day and projects directory's mod
   - Outputs.md
   - FragilityNotes.md
 
+## Week 2
+
 ### Day 7
 
 #### Piece 1 - CTE Query
