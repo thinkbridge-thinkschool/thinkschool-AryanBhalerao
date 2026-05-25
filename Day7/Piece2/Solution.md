@@ -46,3 +46,4 @@ ORDER BY Author, CreatedAt;
 | 10 | Aristotle | Knowing yourself is the beginning of all wisdom. | 2026-05-14 09:00:00.0000000 +00:00 | 2 | 30 | 201 | 2026-05-14 12:00:00.0000000 +00:00 | 48 |
 
 # Output Screenshot:
+![alt text](Output.png)
