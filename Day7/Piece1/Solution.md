@@ -29,7 +29,7 @@ ORDER BY s.QuoteCount DESC;
 
 # Output:
 
-| # | Author | QuoteCount | MostRecentQuote | MostRecentAt |
+|   | Author | QuoteCount | MostRecentQuote | MostRecentAt |
 |---|--------|------------|-----------------|--------------|
 | 1 | Mark Twain | 2 | If you tell the truth, you don't have to remember anything. | 2026-04-15 13:10:00.0000000 +00:00 |
 | 2 | Maya Angelou | 1 | You will face many defeats in life, but never let yourself be defeated. | 2025-07-04 08:45:00.0000000 +00:00 |
@@ -46,4 +46,4 @@ Output Screenshot:
 ![alt text](Output.png)
 
 # Reason:
-CTE is used here because the query needs two separate aggregations (`COUNT`/`MAX` and `ROW_NUMBER`), which a CTE computes once and joins cleanly, while a correlated subquery would re-execute per row and can't handle window functions inline.
+CTE is used here because the query needs two separate aggregations (`COUNT`/`MAX` and `ROW_NUMBER`) which a CTE computes once and joins cleanly, while a correlated subquery would re-execute per row and can't handle window functions inline.
