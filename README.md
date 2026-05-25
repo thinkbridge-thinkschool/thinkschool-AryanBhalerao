@@ -8,21 +8,20 @@ NOTE: All pieces are commited on time. Only the day and projects directory's mod
 - Completed setup and installation of latest versions of git, Microsoft .NET, Node, Angular, VS Code, Github Copilot and Claude
 - Verified using --version command.
 - Contents:
-  - terminalOutput.txt - contains commands and outputs of --version commands
-  - output.png - snapshot of the same
+  - terminalOutput.txt
 
 #### Piece 2 - Hello in Two Languages
 - Implemented simple programs displaying "hello, Aryan" in C# and typescript.
 - Contents:
-  - hello-cs - C# program 
-  - hello-ts - typescript program
-  - readme.md - Output
+  - hello-cs
+  - hello-ts
+  - readme.md
 
 #### Piece 3 — ASP.NET Core 10 Minimal API
 - Implmented minimal QuotesAPI in ASP .NET 10.
 - Contents:
-  - QuotesApi - ASP .NET Web project
-  - curlResults.txt - Endpoint testing using curl. Commands and output.
+  - QuotesApi
+  - curlResults.txt
 
 #### Piece 4 — Refactor a god-method controller
 - Generated a badly refactored project using claude.
@@ -30,10 +29,10 @@ NOTE: All pieces are commited on time. Only the day and projects directory's mod
 - Successfully wrote tests which returned passed.
 - Contents:
   - RefactoringExcercise
-    - OrignalCode - orignal generated code with bad refactoring
-    - src/OrdersApi - correct code
-    - tests/OrderApi - tests for CI Badge
-  - Prompt.txt - prompt given to generate Orignal Code
+    - OrignalCode
+    - src/OrdersApi
+    - tests/OrderApi
+  - Prompt.txt
   - REFACTOR_NOTES.md
   - badge.md
     - [![.NET Tests](https://github.com/thinkbridge-thinkschool/thinkschool-AryanBhalerao/actions/workflows/dotnet-tests.yml/badge.svg)](https://github.com/thinkbridge-thinkschool/thinkschool-AryanBhalerao/actions/workflows/dotnet-tests.yml)
@@ -44,18 +43,18 @@ NOTE: All pieces are commited on time. Only the day and projects directory's mod
 - Compared Claude and Copilots. Analyzed merits and demerits of Claude and Copilot.
 - Contents:
   - main branch
-    - OrderAPI - Main branch code with reviewed changes pushed from both branches
+    - OrderAPI
     - AI_REFLECTION.md
   - claude_workspace branch
-    - OrderAPI - Modified with claude
+    - OrderAPI
   - copilot_workspace branch
-    - OrderAPI - Modified with copilot
+    - OrderAPI
 
 #### Piece 7 - Build a Real Aggregate
 - Successfully added a aggregate Collection and endpoints to QuotesApi.
 - Contents:
-  - QuotesApi - Modified QuotesApi with collection
-  - curl.md - curl test showing 400 Problem Details
+  - QuotesApi
+  - curl.md
 
 ### Day 2
 
@@ -63,30 +62,30 @@ NOTE: All pieces are commited on time. Only the day and projects directory's mod
 - Added a IClock abstraction returns DateTimeOffset.UtcNow — singleton and injected it everywhere that used DateTime.UtcNow.
 - Successfully wrote tests which returned passed.
 - Contents:
-  - OrderApi - Modified OrderApi with dependency injection at depth.
-  - OrderApi.Tests - Tests to verify the listed cases
-  - outputs.md - Output of build and tests.
-  - DI.md 
+  - OrderApi
+  - OrderApi.Tests
+  - outputs.md
+  - DI.md
   - iclock.md
   - iclockprod.md
   - tests.md
 
 #### Piece 2 - async/await with cancellation through layers
-- Added a cancellation token parameter to every async method that takes I/O 
+- Added a cancellation token parameter to every async method that takes I/O
 - Modified token flow to support cancellation.
 - Successfully wrote tests which returned passed.
 - Contents:
-  - QuotesApi - Modified QuotesApi with cancellation through layers
-  - QuotesApi.Tests - Tests to verify the listed cases
-  - outputs.md - Output of build and tests.
+  - QuotesApi
+  - QuotesApi.Tests
+  - outputs.md
   - cancellation-aware-service.md
 
 #### Piece 3 - Test the domain layer
 - Set up xUnit + Fluent Assertions Tests project to test listed cases for QuotesApi.
 - Tests successfully returned pass.
 - Contents:
-  - QuotesApi - Quotes project from Day 2 Piece 2 to run tests on. 
-  - Tests.Domain - Tests to very given cases
+  - QuotesApi
+  - Tests.Domain
   - outputs.md
   - tests.md
 
@@ -95,27 +94,27 @@ NOTE: All pieces are commited on time. Only the day and projects directory's mod
 - Reviewed code, made edits where necessary and merged with main.
 - Contents:
   - main branch
-    - QuotesApi - Main branch code with reviewed changes merged from rich branch 
+    - QuotesApi
     - output.md
     - WHY.md
   - rich branch
-    - QuotesApi - Refactored with rich Quote entity using Claude
+    - QuotesApi
     - output.md
 
 #### Piece 6 - Implement JWT auth (your own issuer)
 - In the Quotes API, added a minimal POST /api/auth/login endpoint that takes {email, password} and returns {access_token, refresh_token, expires_in}.
 - Contents:
   - QuotesApi
-  - curl.md - curl commands and outputs to test given endpoints
-  - endpoint.md - code for login endpoint
+  - curl.md
+  - endpoint.md
 
 #### Piece 7 - Refresh tokens with rotation
 - In the Quotes API, added refresh tokens with rotation.
 - Contents:
   - QuotesApi
   - QuotesApi.Tests
-  - endpoint.md - code for refresh endpoint
-  - test.md - code and output for tests for given cases
+  - endpoint.md
+  - test.md
 
 ### Day 3
 
@@ -123,16 +122,16 @@ NOTE: All pieces are commited on time. Only the day and projects directory's mod
 - Tested QuotesApi endpoint access using Microsoft Entra ID bearer token.
 - Verified authenticated POST request returns `201 Created`.
 - Contents:
-  - QuotesApi - API project configured for token-based access.
-  - curl.md - token retrieval, curl command, and successful response output.
+  - QuotesApi
+  - curl.md
 
 #### Piece 2 - Layer authorization with policies
 - Added policy-based authorization for scope claim (`quotes.write`) and quote ownership.
 - Verified `403 Forbidden` for missing scope and non-owner delete attempts.
 - Contents:
-  - QuotesApi - policy configuration and authorization handler integration.
-  - policies.md - policy setup and relevant code snippets.
-  - tests.md - policy test cases and test output.
+  - QuotesApi
+  - policies.md
+  - tests.md
 
 #### Piece 3 - CI hardening for auth paths
 - Added CI coverage for key auth and token lifecycle scenarios.
@@ -140,7 +139,7 @@ NOTE: All pieces are commited on time. Only the day and projects directory's mod
 - Contents:
   - QuotesApi
   - QuotesApi.Tests
-  - CIrun.md - workflow badge and covered scenarios.
+  - CIrun.md
 
 #### Piece 5 - Expand unit test depth
 - Added comprehensive unit test coverage for domain models and authorization logic.
@@ -148,9 +147,9 @@ NOTE: All pieces are commited on time. Only the day and projects directory's mod
 - Contents:
   - QuotesApi
   - Quotes.Tests.Unit
-  - SampleTests.md - representative tests.
-  - testsOutput.md - local test run output (`44/44` passed).
-  - CIRun.md - [![Piece 5 Unit Tests](https://github.com/thinkbridge-thinkschool/thinkschool-AryanBhalerao/actions/workflows/day3piece5ci.yml/badge.svg)](https://github.com/thinkbridge-thinkschool/thinkschool-AryanBhalerao/actions/workflows/day3piece5ci.yml) 
+  - SampleTests.md
+  - testsOutput.md
+  - CIRun.md
 
 #### Piece 6 - Integration test infrastructure with WebApplicationFactory
 - Implemented reusable integration test setup using `WebApplicationFactory` and SQLite test database isolation.
@@ -158,9 +157,9 @@ NOTE: All pieces are commited on time. Only the day and projects directory's mod
 - Contents:
   - QuotesApi
   - Quotes.Tests.Integration
-  - factory.md - test factory implementation.
-  - tests.md - representative integration tests.
-  - TestsOutput.md - integration test run output (`25/25` passed).
+  - factory.md
+  - tests.md
+  - TestsOutput.md
 
 #### Piece 7 - Testcontainers + SQL Server integration in CI
 - Added Testcontainers-based SQL Server fixture for realistic integration test execution.
@@ -168,10 +167,10 @@ NOTE: All pieces are commited on time. Only the day and projects directory's mod
 - Contents:
   - QuotesApi
   - Quotes.Tests.Integration
-  - actions.md - CI workflow for container-backed integration tests.
-  - TestContainers.md - fixture and factory setup details.
-  - TestsList.md - list of integration test cases.
-  - CIRun.md - [![Piece 7 Integration Tests](https://github.com/thinkbridge-thinkschool/thinkschool-AryanBhalerao/actions/workflows/day3piece7ci.yml/badge.svg)](https://github.com/thinkbridge-thinkschool/thinkschool-AryanBhalerao/actions/workflows/day3piece7ci.yml)  
+  - actions.md
+  - TestContainers.md
+  - TestsList.md
+  - CIRun.md
 
 ### Day 4
 
@@ -183,8 +182,8 @@ NOTE: All pieces are commited on time. Only the day and projects directory's mod
   - QuotesApi.Tests
   - Quotes.Tests.Integration
   - Quotes.Tests.Unit
-  - CIRun.md - [![Status Check Requirement](https://github.com/thinkbridge-thinkschool/thinkschool-AryanBhalerao/actions/workflows/day3piece7ci.yml/badge.svg)](https://github.com/thinkbridge-thinkschool/thinkschool-AryanBhalerao/actions/workflows/day3piece7ci.yml)
-  - screenshot.md - merge screenshot after status check validation.
+  - CIRun.md
+  - screenshot.md
 
 #### Piece 2 - Code Coverage Analysis
 - Measured and analysed code coverage across integration and unit test suites using `dotnet test --collect:"XPlat Code Coverage"`.
@@ -195,9 +194,9 @@ NOTE: All pieces are commited on time. Only the day and projects directory's mod
   - QuotesApi.Tests
   - Quotes.Tests.Integration
   - Quotes.Tests.Unit
-  - coverage.runsettings - excludes migrations and compiler-generated code.
-  - coverageReport.md - per-class line and branch rates for both test projects.
-  - Exercise.md - analysis of the most surprising uncovered branch.
+  - coverage.runsettings
+  - coverageReport.md
+  - Exercise.md
 
 #### Piece 4 - Structured Logging with Serilog
 - Added Serilog with a two-stage bootstrap so startup exceptions are captured before configuration is read.
@@ -208,8 +207,8 @@ NOTE: All pieces are commited on time. Only the day and projects directory's mod
   - QuotesApi.Tests
   - Quotes.Tests.Integration
   - Quotes.Tests.Unit
-  - SerilogSetup.md - package list, Program.cs bootstrap, appsettings Serilog section, structured vs interpolated logging rules.
-  - LogOutput.md - sample correlated log output showing TraceId across EF Core, application, and middleware lines.
+  - SerilogSetup.md
+  - LogOutput.md
 
 #### Piece 5 - Distributed Tracing with OpenTelemetry + Jaeger
 - Instrumented QuotesApi with OpenTelemetry tracing for ASP.NET Core, EF Core, and HttpClient.
@@ -220,9 +219,8 @@ NOTE: All pieces are commited on time. Only the day and projects directory's mod
   - QuotesApi.Tests
   - Quotes.Tests.Integration
   - Quotes.Tests.Unit
-  - OTel.md - package list, tracing configuration, custom span code.
-  - jaeger.md - Jaeger setup notes.
-  - jaeger.png / jaegerSpans.png - Jaeger UI screenshots.
+  - OTel.md
+  - jaeger.md
 
 #### Piece 6 - Azure Application Insights + KQL Monitoring
 - Deployed QuotesApi to Azure App Service; connected Application Insights (workspace-based) via OpenTelemetry's `UseAzureMonitor()`.
@@ -233,10 +231,10 @@ NOTE: All pieces are commited on time. Only the day and projects directory's mod
   - QuotesApi.Tests
   - Quotes.Tests.Integration
   - Quotes.Tests.Unit
-  - InsightsSetup.md - package references and OpenTelemetry wiring in Program.cs / InfrastructureExtensions.cs.
-  - cloudSetup.md - Azure portal steps for App Insights, Key Vault, RBAC access, App Service config, and alert rule.
-  - KQLquery.md - KQL query used to surface slow requests.
-  - KQIOutput.md / KQIOutput.png - query results screenshot.
+  - InsightsSetup.md
+  - cloudSetup.md
+  - KQLquery.md
+  - KQIOutput.md
 
 #### Piece 7 - Configuration Management
 - Introduced a typed `JwtOptions` record bound via `IOptions<JwtOptions>` with startup validation that throws if `Jwt:SigningKey` is absent.
@@ -246,7 +244,7 @@ NOTE: All pieces are commited on time. Only the day and projects directory's mod
   - QuotesApi.Tests
   - Quotes.Tests.Integration
   - Quotes.Tests.Unit
-  - Configurations.md - JwtOptions record, appsettings.json excerpt, DI registration with startup validation, and injection example in AuthEndpoints.
+  - Configurations.md
 
 ### Day 5
 
@@ -255,9 +253,9 @@ NOTE: All pieces are commited on time. Only the day and projects directory's mod
 - Fixed by replacing the N+1 loop with the existing `GetPagedAsync` single query, dropping response time from ~1.27 s to ~7 ms.
 - Contents:
   - QuotesApi
-  - Jaegar.md - Jaeger trace screenshots showing the slow span before and after.
-  - KQLQuery.md - KQL query used to identify slow endpoints.
-  - Note.md - explanation of the N+1 pattern and the fix.
+  - Jaegar.md
+  - KQLQuery.md
+  - Note.md
 
 #### Piece 2 - Containerize the API
 - Built a Docker image for QuotesApi using `dotnet publish` container support (`ContainerImageName`, `ContainerImageTag`, `ContainerBaseImage` set in csproj).
@@ -265,16 +263,16 @@ NOTE: All pieces are commited on time. Only the day and projects directory's mod
 - Verified `GET /health` returned `200 Healthy` from the running container.
 - Contents:
   - QuotesApi
-  - csproj.md - container property configuration in QuotesApi.csproj.
-  - dockerOutput.md - `docker run` command, startup log output, and required runtime env vars.
-  - curl.md - health check curl command and response.
+  - csproj.md
+  - dockerOutput.md
+  - curl.md
 
 #### Piece 3 - Azure Container Apps Environment Setup
 - Created an Azure Container Apps Environment via `az CLI` in `southeastasia` region (required by subscription policy — `centralindia` blocked).
 - Contents:
   - QuotesApi
-  - AzureSetup.md - `az group create` and `az containerapp env create` commands.
-  - Output.md - `az containerapp env show` output with key fields (provisioningState, defaultDomain, staticIp).
+  - AzureSetup.md
+  - Output.md
 
 #### Piece 4 - Deploy to Azure Container Apps with azd
 - Deployed QuotesApi to Azure Container Apps using Azure Developer CLI (`azd up`) with an `azure.yaml` service definition.
@@ -282,16 +280,16 @@ NOTE: All pieces are commited on time. Only the day and projects directory's mod
 - Live URL: `https://ca-api-nb3bgcnwnlpwe.lemoncliff-d4727121.southeastasia.azurecontainerapps.io`
 - Contents:
   - QuotesApi
-  - AzureSetup.md - `azure.yaml`, `azd up` output, region and subscription notes.
-  - curl.md - curl test against the live deployment.
+  - AzureSetup.md
+  - curl.md
 
 #### Piece 5 - App Insights KQL Monitoring on Production
 - Queried Application Insights for request metrics (count, p50, p99) on the deployed app using KQL.
 - Most surprising finding: `GET /health` had a 575× p50/p99 gap (0.48 ms vs 279 ms) — the no-op health route had the worst tail latency because the single-replica Container Apps instance can be parked in a low-priority CPU slot between requests.
 - Contents:
   - QuotesApi
-  - Observations.md - KQL query results table and analysis of the health endpoint anomaly.
-  - KQLResults.md - full KQL query output.
+  - Observations.md
+  - KQLResults.md
 
 #### Piece 6 - Polly Resilience for Entra ID HttpClient
 - Added retry (exponential backoff with jitter, up to 3 retries) and circuit breaker (50% failure ratio over 30 s, 30 s break) to the Entra ID `HttpClient` using `Microsoft.Extensions.Http.Resilience`.
@@ -300,15 +298,43 @@ NOTE: All pieces are commited on time. Only the day and projects directory's mod
 - Contents:
   - QuotesApi
   - Quotes.Tests.Unit
-  - config.md - package reference, `AddResilienceHandler` configuration, retry delay schedule, and logging contract.
-  - tests.md - two representative unit tests (`succeeds after two transient failures`, `exhausts all retries`) and test run output (`44/44` passed).
+  - config.md
+  - tests.md
 
 #### Piece 7 - End-to-End Smoke Tests
 - Ran 20 smoke tests against the deployed Azure Container Apps instance covering health, auth (login/refresh/logout), anonymous reads, authenticated writes, and deletes.
 - All 20 checks passed; 1 skipped (cross-user delete — only one user exists in the deployed DB).
 - Documented 10 fragility notes including: 500 on wrong `refresh_token` field name, inconsistent request/response field casing, no pagination defaults, ephemeral SQLite DB, and missing rate limiting on auth endpoints.
 - Contents:
-  - ResultsSummary.md - pass/fail table for all 20 checks with request/response details.
-  - SmokeTests.md - smoke test script.
-  - Outputs.md - raw curl output.
-  - FragilityNotes.md - 10 identified fragility issues with severity ratings and fix suggestions.
+  - ResultsSummary.md
+  - SmokeTests.md
+  - Outputs.md
+  - FragilityNotes.md
+
+### Day 7
+
+#### Piece 1 - CTE Query
+- Wrote a CTE query returning each author with their quote count and most-recent quote.
+- Used two CTEs (`AuthorStats` for `COUNT`/`MAX`, `RankedQuotes` for `ROW_NUMBER`) joined cleanly to avoid re-executing correlated subqueries per row.
+- Contents:
+  - DBSetup.sql
+  - query.sql
+  - FullResult.csv
+  - Solution.md
+
+#### Piece 2 - Window Functions Query
+- Wrote a window function query returning per-author quote timeline with running count and gap in days since previous quote.
+- Used `ROW_NUMBER`, `RANK`, `LAG`, `LEAD`, and `SUM ... ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW` in a single pass.
+- Contents:
+  - DBSetup.sql
+  - query.sql
+  - FullResult.csv
+  - Solution.md
+
+#### Piece 3 - Set Operations
+- Wrote three queries using EXCEPT, INTERSECT, and UNION set operators.
+- Query 1 (EXCEPT): authors with quotes but no tags. Query 2 (INTERSECT): authors appearing in both 'classic' and 'modern' categories. Query 3 (UNION): combined distinct tag list across both categories.
+- Contents:
+  - DBSetup.sql
+  - query.sql
+  - Solution.md
