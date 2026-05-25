@@ -9,15 +9,19 @@ FROM   Quotes      q
 JOIN   QuoteTags  qt ON q.Id = qt.QuoteId;
 ```
 
-Operator: EXCEPT. Reason: The result is the set of all quote authors minus the set of authors who have at least one tagged quote. EXCEPT performs exactly that subtraction between two result sets. A LEFT JOIN with a NULL check produces the same rows but mixes filtering logic into what is structurally a set-difference operation.
+Operator: EXCEPT. 
+
+Reason: The result is the set of all quote authors minus the set of authors who have at least one tagged quote. EXCEPT performs exactly that subtraction between two result sets. A LEFT JOIN with a NULL check produces the same rows but mixes filtering logic into what is structurally a set-difference operation.
 
 Output:
-	Authors with no quotes with Tags
-1	Henry Ford
-2	Nelson Mandela
-3	Theodore Roosevelt
 
-![alt text](Query1Output.png)
+| Authors with no quotes with Tags |
+|---|
+| Henry Ford |
+| Nelson Mandela |
+| Theodore Roosevelt |
+
+![Output Screenshot](Query1Output.png)
 
 ---
 
@@ -37,17 +41,20 @@ JOIN   Categories       c ON qc.CategoryId = c.Id
 WHERE  c.Name = 'modern';
 ```
 
-Operator: INTERSECT. Reason: INTERSECT returns only rows that appear in both result sets, which directly matches the condition of an author having quotes in both categories. A self-join or EXISTS subquery can produce the same output but encodes set membership as a filter rather than as a set operation. INTERSECT keeps both sides structurally parallel and is the natural operator for set intersection.
+Operator: INTERSECT. 
 
-![alt text](Query2Output.png)
+Reason: INTERSECT returns only rows that appear in both result sets, which directly matches the condition of an author having quotes in both categories. A self-join or EXISTS subquery can produce the same output but encodes set membership as a filter rather than as a set operation. INTERSECT keeps both sides structurally parallel and is the natural operator for set intersection.
 
 Output:
-	Authors with both Classic and Modern quotes.
-1	Benjamin Franklin
-2	Friedrich Nietzsche
-3	Mark Twain
-4	Oscar Wilde
 
+| Authors with both Classic and Modern quotes. |
+|---|
+| Benjamin Franklin |
+| Friedrich Nietzsche |
+| Mark Twain |
+| Oscar Wilde |
+
+![Output Screenshot](Query2Output.png)
 ---
 
 ## Query 3 — Combined distinct tag list across 'classic' and 'modern'
@@ -69,19 +76,23 @@ WHERE  c.Name = 'modern';
 
 ```
 
-Operator: UNION. Reason: UNION merges two result sets and removes duplicate rows, so tags shared between classic and modern quotes appear exactly once in the output. UNION ALL is not suitable here because it preserves duplicates, inflating the list beyond the distinct set of tags. UNION is the correct operator when the goal is a combined, deduplicated collection from multiple sets.
+Operator: UNION. 
+
+Reason: UNION merges two result sets and removes duplicate rows, so tags shared between classic and modern quotes appear exactly once in the output. UNION ALL is not suitable here because it preserves duplicates, inflating the list beyond the distinct set of tags. UNION is the correct operator when the goal is a combined, deduplicated collection from multiple sets.
 
 Output:
-	Distinct Tags
-1	change
-2	education
-3	humor
-4	life
-5	motivation
-6	perseverance
-7	philosophy
-8	success
-9	truth
-10	wisdom
 
-![alt text](Query3Output.png)
+| Distinct Tags |
+|---|
+| change |
+| education |
+| humor |
+| life |
+| motivation |
+| perseverance |
+| philosophy |
+| success |
+| truth |
+| wisdom |
+
+![Output Screenshot](Query3Output.png)
