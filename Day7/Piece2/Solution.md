@@ -32,7 +32,7 @@ ORDER BY Author, CreatedAt;
 
 # Output
 
-| # | Author | Text | CreatedAt | QuoteNumber | GlobalRecencyRank | DaysSincePrevious | NextQuoteAt | RunningQuoteTotal |
+|   | Author | Text | CreatedAt | QuoteNumber | GlobalRecencyRank | DaysSincePrevious | NextQuoteAt | RunningQuoteTotal |
 |---|--------|------|-----------|-------------|-------------------|-------------------|-------------|-------------------|
 | 1 | Abraham Lincoln | Whatever you are, be a good one. | 2025-09-05 09:30:00.0000000 +00:00 | 1 | 71 | | 2026-05-08 09:00:00.0000000 +00:00 | 7 |
 | 2 | Abraham Lincoln | Give me six hours to chop down a tree and I will spend the first four sharpening the axe. | 2026-05-08 09:00:00.0000000 +00:00 | 2 | 39 | 245 | 2026-05-09 10:00:00.0000000 +00:00 | 39 |
