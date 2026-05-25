@@ -1,0 +1,1 @@
+CTE is used here because the query needs two separate aggregations (`COUNT`/`MAX` and `ROW_NUMBER`), which a CTE computes once and joins cleanly, while a correlated subquery would re-execute per row and can't handle window functions inline.
