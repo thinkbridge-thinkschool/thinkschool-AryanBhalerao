@@ -1,5 +1,5 @@
 # Execultion Plan Before INCLUDE:
-![Before](Screenshots/Before_ExecutionPlan.png)
+![Before](Before_ExecutionPlan.png)
 
 # INCLUDE Query:
 ```sql
@@ -13,7 +13,7 @@ GO
 ```
 
 # Execution Plan After INCLUDE:
-![After](Screenshots/After_ExecutionPlan.png)
+![After](After_ExecutionPlan.png)
 
 # Logical Reads Delta:
 
