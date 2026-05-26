@@ -120,13 +120,13 @@ A single INSERT that cost 1 logical write on the heap now costs 3 logical writes
 Output Screenshots:
 
 1. Database Creation:
-![alt text](DBSetup.png)
+![alt text](Screenshots/DBSetup.png)
 
 2. Queries before Index IO Output:
-![alt text](Before.png)
+![alt text](Screenshots/Before.png)
 
 3. Adding Index:
-![alt text](AddingIndexes.png)
+![alt text](Screenshots/AddingIndexes.png)
 
 4. Queries after Index IO Output:
-![alt text](After.png)
+![alt text](Screenshots/After.png)
