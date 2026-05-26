@@ -30,6 +30,7 @@ WHERE  OrderID = 42000;
 ```
 
 Logical Reads Before: 716
+
 Statistics IO:
 ```txt
 (1 row affected)
@@ -37,6 +38,7 @@ Table 'Orders'. Scan count 1, logical reads 716, physical reads 0, page server r
 ```
 
 Logical Reads After: 3
+
 Statistics IO:
 ```txt
 (1 row affected)
@@ -53,6 +55,7 @@ WHERE  CustomerID = 7500;
 ```
 
 Logical Reads Before: 716
+
 Statistics IO:
 ```txt
 (12 rows affected)
@@ -60,6 +63,7 @@ Table 'Orders'. Scan count 1, logical reads 716, physical reads 0, page server r
 ```
 
 Logical Reads After: 2
+
 Statistics IO:
 ```txt
 (12 rows affected)
@@ -76,6 +80,7 @@ WHERE  OrderDate >= '2025-01-01' AND OrderDate < '2025-04-01';
 ```
 
 Logical Reads Before: 716
+
 Statistics IO:
 ```txt
 (4895 rows affected)
@@ -83,6 +88,7 @@ Table 'Orders'. Scan count 1, logical reads 716, physical reads 0, page server r
 ```
 
 Logical Reads After: 21
+
 Statistics IO:
 ```txt
 (4895 rows affected)
@@ -99,6 +105,7 @@ VALUES (100002, 5001, '2026-05-26', 149.99, 'Pending', 42, 'West');
 ```
 
 Logical Reads Before: 1
+
 Statistics IO:
 ```txt
 Table 'Orders'. Scan count 0, logical reads 1, physical reads 0, page server reads 0, read-ahead reads 0, page server read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob page server reads 0, lob read-ahead reads 0, lob page server read-ahead reads 0.
@@ -107,6 +114,7 @@ Table 'Orders'. Scan count 0, logical reads 1, physical reads 0, page server rea
 ```
 
 Logical Reads After: 13
+
 Statistics IO:
 ```txt
 Table 'Orders'. Scan count 0, logical reads 13, physical reads 0, page server reads 0, read-ahead reads 0, page server read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob page server reads 0, lob read-ahead reads 0, lob page server read-ahead reads 0.
