@@ -15,7 +15,7 @@ CREATE TABLE dbo.Orders (
 );
 GO
 
--- Number generator: exceeds 100 000 combinations
+-- Number generator: exceeds 100,000 combinations
 WITH Nums AS (
     SELECT TOP (100000)
            ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) AS n
