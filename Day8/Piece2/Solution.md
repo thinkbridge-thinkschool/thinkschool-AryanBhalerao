@@ -23,7 +23,7 @@ GO
 | After INCLUDE  | 2                 |
 | **Delta**      | **= 23 - 2 = 21** |
 
-# Full Output:
+# Full Query and Output:
 
 ## Before INCLUDE
 ```sql
@@ -52,8 +52,6 @@ SET STATISTICS IO OFF;
 GO
 ```
 
-Statistics IO:
-
 ```txt
 (7 rows affected)
 Table 'Orders'. Scan count 1, logical reads 23, physical reads 0, page server reads 0, read-ahead reads 0, page server read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob page server reads 0, lob read-ahead reads 0, lob page server read-ahead reads 0.
@@ -62,8 +60,9 @@ Table 'Orders'. Scan count 1, logical reads 23, physical reads 0, page server re
 
 Completion time: 2026-05-26T17:32:58.5937295+05:30
 ```
+### Logical Reads: 23
 
-Statistics Profile:
+### Statistics Profile:
 
 | Row | Rows | Executes | StmtText |
 |-----|------|----------|----------|
@@ -104,10 +103,8 @@ SET STATISTICS IO OFF;
 GO
 ```
 
-Statistics IO:
-
 ```txt
-7 rows affected)
+(7 rows affected)
 Table 'Orders'. Scan count 1, logical reads 2, physical reads 0, page server reads 0, read-ahead reads 0, page server read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob page server reads 0, lob read-ahead reads 0, lob page server read-ahead reads 0.
 
 (2 rows affected)
@@ -117,7 +114,9 @@ Table 'Orders'. Scan count 1, logical reads 2, physical reads 0, page server rea
 Completion time: 2026-05-26T17:36:00.2449850+05:30
 ```
 
-Statistics Profile:
+### Logical Reads: 2
+
+### Statistics Profile:
 
 | Row | Rows | Executes | StmtText |
 |-----|------|----------|----------|
