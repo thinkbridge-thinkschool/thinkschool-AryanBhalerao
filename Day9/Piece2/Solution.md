@@ -1,5 +1,3 @@
-# Deadlock Lab — Solution
-
 ## Repro Scripts
 
 **session1.sql** — lock order: Widgets → Orders
