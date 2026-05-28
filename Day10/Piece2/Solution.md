@@ -1,6 +1,8 @@
 ## EF Core SQL Logging Setup
 
 Filters EF logs to SQL commands only and prints them to the console.
+`EnableSensitiveDataLogging()` ensures parameter values appear in the output for easier debugging.
+This factory method is used throughout the demos instead of the default context constructor.
 
 `QueryProjections/AppDbContext.cs`
 ```csharp
@@ -20,6 +22,8 @@ public static AppDbContext CreateWithLogging() =>
 ## Original SQL
 
 Fetches every column of every matching entity from the database.
+All 7 columns are included in the `SELECT` even though only a few may actually be needed.
+This is the default EF behavior when you materialize a full entity.
 
 #### EF LINQ
 `Demos/ProjectionDemo.cs`
@@ -41,6 +45,8 @@ info: 5/28/2026 14:20:26.395 RelationalEventId.CommandExecuted[20101] (Microsoft
 ## Projected query
 
 Uses `.Select()` to tell EF to fetch only the columns the DTO actually needs.
+EF translates the projection into a narrower `SELECT` list, so less data travels over the network.
+The DTO is constructed entirely server-side — no extra mapping step is required in C#.
 
 #### EF LINQ
 `Demos/ProjectionDemo.cs`
@@ -71,6 +77,8 @@ info: 5/28/2026 14:20:26.459 RelationalEventId.CommandExecuted[20101] (Microsoft
 ### Bug
 
 Calling `.ToList()` mid-chain breaks out of `IQueryable`, so EF sends no `WHERE` clause and pulls the entire table into memory.
+The subsequent `.Where()` and `.Select()` run as LINQ-to-Objects on the in-memory list, not as SQL.
+At scale this silently fetches millions of rows and exhausts both memory and network bandwidth.
 
 #### EF LINQ
 `Demos/ProjectionDemo.cs`
@@ -95,6 +103,8 @@ info: 5/28/2026 14:20:26.466 RelationalEventId.CommandExecuted[20101] (Microsoft
 ### Fix
 
 Keep the entire chain as `IQueryable<T>` so EF translates both the filter and the projection into a single optimised SQL query.
+Only the rows that match the predicate and the columns the DTO needs ever leave the database.
+Call `.ToList()` once at the very end to materialise the result set.
 
 #### EF LINQ
 `Demos/ProjectionDemo.cs`
