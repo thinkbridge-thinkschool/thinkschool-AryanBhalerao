@@ -16,8 +16,8 @@ public static AppDbContext CreateWithLogging() =>
         .EnableSensitiveDataLogging()
         .Options);
 ```
-
----
+## Output Screenshot:
+![output](Output.png)
 
 ## Original SQL
 
@@ -125,6 +125,3 @@ info: 5/28/2026 14:20:26.565 RelationalEventId.CommandExecuted[20101] (Microsoft
 
 → Got 1000 items, only matching rows + 3 cols sent
 ```
-
-Output Screenshot:
-![output](Output.png)
