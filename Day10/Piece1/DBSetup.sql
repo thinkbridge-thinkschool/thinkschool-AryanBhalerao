@@ -1,52 +1,48 @@
--- ============================================================
--- DB Setup — EF Core Change Tracker Demo
--- SQLite schema created automatically by EF Core (EnsureCreated)
--- ============================================================
+-- DBSetup.sql
+-- Run via: sqlcmd -S .\SQLEXPRESS -E -i DBSetup.sql
 
--- Schema equivalent (what EF Core generates for SQLite):
+-- Create database if it does not exist
+IF DB_ID('EFCoreDemo') IS NULL
+    CREATE DATABASE EFCoreDemo;
+GO
 
-CREATE TABLE IF NOT EXISTS "Quotes" (
-    "Id"        INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "Author"    TEXT    NOT NULL,
-    "Text"      TEXT    NOT NULL,
-    "CreatedAt" TEXT    NOT NULL,
-    "OwnerId"   INTEGER NULL
-);
+USE EFCoreDemo;
+GO
 
-CREATE TABLE IF NOT EXISTS "Users" (
-    "Id"           INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "Email"        TEXT    NOT NULL,
-    "PasswordHash" TEXT    NOT NULL
-);
+-- Create table
+IF OBJECT_ID('dbo.Products', 'U') IS NULL
+BEGIN
+    CREATE TABLE dbo.Products (
+        Id    INT           NOT NULL IDENTITY(1,1) PRIMARY KEY,
+        Name  NVARCHAR(200) NOT NULL,
+        Price DECIMAL(18,2) NOT NULL,
+        Stock INT           NOT NULL
+    );
+END
+GO
 
-CREATE TABLE IF NOT EXISTS "RefreshTokens" (
-    "Id"              INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "TokenHash"       TEXT    NOT NULL,
-    "UserId"          INTEGER NOT NULL,
-    "FamilyId"        TEXT    NOT NULL,
-    "ExpiresAt"       TEXT    NOT NULL,
-    "RevokedAt"       TEXT    NULL,
-    "ReplacedByToken" TEXT    NULL,
-    FOREIGN KEY ("UserId") REFERENCES "Users" ("Id")
-);
+-- Seed 10 000 rows using a cross-join tally table
+-- (avoids the default MAXRECURSION 100 limit of recursive CTEs)
+IF NOT EXISTS (SELECT 1 FROM dbo.Products)
+BEGIN
+    WITH
+        n2    AS (SELECT 1 AS x UNION ALL SELECT 1),
+        n4    AS (SELECT 1 AS x FROM n2   CROSS JOIN n2   b),
+        n16   AS (SELECT 1 AS x FROM n4   CROSS JOIN n4   b),
+        n256  AS (SELECT 1 AS x FROM n16  CROSS JOIN n16  b),
+        n65k  AS (SELECT 1 AS x FROM n256 CROSS JOIN n256 b),
+        nums  AS (SELECT ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) AS n
+                  FROM n65k)
+    INSERT INTO dbo.Products (Name, Price, Stock)
+    SELECT
+        N'Product-' + CAST(n AS NVARCHAR(10)),
+        CAST(1.0 + (n % 999) AS DECIMAL(18,2)),
+        CAST(n % 500 AS INT)
+    FROM nums
+    WHERE n <= 10000;
 
-CREATE UNIQUE INDEX "IX_RefreshTokens_TokenHash" ON "RefreshTokens" ("TokenHash");
-CREATE        INDEX "IX_RefreshTokens_FamilyId"  ON "RefreshTokens" ("FamilyId");
-
--- ============================================================
--- Seed: handled by the benchmark endpoint on first call
--- GET /benchmark/change-tracker  → seeds 10,000 quotes if needed
--- ============================================================
-
--- Manual seed example (SQLite — runs in a loop via recursive CTE):
--- INSERT INTO Quotes (Author, Text, CreatedAt)
--- WITH RECURSIVE gen(n) AS (
---     SELECT 1
---     UNION ALL
---     SELECT n + 1 FROM gen WHERE n < 10000
--- )
--- SELECT
---     'Author_' || n,
---     'Benchmark quote ' || n || '. The quick brown fox jumps over the lazy dog.',
---     datetime('now')
--- FROM gen;
+    PRINT CAST(@@ROWCOUNT AS VARCHAR(10)) + ' rows inserted into Products.';
+END
+ELSE
+    PRINT 'Products table already seeded, skipping.';
+GO
