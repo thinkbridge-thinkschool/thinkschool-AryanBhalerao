@@ -110,7 +110,7 @@ a.Name = "MUTATED";
 Console.WriteLine(b.Name); // "MUTATED"
 ```
 
-- Two queries for the same PK return the **same object reference** — `ReferenceEquals` is **true**
+- Two queries for the same PK return the **same object reference**, thus `ReferenceEquals` is **true**
 - Mutating the entity through one variable is immediately visible through any other variable holding the same row
 
 ### Without Tracking
@@ -124,8 +124,8 @@ c.Name = "MUTATED";
 Console.WriteLine(d.Name); // unchanged
 ```
 
-- Two queries for the same PK return **different object references** — `ReferenceEquals` is **false**
-- Mutating one instance has no effect on the other — each variable holds an independent copy, so the value stays **unchanged**
+- Two queries for the same PK return **different object references**, thus `ReferenceEquals` is **false**
+- Mutating one instance has no effect on the other and each variable holds an independent copy, so the value stays **unchanged**
 
 ---
 
