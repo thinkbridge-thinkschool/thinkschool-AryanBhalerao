@@ -340,3 +340,25 @@ NOTE: All pieces are commited on time. Only the day and projects directory's mod
   - DBSetup.sql
   - query.sql
   - Solution.md
+
+### Day 8
+
+#### Piece 1 - Index Design and IO Analysis
+- Created a clustered index on `OrderID` and two nonclustered indexes on `CustomerID` and `OrderDate` (both with `INCLUDE` columns) on a 100k-row `Orders` table.
+- Measured logical reads before and after for 3 read queries and 1 insert; point-lookup dropped from 716 → 3 reads, date-range from 716 → 21 reads.
+- Observed write-side cost: a single INSERT grew from 1 → 13 logical writes after adding three indexes.
+- Contents:
+  - DBSetup.sql
+  - query.sql
+  - Solution.md
+  - Screenshots/
+
+#### Piece 2 - Covering Index with INCLUDE
+- Replaced a narrow nonclustered index on `CustomerID` with a covering index that includes `OrderDate` and `TotalAmount`.
+- Eliminated the Key Lookup (clustered index seek) from the execution plan; logical reads dropped from 23 → 2.
+- Contents:
+  - DBSetup.sql
+  - Query.sql
+  - Solution.md
+  - Before_ExecutionPlan.png
+  - After_ExecutionPlan.png
