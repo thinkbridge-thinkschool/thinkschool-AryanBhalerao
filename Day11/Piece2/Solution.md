@@ -7,7 +7,8 @@
     http_reqs......................: 180   3.589674/s
 ```
 
-Full Output: [text](Before_k6Output.md)
+Full Output: [Before](Before_k6Output.md)
+
 Full Output Screenshot:
 ![alt text](Before_k6_Output.png)
 
@@ -19,7 +20,8 @@ Full Output Screenshot:
     http_req_failed................: 0.00% 0 out of 2769
     http_reqs......................: 2769  55.354034/s
 ```
-Full Output: [text](After_k6Output.md)
+Full Output: [After](After_k6Output.md)
+
 Full Output Screenshot:
 ![alt text](After_k6Outputpng.png)
 
@@ -35,12 +37,14 @@ Full Output Screenshot:
 
 ## Changes Made
 
-### Fix 1: Eliminate the N+1 — EF Core Projection Query
+### Fix 1: Eliminate the N+1 — Projection Query
 
-Added `ICollection<Quote> Quotes` navigation property to `Author.cs` and updated `AppDbContext.cs` to wire it with `WithMany(a => a.Quotes)`.
-Added `GetAllWithQuotesAsync` to `IAuthorRepository` / `AuthorRepository`. The new implementation uses a single EF Core projection:
+`Author.cs` — added `ICollection<Quote> Quotes` navigation property.  
+`AppDbContext.cs` — wired the relationship with `WithMany(a => a.Quotes)` and declared the covering index via `HasIndex(...).IncludeProperties(Text, CreatedAt)`.  
+`AuthorEndpoints.cs` — switched to call `GetAllWithQuotesAsync`.
 
-`AuthorRepository.cs`
+`IAuthorRepository.cs` / `AuthorRepository.cs` — added `GetAllWithQuotesAsync`, replacing 21 round-trips with one LEFT JOIN that selects only the 3 columns needed:
+
 ```csharp
 public async Task<List<AuthorWithQuotesDto>> GetAllWithQuotesAsync(CancellationToken ct)
 {
@@ -62,43 +66,16 @@ public async Task<List<AuthorWithQuotesDto>> GetAllWithQuotesAsync(CancellationT
 }
 ```
 
-EF Core translates this to a **single LEFT JOIN** query:
-```sql
--- After: 1 query total
-SELECT [a].[Id], [a].[Name], [q].[Id], [q].[Text], [q].[CreatedAt]
-FROM [Authors] AS [a]
-LEFT JOIN [Quotes] AS [q] ON [q].[AuthorId] = [a].[Id]
-ORDER BY [a].[Id]
-```
-
-`AsNoTracking()` removes EF Core's identity-map and change-detection overhead (read-only endpoint). The projection selects only the 3 columns `QuoteSummaryDto` needs instead of all 6 Quote columns, reducing bytes transferred from SQL Server by ~40%.
-
-`AuthorEndpoints.cs` updated to call `GetAllWithQuotesAsync` instead of `GetAllWithQuotesSlowAsync`.
-
 ### Fix 2: Add Covering Index on `Quotes.AuthorId`
 
-Removed the `DROP INDEX` from `Program.cs`. Replaced it with an idempotent covering-index creation:
+`Program.cs` — replaced the `DROP INDEX` with an idempotent SQL block that recreates `IX_Quotes_AuthorId` as a covering index:
+
 ```sql
--- Program.cs startup SQL (idempotent)
-IF EXISTS (
-    SELECT 1 FROM sys.indexes
-    WHERE name = N'IX_Quotes_AuthorId'
-      AND object_id = OBJECT_ID(N'[dbo].[Quotes]'))
-    DROP INDEX [IX_Quotes_AuthorId] ON [dbo].[Quotes];
+DROP INDEX [IX_Quotes_AuthorId] ON [dbo].[Quotes];
 CREATE NONCLUSTERED INDEX [IX_Quotes_AuthorId]
     ON [dbo].[Quotes] ([AuthorId] ASC)
     INCLUDE ([Text], [CreatedAt]);
 ```
-
-`AppDbContext.cs` also declares the covering index so any fresh-DB creation via `EnsureCreated()` builds it correctly:
-`AppDbContext.cs`
-```csharp
-modelBuilder.Entity<Quote>()
-    .HasIndex(q => q.AuthorId)
-    .HasDatabaseName("IX_Quotes_AuthorId")
-    .IncludeProperties(nameof(Quote.Text), nameof(Quote.CreatedAt));
-```
-The covering index includes `Text` and `CreatedAt` so that per-author lookups (e.g., `WHERE AuthorId = @id` projecting only those columns) never need a key lookup — the entire result is available directly from the leaf page.
 
 ## After Execution Plans
 
