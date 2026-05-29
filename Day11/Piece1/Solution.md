@@ -3,7 +3,16 @@
 - Schema: Setup a test Quotes table with 500 rows. Seeded at dotnet run startup. 
 - Captured with k6 (10 VUs, 50 s, back-to-back requests, no sleep).  
 
-## K6 Output
+## K6 Output:
+```pwsh
+    HTTP
+    http_req_duration..............: avg=2.28s min=328.19ms med=2.22s max=3.31s p(90)=3.24s p(95)=3.28s
+      { expected_response:true }...: avg=2.28s min=328.19ms med=2.22s max=3.31s p(90)=3.24s p(95)=3.28s
+    http_req_failed................: 0.00% 0 out of 180
+    http_reqs......................: 180   3.589674/s
+```
+Full Output: [k6Output.md](k6Output.md)
+Full Output Screenshot:
 ![output](k6_Output.png)
 
 ## Baseline p50 / p99
