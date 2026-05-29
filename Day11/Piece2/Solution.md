@@ -10,7 +10,7 @@
 Full Output: [Before](Before_k6Output.md)
 
 Full Output Screenshot:
-![alt text](Before_k6_Output.png)
+![alt text](Before_k6Output.png)
 
 ## After K6 Output (projection + covering index):
 ```pwsh
