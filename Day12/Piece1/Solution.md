@@ -94,7 +94,24 @@ public class QuoteQueryService : IQuoteQueryService
 - **Endpoints/QuoteEndpoints.cs** — GET endpoints now inject `IQuoteQueryService`; POST maps `CreateQuoteRequest` → `CreateQuoteCommand` → handler
 - **Extensions/InfrastructureExtensions.cs** — registered `CreateQuoteCommandHandler` (scoped) and `IQuoteQueryService → QuoteQueryService` (scoped)
 
-## Read Queries Before
+## Read Queries
+
+### Before
+
+Curl:
+
+```pwsh
+# GET /api/quotes
+curl.exe "http://localhost:5051/api/quotes?page=1&size=2"
+[{"id":1,"author":"Seneca","text":"[1] Waste no more time arguing what a good man should be. Be one.","createdAt":"2026-05-28T09:56:03.2154741+00:00","ownerId":null,"authorId":2},{"id":2,"author":"Epictetus","text":"[2] You have power over your mind, not outside events. Realize this, and you will find strength.","createdAt":"2026-05-27T09:56:03.2155727+00:00","ownerId":null,"authorId":3}]
+
+# GET /api/quotes/{id}
+curl.exe "http://localhost:5051/api/quotes/1"
+{"id":1,"author":"Seneca","text":"[1] Waste no more time arguing what a good man should be. Be one.","createdAt":"2026-05-28T09:56:03.2154741+00:00","ownerId":null,"authorId":2}
+```
+
+Screenshot:
+![alt text](Before.png)
 
 Both GET endpoints injected `IQuoteRepository` and returned raw `Quote` entities.
 
@@ -127,9 +144,25 @@ FROM [Quotes] AS [q]
 WHERE [q].[Id] = @__id_0
 ```
 
-## Read Queries After
+### After
+
+Curl:
+
+```pwsh
+# GET /api/quotes
+curl.exe "http://localhost:5051/api/quotes?page=1&size=2"
+[{"id":1,"authorName":"Seneca","text":"[1] Waste no more time arguing what a good man should be. Be one.","createdAt":"2026-05-28T09:56:03.2154741+00:00"},{"id":2,"authorName":"Epictetus","text":"[2] You have power over your mind, not outside events. Realize this, and you will find strength.","createdAt":"2026-05-27T09:56:03.2155727+00:00"}]
+
+# GET /api/quotes/{id}
+curl.exe "http://localhost:5051/api/quotes/1"
+{"id":1,"authorName":"Seneca","text":"[1] Waste no more time arguing what a good man should be. Be one.","createdAt":"2026-05-28T09:56:03.2154741+00:00"}
+```
+
+Screenshot:
+![](After.png)
 
 Both GET endpoints inject `IQuoteQueryService` and return projected `QuoteReadModel` records:
+
 EF Core LINQ:
 ```csharp
 // GET /api/quotes
