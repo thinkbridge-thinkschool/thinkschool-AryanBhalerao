@@ -225,6 +225,8 @@ NOTE: All pieces are commited on time. Only the day and projects directory's mod
   - Quotes.Tests.Unit
   - OTel.md
   - jaeger.md
+  - jaeger.png
+  - jaegerSpans.png
 
 #### Piece 6 - Azure Application Insights + KQL Monitoring
 - Deployed QuotesApi to Azure App Service; connected Application Insights (workspace-based) via OpenTelemetry's `UseAzureMonitor()`.
@@ -239,6 +241,7 @@ NOTE: All pieces are commited on time. Only the day and projects directory's mod
   - cloudSetup.md
   - KQLquery.md
   - KQIOutput.md
+  - KQIOutput.png
 
 #### Piece 7 - Configuration Management
 - Introduced a typed `JwtOptions` record bound via `IOptions<JwtOptions>` with startup validation that throws if `Jwt:SigningKey` is absent.
@@ -260,6 +263,8 @@ NOTE: All pieces are commited on time. Only the day and projects directory's mod
   - Jaegar.md
   - KQLQuery.md
   - Note.md
+  - before.png
+  - after.png
 
 #### Piece 2 - Containerize the API
 - Built a Docker image for QuotesApi using `dotnet publish` container support (`ContainerImageName`, `ContainerImageTag`, `ContainerBaseImage` set in csproj).
@@ -294,6 +299,7 @@ NOTE: All pieces are commited on time. Only the day and projects directory's mod
   - QuotesApi
   - Observations.md
   - KQLResults.md
+  - KQLResults.png
 
 #### Piece 6 - Polly Resilience for Entra ID HttpClient
 - Added retry (exponential backoff with jitter, up to 3 retries) and circuit breaker (50% failure ratio over 30 s, 30 s break) to the Entra ID `HttpClient` using `Microsoft.Extensions.Http.Resilience`.
@@ -327,6 +333,7 @@ NOTE: All pieces are commited on time. Only the day and projects directory's mod
   - query.sql
   - FullResult.csv
   - Solution.md
+  - Output.png
 
 #### Piece 2 - Window Functions Query
 - Wrote a window function query returning per-author quote timeline with running count and gap in days since previous quote.
@@ -336,6 +343,7 @@ NOTE: All pieces are commited on time. Only the day and projects directory's mod
   - query.sql
   - FullResult.csv
   - Solution.md
+  - Output.png
 
 #### Piece 3 - Set Operations
 - Wrote three queries using EXCEPT, INTERSECT, and UNION set operators.
@@ -344,6 +352,9 @@ NOTE: All pieces are commited on time. Only the day and projects directory's mod
   - DBSetup.sql
   - query.sql
   - Solution.md
+  - Query1Output.png
+  - Query2Output.png
+  - Query3Output.png
 
 ### Day 8
 
@@ -356,6 +367,10 @@ NOTE: All pieces are commited on time. Only the day and projects directory's mod
   - query.sql
   - Solution.md
   - Screenshots/
+    - AddingIndexes.png
+    - Before.png
+    - After.png
+    - DBSetup.png
 
 #### Piece 2 - Covering Index with INCLUDE
 - Replaced a narrow nonclustered index on `CustomerID` with a covering index that includes `OrderDate` and `TotalAmount`.
@@ -377,6 +392,12 @@ NOTE: All pieces are commited on time. Only the day and projects directory's mod
   - Session1.sql
   - Session2.sql
   - Solution.md
+  - DirtyRead_Reproduce.png
+  - DirtyRead_Prevent.png
+  - NonRepeatable_Reproduce.png
+  - NonRepeatable_Prevent.png
+  - PhantomRead_Reproduce.png
+  - PhantomRead_Prevent.png
 
 #### Piece 2 - Deadlock Detection and Prevention
 - Reproduced a classic circular-wait deadlock between two sessions acquiring locks on Widgets and Orders tables in opposite order.
@@ -386,6 +407,9 @@ NOTE: All pieces are commited on time. Only the day and projects directory's mod
   - session1.sql
   - session2.sql
   - Solution.md
+  - DeadlockRepro.png
+  - DeadlockGraph.png
+  - Fixed.png
 
 ### Day 10
 
@@ -404,6 +428,7 @@ NOTE: All pieces are commited on time. Only the day and projects directory's mod
   - DBSetup.sql
   - QueryProjections/
   - Solution.md
+  - Output.png
 
 ### Day 11
 
@@ -415,6 +440,8 @@ NOTE: All pieces are commited on time. Only the day and projects directory's mod
   - k6/
   - k6Output.md
   - Solution.md
+  - ExecutionPlan.png
+  - k6_Output.png
 
 #### Piece 2 - Performance Optimization (N+1 Fix + Covering Index)
 - Replaced the N+1 loop with a single LEFT JOIN projection (`GetAllWithQuotesAsync`) and added a nonclustered covering index on `Quotes.AuthorId` including `Text` and `CreatedAt`.
@@ -425,6 +452,10 @@ NOTE: All pieces are commited on time. Only the day and projects directory's mod
   - Before_k6Output.md
   - After_k6Output.md
   - Solution.md
+  - Before_k6Output.png
+  - After_k6Outputpng.png
+  - FullJoin_ExecutionPlan.png
+  - PerAuthor_ExecutionPlan.png
 
 ### Day 12
 
@@ -434,6 +465,8 @@ NOTE: All pieces are commited on time. Only the day and projects directory's mod
 - Contents:
   - QuotesApi/
   - Solution.md
+  - Before.png
+  - After.png
 
 #### Piece 2 - EF Core vs. Dapper on Hot Read Paths
 - Benchmarked EF Core and Dapper on the `GetPagedAsync` hot path (500 rows, 10 back-to-back calls); both emit identical SQL.
@@ -442,3 +475,4 @@ NOTE: All pieces are commited on time. Only the day and projects directory's mod
 - Contents:
   - QuotesApi/
   - Solution.md
+  - output.png
