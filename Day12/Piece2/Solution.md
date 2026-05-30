@@ -5,8 +5,6 @@ is the highest-frequency read in this API. It returns a page of quotes sorted ne
 Both implementations project directly to the `QuoteReadModel` record; no entity tracking is
 needed because nothing is written back.
 
----
-
 ## EF Core implementation
 
 `Queries/QuoteQueryService.cs`
@@ -33,10 +31,8 @@ OFFSET @__p_0 ROWS FETCH NEXT @__p_1 ROWS ONLY
 
 - EF compiles this LINQ expression tree on first call and caches the result, so subsequent
 calls skip re-translation. The generated SQL is identical to what you would write by hand.
-The per-call overhead comes from:
-- Materialising internal `InternalEntityEntry` bookkeeping even for no-tracking projections
-  (the `.Select()` projection partially avoids this, but not entirely in the current EF pipeline)
-- Extra type-coercion layers in the EF materialiser compared to Dapper's IL-emitted mapper
+- The per-call overhead comes from materialising internal `InternalEntityEntry` bookkeeping even for no-tracking projections. The `.Select()` projection partially avoids this, but not entirely in the current EF pipeline.
+- Extra type-coercion layers in the EF materialiser compared to Dapper's IL-emitted mapper also add to the overhead. 
 
 ## Dapper implementation
 
@@ -69,9 +65,9 @@ ORDER  BY CreatedAt DESC
 OFFSET @Offset ROWS FETCH NEXT @Size ROWS ONLY
 ```
 
-The SQL is functionally identical. The only change is an `Author AS AuthorName` alias to
-match the `QuoteReadModel` record's property name without a custom `TypeHandler`. Dapper
-reuses the `AppDbContext`'s open connection so no second connection pool slot is consumed.
+- The SQL is functionally identical to what EF emits. The only change is an `Author AS AuthorName` alias to match the `QuoteReadModel` record's property name without needing a custom `TypeHandler`.
+- On first execution, Dapper emits IL to build a dedicated mapper for `QuoteReadModel` and caches it. Subsequent calls use that compiled mapper directly, bypassing reflection entirely.
+- There is no change tracking involved. Dapper materialises plain objects with no entity state, identity map, or proxy wrapping, which is why the per-call cost stays close to the raw round-trip time.
 
 ## Timing comparison
 
@@ -85,6 +81,7 @@ PS C:\Users\aryan> curl.exe "http://localhost:5051/api/quotes/benchmark?page=1&s
 ```
 
 Screenshot:
+
 ![alt text](output.png)
 
 | Metric           | EF Core 10   | Dapper      |
