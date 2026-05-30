@@ -1,6 +1,6 @@
 ## The hot read path
 
-`GetPagedAsync` in `IQuoteQueryService` — the `GET /api/quotes?page=&size=` endpoint —
+`GetPagedAsync` in `IQuoteQueryService`, the `GET /api/quotes?page=&size=` endpoint,
 is the highest-frequency read in this API. It returns a page of quotes sorted newest-first.
 Both implementations project directly to the `QuoteReadModel` record; no entity tracking is
 needed because nothing is written back.
@@ -95,15 +95,15 @@ Screenshot:
 **Dapper speeds up the average call by 19.3x.**
 
 Dapper's 0.63 ms average sits close to the raw SQL Server round-trip cost, meaning its own
-overhead is negligible. EF's 12.19 ms average reflects cold-query cost — expression-tree
-compilation on first call is not yet cached in this run — plus internal tracking scaffolding
+overhead is negligible. EF's 12.19 ms average reflects cold-query cost. Expression-tree
+compilation on first call is not yet cached in this run, plus internal tracking scaffolding
 and a richer materialisation path. The 19× gap is larger than typical steady-state because
-the EF query plan cache was cold; in a long-running process the gap narrows to roughly 2×,
+the EF query plan cache was cold. In a long-running process the gap narrows to roughly 2×,
 but Dapper remains consistently faster on this purely projective path.
 
 ## Rule for when to drop to Dapper
 
 Default to EF; reach for Dapper only when a read path is both hot and purely projective.
 (no tracking, no writes, no navigation properties). The signal is a .Select(→DTO) query
-that shows up as a cost centre in a profiler. Keep EF everywhere else — migrations, change
+that shows up as a cost centre in a profiler. Keep EF everywhere else. Migrations, change
 tracking, and relationship navigation pay for themselves on the write side.
