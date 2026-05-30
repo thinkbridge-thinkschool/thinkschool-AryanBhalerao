@@ -140,6 +140,7 @@ NOTE: All pieces are commited on time. Only the day and projects directory's mod
   - QuotesApi
   - QuotesApi.Tests
   - CIrun.md
+    - [![QuotesAPI CI](https://github.com/thinkbridge-thinkschool/thinkschool-AryanBhalerao/actions/workflows/quotes-api-ci.yml/badge.svg)](https://github.com/thinkbridge-thinkschool/thinkschool-AryanBhalerao/actions/workflows/quotes-api-ci.yml)
 
 #### Piece 5 - Expand unit test depth
 - Added comprehensive unit test coverage for domain models and authorization logic.
@@ -150,6 +151,7 @@ NOTE: All pieces are commited on time. Only the day and projects directory's mod
   - SampleTests.md
   - testsOutput.md
   - CIRun.md
+    - [![Piece 5 Unit Tests](https://github.com/thinkbridge-thinkschool/thinkschool-AryanBhalerao/actions/workflows/day3piece5ci.yml/badge.svg)](https://github.com/thinkbridge-thinkschool/thinkschool-AryanBhalerao/actions/workflows/day3piece5ci.yml)
 
 #### Piece 6 - Integration test infrastructure with WebApplicationFactory
 - Implemented reusable integration test setup using `WebApplicationFactory` and SQLite test database isolation.
@@ -171,6 +173,7 @@ NOTE: All pieces are commited on time. Only the day and projects directory's mod
   - TestContainers.md
   - TestsList.md
   - CIRun.md
+    - [![Piece 7 Integration Tests](https://github.com/thinkbridge-thinkschool/thinkschool-AryanBhalerao/actions/workflows/day3piece7ci.yml/badge.svg)](https://github.com/thinkbridge-thinkschool/thinkschool-AryanBhalerao/actions/workflows/day3piece7ci.yml)
 
 ### Day 4
 
@@ -183,6 +186,7 @@ NOTE: All pieces are commited on time. Only the day and projects directory's mod
   - Quotes.Tests.Integration
   - Quotes.Tests.Unit
   - CIRun.md
+    - [![CI – Day 4 Piece 1](https://github.com/thinkbridge-thinkschool/thinkschool-AryanBhalerao/actions/workflows/ci.yml/badge.svg)](https://github.com/thinkbridge-thinkschool/thinkschool-AryanBhalerao/actions/workflows/ci.yml)
   - screenshot.md
 
 #### Piece 2 - Code Coverage Analysis
@@ -362,3 +366,79 @@ NOTE: All pieces are commited on time. Only the day and projects directory's mod
   - Solution.md
   - Before_ExecutionPlan.png
   - After_ExecutionPlan.png
+
+### Day 9
+
+#### Piece 1 - Isolation Levels and Anomalies
+- Demonstrated three SQL Server isolation anomalies (dirty read, non-repeatable read, phantom read) and the lowest isolation level that prevents each.
+- Dirty read prevented by READ COMMITTED; non-repeatable read by REPEATABLE READ; phantom read by SERIALIZABLE.
+- Contents:
+  - DBSetup.sql
+  - Session1.sql
+  - Session2.sql
+  - Solution.md
+
+#### Piece 2 - Deadlock Detection and Prevention
+- Reproduced a classic circular-wait deadlock between two sessions acquiring locks on Widgets and Orders tables in opposite order.
+- Fixed by enforcing a consistent lock acquisition order (Widgets → Orders) in both sessions, eliminating the circular wait.
+- Contents:
+  - DBSetup.sql
+  - session1.sql
+  - session2.sql
+  - Solution.md
+
+### Day 10
+
+#### Piece 1 - Entity Tracking vs. No Tracking
+- Benchmarked EF Core change tracking on a 10,000-row read workload using BenchmarkDotNet.
+- `AsNoTracking()` was 2.3× faster (22.1 ms → 9.7 ms) and used 2.7× less memory (8,676 KB → 3,161 KB).
+- Contents:
+  - DBSetup.sql
+  - EFCoreDemo/
+  - Solution.md
+
+#### Piece 2 - Query Projections and Client-Side Evaluation
+- Compared full-entity loads, server-side `.Select()` projections, and accidental client-side evaluation (`.ToList()` before filtering).
+- Server-side projections reduce network transfer and database I/O by selecting only the needed columns; premature `.ToList()` forces the entire 10,000-row table into memory before filtering.
+- Contents:
+  - DBSetup.sql
+  - QueryProjections/
+  - Solution.md
+
+### Day 11
+
+#### Piece 1 - Baseline Performance (N+1 Problem)
+- Profiled a Quotes API endpoint that triggered 21 queries per HTTP request: one to fetch all 20 authors, then a separate query per author to fetch their quotes.
+- A missing index on `Quotes.AuthorId` forced each per-author query to scan the full 5,000-row table; combined effect: p50 latency of 2.22 s and 3.59 RPS under 10 concurrent users.
+- Contents:
+  - QuotesApi/
+  - k6/
+  - k6Output.md
+  - Solution.md
+
+#### Piece 2 - Performance Optimization (N+1 Fix + Covering Index)
+- Replaced the N+1 loop with a single LEFT JOIN projection (`GetAllWithQuotesAsync`) and added a nonclustered covering index on `Quotes.AuthorId` including `Text` and `CreatedAt`.
+- Results: p50 dropped from 2.22 s to 150 ms (14.8×), p99 from 3.3 s to 305 ms (10.8×), RPS from 3.59 to 55.35 (15.4×), queries per request from 21 to 1.
+- Contents:
+  - QuotesApi/
+  - k6/
+  - Before_k6Output.md
+  - After_k6Output.md
+  - Solution.md
+
+### Day 12
+
+#### Piece 1 - Command-Query Separation (CQRS)
+- Refactored QuotesApi to separate write commands (`CreateQuoteCommand` / `CreateQuoteCommandHandler`) from read queries (`IQuoteQueryService` / `QuoteQueryService` with `.Select()` projection).
+- GET endpoints now return only display fields (Id, AuthorName, Text, CreatedAt) via `QuoteReadModel`; write-side internals (OwnerId, AuthorId) never appear in read responses.
+- Contents:
+  - QuotesApi/
+  - Solution.md
+
+#### Piece 2 - EF Core vs. Dapper on Hot Read Paths
+- Benchmarked EF Core and Dapper on the `GetPagedAsync` hot path (500 rows, 10 back-to-back calls); both emit identical SQL.
+- Dapper was 19.3× faster (121.87 ms vs 6.29 ms total) due to IL-emitted mappers, no change-tracking overhead, and no expression-tree compilation cost.
+- Rule: default to EF Core; drop to Dapper only for hot, purely projective read paths where no tracking or navigation properties are needed.
+- Contents:
+  - QuotesApi/
+  - Solution.md
