@@ -1,0 +1,130 @@
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  signal,
+  untracked,
+} from '@angular/core';
+import { QuoteMetadataReadModel, QuoteReadModel } from '../models/quote.model';
+import { QuotesService } from '../services/quotes.service';
+
+type ViewMode = 'list' | 'metadata';
+type LoadStatus = 'loading' | 'loaded' | 'empty' | 'error';
+
+@Component({
+  selector: 'app-quotes-list',
+  templateUrl: './quotes-list.component.html',
+  styleUrl: './quotes-list.component.css',
+  // standalone: true is the default in Angular 17+; no NgModule needed
+})
+export class QuotesListComponent {
+  private readonly svc = inject(QuotesService);
+
+  // ── Writable signals ──────────────────────────────────────────────────────
+  readonly page = signal(1);
+  readonly size = signal(10);
+  readonly view = signal<ViewMode>('list');
+  readonly status = signal<LoadStatus>('loading');
+  readonly quotes = signal<QuoteReadModel[]>([]);
+  readonly metadata = signal<QuoteMetadataReadModel[]>([]);
+
+  // ── Computed signals ──────────────────────────────────────────────────────
+  // Re-evaluates automatically whenever quotes() or page() changes.
+  readonly isEmpty = computed(() => this.quotes().length === 0);
+  readonly pageLabel = computed(
+    () => `Page ${this.page()} · ${this.quotes().length} of ${this.size()} requested`
+  );
+  readonly firstAuthor = computed(() => this.quotes()[0]?.authorName ?? '—');
+
+  constructor() {
+    // Effect 1: data-loading.
+    // Reads page + size; any change re-fetches. allowSignalWrites is required
+    // because we write status synchronously inside the effect body before the
+    // async subscribe callback fires.
+    effect(
+      () => {
+        const p = this.page();
+        const s = this.size();
+        this.status.set('loading');
+
+        // untracked so the subscribe callbacks don't accidentally register
+        // quotes/status as dependencies of this effect.
+        untracked(() => {
+          if (this.view() === 'list') {
+            this.svc.getPage(p, s).subscribe({
+              next: (data) => {
+                this.quotes.set(data);
+                this.status.set(data.length === 0 ? 'empty' : 'loaded');
+              },
+              error: () => this.status.set('error'),
+            });
+          } else {
+            this.svc.getWithMetadata(p, s).subscribe({
+              next: (data) => {
+                this.metadata.set(data);
+                this.status.set(data.length === 0 ? 'empty' : 'loaded');
+              },
+              error: () => this.status.set('error'),
+            });
+          }
+        });
+      },
+      { allowSignalWrites: true }
+    );
+
+    // Effect 2: pure side-effect — logs the computed summary whenever it changes.
+    // No signal writes; demonstrates a read-only effect.
+    effect(() => {
+      console.log('[QuotesList] state:', this.pageLabel(), '| status:', this.status());
+    });
+  }
+
+  // ── Actions ───────────────────────────────────────────────────────────────
+  prevPage() {
+    if (this.page() > 1) this.page.update((p) => p - 1);
+  }
+
+  nextPage() {
+    this.page.update((p) => p + 1);
+  }
+
+  setSize(value: number) {
+    this.size.set(value);
+    this.page.set(1); // reset to page 1 when page size changes
+  }
+
+  switchView(v: ViewMode) {
+    this.view.set(v);
+    this.page.set(1);
+    this.quotes.set([]);
+    this.metadata.set([]);
+    this.status.set('loading');
+    // Re-fetch for the new view
+    if (v === 'list') {
+      this.svc.getPage(1, this.size()).subscribe({
+        next: (data) => {
+          this.quotes.set(data);
+          this.status.set(data.length === 0 ? 'empty' : 'loaded');
+        },
+        error: () => this.status.set('error'),
+      });
+    } else {
+      this.svc.getWithMetadata(1, this.size()).subscribe({
+        next: (data) => {
+          this.metadata.set(data);
+          this.status.set(data.length === 0 ? 'empty' : 'loaded');
+        },
+        error: () => this.status.set('error'),
+      });
+    }
+  }
+
+  formatDate(iso: string): string {
+    return new Date(iso).toLocaleDateString('en-AU', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    });
+  }
+}
