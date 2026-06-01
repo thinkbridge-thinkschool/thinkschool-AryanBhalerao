@@ -1,0 +1,85 @@
+.quotes-shell {
+  max-width: 720px;
+  margin: 0 auto;
+  font-family: system-ui, sans-serif;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.toolbar h2 { margin: 0; flex: 1; }
+
+.view-toggle button {
+  border: 1px solid #cbd5e1;
+  background: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.view-toggle button.active { background: #3b82f6; color: white; border-color: #3b82f6; }
+
+.summary {
+  color: #64748b;
+  font-size: 0.85rem;
+  margin: 0.5rem 0;
+}
+
+.state-msg {
+  padding: 2rem;
+  text-align: center;
+  color: #64748b;
+}
+.state-msg.error { color: #dc2626; }
+
+.quote-list { list-style: none; padding: 0; margin: 0; }
+
+.quote-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.quote-card blockquote {
+  margin: 0 0 0.5rem;
+  font-style: italic;
+  color: #1e293b;
+}
+
+.quote-card footer {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.85rem;
+  color: #475569;
+}
+
+.pills { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+
+.pill {
+  padding: 0.1rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+}
+.pill.tag { background: #dbeafe; color: #1d4ed8; }
+.pill.cat { background: #dcfce7; color: #15803d; }
+
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 0;
+}
+.pagination button {
+  padding: 0.35rem 1rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  cursor: pointer;
+  background: white;
+}
+.pagination button:disabled { opacity: 0.4; cursor: not-allowed; }
