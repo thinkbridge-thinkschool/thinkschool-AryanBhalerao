@@ -1,14 +1,4 @@
-# Day 13 Piece 1 — Verification Log
-
-## Setup
-
-- API: `http://localhost:5051` (QuotesApi, ASP.NET Core 10 Minimal APIs)
-- UI: `http://localhost:4200` (Angular 21.2 standalone, `ng serve`)
-- CORS: API already has `WithOrigins("http://localhost:4200")` in `InfrastructureExtensions.cs`
-
----
-
-## States and Edges Exercised
+Verification Log
 
 ### 1. Loading state (initial render)
 When the app loads, `status` signal is `'loading'` and `page = 1`, `size = 10`.
@@ -57,7 +47,7 @@ Effect in `App` root watches `selectedId`.
 - Response arrives: `detailStatus = 'found'`, `@case ('found')` shows the blockquote
 - Typing `99999` → 404 → `detailStatus = 'notFound'` → `@case ('notFound')` shows "404 — no quote with that ID."
 
----
+# Bugs Caught and Fixed
 
 ## Bug Caught: `@` in plain template text parsed as control flow
 
@@ -84,7 +74,7 @@ Similarly, `{id}` in template text triggers ICU message parsing (`{` opens an IC
 
 ---
 
-## What Would Break if the API Contract Changed
+# What Would Break if the API Contract Changed
 
 - **`authorName` → `author`** — `{{ quote.authorName }}` renders blank. TypeScript sees `string`, template sees `undefined`. No compile error because `QuoteReadModel.authorName` would still exist in the interface, just never populated at runtime. *Silent data loss.*
 
