@@ -1,0 +1,97 @@
+<section class="quotes-shell">
+  <header class="toolbar">
+    <h2>Quotes</h2>
+
+    <div class="view-toggle">
+      <button
+        [class.active]="view() === 'list'"
+        (click)="switchView('list')"
+      >
+        List
+      </button>
+      <button
+        [class.active]="view() === 'metadata'"
+        (click)="switchView('metadata')"
+      >
+        Metadata
+      </button>
+    </div>
+
+    <div class="page-size">
+      <label for="size">Per page</label>
+      <select id="size" (change)="setSize(+$any($event.target).value)">
+        <option value="5">5</option>
+        <option value="10" selected>10</option>
+        <option value="25">25</option>
+      </select>
+    </div>
+  </header>
+
+  <!-- computed() drives the summary line -->
+  <p class="summary">{{ pageLabel() }} · first author: {{ firstAuthor() }}</p>
+
+  <!-- @switch on the view signal — demonstrates new control flow @switch -->
+  @switch (view()) {
+    @case ('list') {
+      <!-- @if for loading / error / empty / loaded states -->
+      @if (status() === 'loading') {
+        <p class="state-msg">Loading…</p>
+      } @else if (status() === 'error') {
+        <p class="state-msg error">
+          Could not reach the API at <code>localhost:5051</code>. Is the
+          QuotesApi running?
+        </p>
+      } @else if (isEmpty()) {
+        <p class="state-msg">No quotes found on this page.</p>
+      } @else {
+        <!-- @for with track — track quote.id, not $index -->
+        <ul class="quote-list">
+          @for (quote of quotes(); track quote.id) {
+            <li class="quote-card">
+              <blockquote>{{ quote.text }}</blockquote>
+              <footer>
+                <strong>{{ quote.authorName }}</strong>
+                <time>{{ formatDate(quote.createdAt) }}</time>
+              </footer>
+            </li>
+          }
+        </ul>
+      }
+    }
+
+    @case ('metadata') {
+      @if (status() === 'loading') {
+        <p class="state-msg">Loading metadata…</p>
+      } @else if (status() === 'error') {
+        <p class="state-msg error">Failed to load metadata.</p>
+      } @else if (metadata().length === 0) {
+        <p class="state-msg">No metadata on this page.</p>
+      } @else {
+        <ul class="quote-list">
+          @for (m of metadata(); track m.quoteId) {
+            <li class="quote-card">
+              <blockquote>{{ m.quote }}</blockquote>
+              <footer>
+                <strong>{{ m.user }}</strong>
+                <span class="pills">
+                  @for (tag of m.tags; track tag) {
+                    <span class="pill tag">{{ tag }}</span>
+                  }
+                  @for (cat of m.categories; track cat) {
+                    <span class="pill cat">{{ cat }}</span>
+                  }
+                </span>
+              </footer>
+            </li>
+          }
+        </ul>
+      }
+    }
+  }
+
+  <nav class="pagination">
+    <button (click)="prevPage()" [disabled]="page() <= 1">← Prev</button>
+    <span>Page {{ page() }}</span>
+    <button (click)="nextPage()" [disabled]="isEmpty()">Next →</button>
+  </nav>
+</section>

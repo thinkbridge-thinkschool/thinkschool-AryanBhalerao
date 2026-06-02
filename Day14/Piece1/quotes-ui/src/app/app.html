@@ -1,0 +1,80 @@
+<div class="app-shell">
+  <header class="app-header">
+    <h1>Quotes UI</h1>
+    <p class="subtitle">signal · computed · effect · &#64;if · &#64;for · &#64;switch · inject()</p>
+  </header>
+
+  <nav class="tab-bar">
+    <button
+      class="tab-btn"
+      [class.active]="activeTab() === 'explorer'"
+      (click)="setTab('explorer')"
+    >
+      Quotes Explorer
+    </button>
+    <button
+      class="tab-btn"
+      [class.active]="activeTab() === 'search'"
+      (click)="setTab('search')"
+    >
+      Search Quotes
+    </button>
+    <button
+      class="tab-btn"
+      [class.active]="activeTab() === 'create'"
+      (click)="setTab('create')"
+    >
+      Create Quote
+    </button>
+  </nav>
+
+  <main class="tab-content">
+
+    @if (activeTab() === 'explorer') {
+      <app-quotes-list />
+    }
+
+    @if (activeTab() === 'search') {
+      <div class="search-panel">
+        <h2 class="panel-title">{{ detailHeader() }}</h2>
+        <p class="panel-desc">Enter a quote ID to fetch it directly from <code>GET /api/quotes/&#123;id&#125;</code>.</p>
+
+        <input
+          class="search-input"
+          type="number"
+          placeholder="Quote ID…"
+          (input)="lookupId($any($event.target).value)"
+          min="1"
+        />
+
+        @switch (detailStatus()) {
+          @case ('idle') {
+            <p class="hint">Type an ID above to look up a quote.</p>
+          }
+          @case ('loading') {
+            <p class="hint">Fetching…</p>
+          }
+          @case ('found') {
+            <div class="detail-card">
+              <blockquote>{{ detail()!.text }}</blockquote>
+              <p class="detail-author"><strong>— {{ detail()!.authorName }}</strong></p>
+              <p class="detail-meta">ID: {{ detail()!.id }} &nbsp;·&nbsp; {{ detail()!.createdAt | date:'mediumDate' }}</p>
+            </div>
+          }
+          @case ('notFound') {
+            <p class="hint error">404 — no quote found with that ID.</p>
+          }
+        }
+      </div>
+    }
+
+    @if (activeTab() === 'create') {
+      <div class="create-panel">
+        <h2 class="panel-title">Create a New Quote</h2>
+        <p class="panel-desc">Add a quote and optionally attach tags and categories.</p>
+        <app-create-quote-form />
+      </div>
+    }
+
+  </main>
+</div>
