@@ -1,6 +1,6 @@
 # Create-Quote Form — Agent Spec, Output, and Verification
 
-## 1. Brief — the spec given to the agent
+## 1 Brief — the spec given to the agent
 
 ```text
 "
@@ -277,33 +277,33 @@ export class CreateQuoteFormComponent {
 
 ### 3.1 States and edges exercised
 
-1. **Empty submit** — clicked "Create quote" with both fields blank; both `cf-author-error` and `cf-text-error` spans populated, `aria-invalid="true"` set on both inputs, focus moved to Author field.
+1 . **Empty submit** — clicked "Create quote" with both fields blank; both `cf-author-error` and `cf-text-error` spans populated, `aria-invalid="true"` set on both inputs, focus moved to Author field.
 
-2. **Author too long** — pasted a 101-character string and tabbed away; "Author must be 100 characters or fewer" appeared via `aria-live="polite"`, red border applied via `[attr.aria-invalid]`.
+2 . **Author too long** — pasted a 101-character string and tabbed away; "Author must be 100 characters or fewer" appeared via `aria-live="polite"`, red border applied via `[attr.aria-invalid]`.
 
-3. **Text too long** — typed 1001 characters in Quote text; maxlength validator fired, error text rendered in `cf-text-error` span.
+3 . **Text too long** — typed 1001 characters in Quote text; maxlength validator fired, error text rendered in `cf-text-error` span.
 
-4. **Submitting** — submitted a valid form with network throttled to Slow 3G in DevTools; button showed "Saving…", `aria-busy="true"` set, button `disabled` — no double-submit possible.
+4 . **Submitting** — submitted a valid form with network throttled to Slow 3G in DevTools; button showed "Saving…", `aria-busy="true"` set, button `disabled` — no double-submit possible.
 
-5. **Success (no metadata)** — Author = "Marcus Aurelius", valid quote text, no tag/category selected; `POST /api/quotes` returned `201 { "id": 78 }`; success paragraph appeared with ID 78, form reset, no metadata call made.
+5 . **Success (no metadata)** — Author = "Marcus Aurelius", valid quote text, no tag/category selected; `POST /api/quotes` returned `201 { "id": 78 }`; success paragraph appeared with ID 78, form reset, no metadata call made.
 
-6. **Success (with metadata)** — same form plus tag = `wisdom`, category = `classic`; `POST /api/quotes` returned `201 { "id": 79 }`, then `POST /api/quotes/79/metadata` with `{ "tags": ["wisdom"], "categories": ["classic"] }` returned `204`; success paragraph shown, radio buttons cleared.
+6 . **Success (with metadata)** — same form plus tag = `wisdom`, category = `classic`; `POST /api/quotes` returned `201 { "id": 79 }`, then `POST /api/quotes/79/metadata` with `{ "tags": ["wisdom"], "categories": ["classic"] }` returned `204`; success paragraph shown, radio buttons cleared.
 
-7. **Partial success** — killed the API after quote creation but before the metadata call completed; quote ID visible in success message, metadata warning paragraph shown alongside it.
+7 . **Partial success** — killed the API after quote creation but before the metadata call completed; quote ID visible in success message, metadata warning paragraph shown alongside it.
 
-8. **Server error** — stopped the API entirely, submitted a valid form; `POST /api/quotes` failed with a network error; `role="alert"` paragraph displayed "Failed to create quote. Please try again."
+8 . **Server error** — stopped the API entirely, submitted a valid form; `POST /api/quotes` failed with a network error; `role="alert"` paragraph displayed "Failed to create quote. Please try again."
 
 ### 3.2 A11y checks
 
-1. **Keyboard path:** Tab → Author → Tab → Quote text → Tab → first Tag radio → arrow keys through remaining radios → Tab → first Category radio → arrow keys → Tab → Submit → Enter. All controls reachable; on empty submit focus returns to Author.
-2. **axe DevTools (Chrome extension):** Zero violations in idle state and in the error state (both fields invalid + touched).
-3. **`aria-describedby` pairing:** Verified in the browser accessibility tree — Author input references `cf-author-error`, Quote text references `cf-text-error`. Both spans are always in the DOM so the references are never dangling.
+1 . **Keyboard path:** Tab → Author → Tab → Quote text → Tab → first Tag radio → arrow keys through remaining radios → Tab → first Category radio → arrow keys → Tab → Submit → Enter. All controls reachable; on empty submit focus returns to Author.
+2 . **axe DevTools (Chrome extension):** Zero violations in idle state and in the error state (both fields invalid + touched).
+3 . **`aria-describedby` pairing:** Verified in the browser accessibility tree — Author input references `cf-author-error`, Quote text references `cf-text-error`. Both spans are always in the DOM so the references are never dangling.
 
 ## 4 Bugs caught and fixed
 
 ### 4.1 Bugs
 
-1. **Free-text tag input allowed arbitrary values.** The agent generated `tags` and `categories` as plain text inputs with a `maxItemLength(50)` comma-separated validator. This let the user type any string, which the API would reject with a `400` when the value did not match a row in the seeded `Tags` table (`DbSetupSeedSql.cs` lines 212–222).
+1 . **Free-text tag input allowed arbitrary values.** The agent generated `tags` and `categories` as plain text inputs with a `maxItemLength(50)` comma-separated validator. This let the user type any string, which the API would reject with a `400` when the value did not match a row in the seeded `Tags` table (`DbSetupSeedSql.cs` lines 212–222).
 
   ```typescript
   // component — tags and categories as free-text form controls
@@ -323,7 +323,7 @@ export class CreateQuoteFormComponent {
          placeholder="classic, modern" autocomplete="off" />
   ```
 
-2. **Multiple selections possible, DB allows only one.** The same text inputs allowed comma-separated lists (e.g. `wisdom, humor`), meaning the `tags` array sent to `POST /api/quotes/{id}/metadata` could contain more than one element. The DB schema enforces a single tag and single category per quote — a multi-value submission would cause a constraint violation at the SQL layer with no useful error returned to the UI.
+2 . **Multiple selections possible, DB allows only one.** The same text inputs allowed comma-separated lists (e.g. `wisdom, humor`), meaning the `tags` array sent to `POST /api/quotes/{id}/metadata` could contain more than one element. The DB schema enforces a single tag and single category per quote — a multi-value submission would cause a constraint violation at the SQL layer with no useful error returned to the UI.
 
   ```typescript
   // submit() — parsed the comma-separated string into a potentially multi-item array
@@ -332,7 +332,7 @@ export class CreateQuoteFormComponent {
   // both arrays then sent as-is to POST /api/quotes/{id}/metadata
   ```
 
-3. **`aria-invalid` emitted `"false"` on valid fields.** The agent wrote the ternary to emit `'false'` when the field was valid. `aria-invalid="false"` is technically valid HTML but causes screen readers (NVDA, VoiceOver) to announce the attribute on every field, making the form noisy.
+3 . **`aria-invalid` emitted `"false"` on valid fields.** The agent wrote the ternary to emit `'false'` when the field was valid. `aria-invalid="false"` is technically valid HTML but causes screen readers (NVDA, VoiceOver) to announce the attribute on every field, making the form noisy.
 
   ```html
   <!-- buggy — emits aria-invalid="false" on untouched/valid fields -->
@@ -341,7 +341,7 @@ export class CreateQuoteFormComponent {
 
 ### 4.2 Fixes
 
-1. **Replaced text inputs with radio button groups.** Tags bounded to the 10 seeded values; categories to `classic` and `modern` only. The user can only select values that exist in the DB.
+1 . **Replaced text inputs with radio button groups.** Tags bounded to the 10 seeded values; categories to `classic` and `modern` only. The user can only select values that exist in the DB.
 
   ```typescript
   // component — fixed lists, no form controls for tag/category
@@ -367,7 +367,7 @@ export class CreateQuoteFormComponent {
   }
   ```
 
-2. **Switched to `signal<string | null>` for single selection.** `submit()` wraps the selected value in a single-element array, so the API always receives at most one tag and one category.
+2 . **Switched to `signal<string | null>` for single selection.** `submit()` wraps the selected value in a single-element array, so the API always receives at most one tag and one category.
 
   ```typescript
   // submit() — single-element arrays, never more than one value each
@@ -375,7 +375,7 @@ export class CreateQuoteFormComponent {
   const parsedCategories = this.selectedCategory() ? [this.selectedCategory()!] : [];
   ```
 
-3. **Changed `aria-invalid` to return `null` when valid.** Returning `null` causes Angular to remove the attribute from the DOM entirely when the field is valid, silencing the screen-reader noise.
+3 . **Changed `aria-invalid` to return `null` when valid.** Returning `null` causes Angular to remove the attribute from the DOM entirely when the field is valid, silencing the screen-reader noise.
 
   ```html
   <!-- fixed — attribute absent when field is valid -->

@@ -1,0 +1,55 @@
+<section class="login-form" aria-labelledby="login-form-title">
+  <h3 id="login-form-title">Log in to create quotes</h3>
+  <p class="hint">Seeded accounts: <code>user1@email.com</code> … <code>user15@email.com</code>, password: <code>password</code></p>
+
+  <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+
+    <div class="field">
+      <label for="lf-email">Email</label>
+      <input
+        id="lf-email"
+        type="email"
+        formControlName="email"
+        autocomplete="email"
+        [attr.aria-invalid]="email.invalid && email.touched ? 'true' : null"
+        aria-describedby="lf-email-error"
+      />
+      <span id="lf-email-error" class="field-error" aria-live="polite">
+        @if (email.invalid && email.touched) {
+          @if (email.errors?.['required']) { Email is required. }
+          @else if (email.errors?.['email']) { Enter a valid email address. }
+        }
+      </span>
+    </div>
+
+    <div class="field">
+      <label for="lf-password">Password</label>
+      <input
+        id="lf-password"
+        type="password"
+        formControlName="password"
+        autocomplete="current-password"
+        [attr.aria-invalid]="password.invalid && password.touched ? 'true' : null"
+        aria-describedby="lf-password-error"
+      />
+      <span id="lf-password-error" class="field-error" aria-live="polite">
+        @if (password.invalid && password.touched) {
+          Password is required.
+        }
+      </span>
+    </div>
+
+    @if (status() === 'error') {
+      <p class="server-error" role="alert">{{ errorMsg() }}</p>
+    }
+
+    <button
+      type="submit"
+      [disabled]="status() === 'submitting'"
+      [attr.aria-busy]="status() === 'submitting' ? 'true' : null"
+    >
+      @if (status() === 'submitting') { Logging in… } @else { Log in }
+    </button>
+
+  </form>
+</section>
