@@ -4,9 +4,9 @@ import { QuoteMetadataReadModel, QuoteReadModel } from '../models/quote.model';
 import { Observable } from 'rxjs';
 
 export interface LoginResponse {
-  accessToken: string;
-  refreshToken: string;
-  expiresIn: number;
+  access_token: string;
+  refresh_token: string;
+  expires_in: number;
 }
 
 @Injectable({ providedIn: 'root' })

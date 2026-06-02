@@ -43,9 +43,9 @@ try
         db.Database.Migrate();
     }
 
+    app.UseCors("QuotesUiDev");
     app.UseAuthentication();
     app.UseAuthorization();
-    app.UseCors("QuotesUiDev");
 
     app.MapHealthChecks("/health");
     app.MapAuthEndpoints();
