@@ -32,9 +32,28 @@ HttpErrorResponse (so it can read the status) while error mapping runs last.
 
 ## 2 Agent output — the characterization test + interceptors + typed error mapping
 
-### Screenshot:
-![Screenshot](Test_Pass.png)
-<!-- screenshot of the green `ng test` run to be added -->
+### Screenshots:
+
+400 Bad Request:
+![400](400_badRequest.png)
+
+404 Not Found:
+![404](404_NotFound.png)
+
+Login Failed:
+![alt text](login_failed.png)
+
+Pagination Requests:
+![pagination](pagination.png)
+
+Invalid Quote:
+![invalid](invalid_CreateQuote.png)
+
+Valid Quote:
+![valid](CreateQuote_valid.png)
+
+Quote Created:
+![created](CreateQuote_created.png)
 
 2.1 **`src/app/core/quotes-api.contract.spec.ts`** — the characterization test (green before any UI)
 
