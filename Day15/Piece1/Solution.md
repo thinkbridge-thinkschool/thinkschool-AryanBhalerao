@@ -397,11 +397,26 @@ would also have contradicted the rest of the codebase. The test now matches both
 
 ## 5. What breaks if the API contract changes
 
-| Change to the QuotesApi contract | What breaks, and how it surfaces |
-|---|---|
-| `QuoteReadModel.AuthorName` renamed to `Author` (serialized `author`) | The characterization test goes **red** immediately: `expect('author' in row).toBe(false)` fails and `authorName` is `undefined`. This is the intended tripwire — the contract changed, so the pinned test must change with it (and so must `quote.model.ts`). |
-| `ValidatePaging` changes the `errors` map key (e.g. `page` → `pageNumber`) or wording | `toAppError` still produces a `validation` AppError (it flattens whatever values are present), so the friendly message keeps working. But the spec's exact `friendlyMessage`/`fieldErrors` assertions go red, and any form binding to `fieldErrors['page']` silently stops highlighting that field. |
-| `MaxPageSize` lowered from 100 (or paging returns a different status than 400) | The "no retry on 4xx" guarantee depends on the failure being a 4xx. If oversize paging started returning, say, 500, the retry interceptor would now **retry it** (5xx is retriable) — wasting two round-trips on a deterministic failure. The retriable-status policy in `interceptors.ts` would need revisiting. |
-| `GET /api/quotes` returns a paged envelope `{ items, total, page }` instead of a bare array | The fixture (`flush([QUOTE_ROW])`) and the `QuoteReadModel[]` typing both break. Loading, empty, and the list UI all assume a top-level array; they would need to read `.items`, and the "empty page" edge would move from `[]` to `{ items: [], total: 0 }`. |
-| The 5xx body stops being `ProblemDetails` (e.g. plain text from a proxy) | `isProblemDetails(body)` returns false, so `toAppError` falls back to the generic "Something went wrong on our end" message instead of `body.title`. Still a `server` AppError — degraded message, not a crash. |
-| `POST /api/quotes` drops the `can-edit-quotes` policy (no longer 401 without a token) | The auth interceptor still attaches the header harmlessly, but the 401→`unauthorized` mapping and "please sign in" prompt would never fire — a UX regression the 401 spec would catch only if the policy is re-added, not when it's removed. |
+1 . **Change:** `QuoteReadModel.AuthorName` renamed to `Author` (serialized `author`).
+
+**What It Breaks:** The characterization test goes **red** immediately — `expect('author' in row).toBe(false)` fails and `authorName` is `undefined`. This is the intended tripwire: the contract changed, so the pinned test must change with it (and so must `quote.model.ts`).
+
+2 . **Change:** `ValidatePaging` changes the `errors` map key (e.g. `page` → `pageNumber`) or its wording.
+
+**What It Breaks:** `toAppError` still produces a `validation` AppError (it flattens whatever values are present), so the friendly message keeps working. But the spec's exact `friendlyMessage`/`fieldErrors` assertions go red, and any form binding to `fieldErrors['page']` silently stops highlighting that field.
+
+3 . **Change:** `MaxPageSize` lowered from 100, or oversize paging starts returning a status other than 400.
+
+**What It Breaks:** The "no retry on 4xx" guarantee depends on the failure being a 4xx. If oversize paging started returning, say, 500, the retry interceptor would now **retry it** (5xx is retriable) — wasting two round-trips on a deterministic failure. The retriable-status policy in `interceptors.ts` would need revisiting.
+
+4 . **Change:** `GET /api/quotes` returns a paged envelope `{ items, total, page }` instead of a bare array.
+
+**What It Breaks:** The fixture (`flush([QUOTE_ROW])`) and the `QuoteReadModel[]` typing both break. Loading, empty, and the list UI all assume a top-level array; they would need to read `.items`, and the "empty page" edge would move from `[]` to `{ items: [], total: 0 }`.
+
+5 . **Change:** The 5xx body stops being `ProblemDetails` (e.g. plain text from a proxy).
+
+**What It Breaks:** `isProblemDetails(body)` returns false, so `toAppError` falls back to the generic "Something went wrong on our end" message instead of `body.title`. Still a `server` AppError — degraded message, not a crash.
+
+6 . **Change:** `POST /api/quotes` drops the `can-edit-quotes` policy (no longer 401 without a token).
+
+**What It Breaks:** The auth interceptor still attaches the header harmlessly, but the 401→`unauthorized` mapping and "please sign in" prompt would never fire — a UX regression the 401 spec would catch only if the policy is re-added, not when it's removed.
