@@ -395,7 +395,7 @@ expect('author' in body![0]).toBe(false);   // the bug, pinned shut
 The existing UI model (`models/quote.model.ts`) already used `authorName` — so the agent's draft
 would also have contradicted the rest of the codebase. The test now matches both.
 
-## 5. What breaks if the API contract changes
+## 5 What breaks if the API contract changes
 
 1 . **Change:** `QuoteReadModel.AuthorName` renamed to `Author` (serialized `author`).
 
