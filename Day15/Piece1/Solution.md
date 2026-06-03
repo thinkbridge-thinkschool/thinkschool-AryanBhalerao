@@ -47,7 +47,7 @@ Pagination Requests:
 ![pagination](pagination.png)
 
 Invalid Quote:
-![invalid](invalid_CreateQuote.png)
+![invalid](CreateQuote_invalid.png)
 
 Valid Quote:
 ![valid](CreateQuote_valid.png)
