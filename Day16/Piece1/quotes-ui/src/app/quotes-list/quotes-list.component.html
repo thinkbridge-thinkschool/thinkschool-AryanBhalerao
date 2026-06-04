@@ -1,0 +1,87 @@
+<section class="quotes-shell">
+  <header class="toolbar">
+    <h2>Quotes</h2>
+
+    <div class="page-size">
+      <label for="size">Per page</label>
+      <select id="size" (change)="setSize(+$any($event.target).value)">
+        <option value="5">5</option>
+        <option value="10" selected>10</option>
+        <option value="25">25</option>
+      </select>
+    </div>
+
+    <div class="page-select">
+      <label for="page">Page</label>
+      <input
+        id="page"
+        type="number"
+        min="1"
+        [value]="page()"
+        (change)="setPage(+$any($event.target).value)"
+      />
+    </div>
+  </header>
+
+  <!-- computed() drives the summary lines: per-page counts and collection totals -->
+  <p class="summary">
+    <span class="summary-page">{{ summary() }}</span>
+    <span class="summary-sep">—</span>
+    <span class="summary-total">{{ totalSummary() }}</span>
+  </p>
+
+  <div class="quote-search">
+    <label for="quote-id">Go to ID</label>
+    <input
+      #idBox
+      id="quote-id"
+      type="number"
+      min="1"
+      placeholder="Quote ID…"
+      (keyup.enter)="goToQuote(idBox.value)"
+    />
+    <button type="button" (click)="goToQuote(idBox.value)">Go →</button>
+  </div>
+
+  <!-- @if for loading / error / empty / loaded states -->
+  @if (status() === 'loading') {
+    <p class="state-msg">Loading…</p>
+  } @else if (status() === 'error') {
+    <p class="state-msg error">
+      Could not reach the API at <code>localhost:5051</code>. Is the
+      QuotesApi running?
+    </p>
+  } @else if (isEmpty()) {
+    <p class="state-msg">No quotes found on this page.</p>
+  } @else {
+    <!-- @for with track — track quote.quoteId, not $index -->
+    <ul class="quote-list">
+      @for (quote of quotes(); track quote.quoteId) {
+        <li
+          class="quote-card"
+          [routerLink]="['/quotes', quote.quoteId]"
+          [style.view-transition-name]="'quote-' + quote.quoteId"
+        >
+          <blockquote>{{ quote.quote }}</blockquote>
+          <footer>
+            <strong>{{ quote.author }}</strong>
+            <span class="pills">
+              @for (tag of quote.tags; track tag) {
+                <span class="pill tag">{{ tag }}</span>
+              }
+              @for (cat of quote.categories; track cat) {
+                <span class="pill cat">{{ cat }}</span>
+              }
+            </span>
+          </footer>
+        </li>
+      }
+    </ul>
+  }
+
+  <nav class="pagination">
+    <button (click)="prevPage()" [disabled]="page() <= 1">← Prev</button>
+    <span>Page {{ page() }}</span>
+    <button (click)="nextPage()" [disabled]="isEmpty()">Next →</button>
+  </nav>
+</section>
