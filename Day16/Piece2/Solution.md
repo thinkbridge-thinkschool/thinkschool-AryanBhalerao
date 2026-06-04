@@ -46,17 +46,17 @@ all signal/effect/computed/QuotesService code. Keep goToQuote() in the component
 
 ### Screenshots
 
-1 . Loading State - `'loading'` status rendered before the first `GET /api/quotes/with-metadata` response arrives
-![](LoadingState.png)
-
-2 . Concurrent Requests - DevTools Network tab showing a single batched request when page and size change simultaneously
+1 . Concurrent Requests - DevTools Network tab showing a single batched request when page and size change simultaneously
 ![](ConcurrentRequests.png)
 
-3 . Error State - Error message displayed after the `retryInterceptor` exhausts 3 retries with the API unreachable
+2 . Error State - Error message displayed after the `retryInterceptor` exhausts 3 retries with the API unreachable
 ![](ErrorState.png)
 
-4 . Empty State - "No quotes found" message and disabled Next button when the API returns `200 []` for an over-paged request
+3 . Empty State - "No quotes found" message and disabled Next button when the API returns `200 []` for an over-paged request
 ![](EmptyState.png)
+
+4 . Loading State - `'loading'` status rendered before the first `GET /api/quotes/with-metadata` response arrives
+![](LoadingState.png)
 
 ### 2.1 `src/app/services/quotes-list.store.ts` (new file)
 
