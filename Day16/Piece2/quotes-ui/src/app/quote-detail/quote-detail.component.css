@@ -1,0 +1,82 @@
+.detail-shell {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  color: #2563eb;
+  text-decoration: none;
+}
+.back-link:hover { text-decoration: underline; }
+
+.hint { color: #64748b; font-size: 0.875rem; }
+.hint.error { color: #dc2626; }
+
+/* ── Details panel ── */
+.details-panel {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+}
+
+.details-heading {
+  margin: 0;
+  padding: 0.85rem 1.25rem;
+  font-size: 1rem;
+  color: #1e293b;
+  background: #f1f5f9;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+/* Label / value rows. */
+.details-grid {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  margin: 0;
+}
+.details-grid dt {
+  padding: 0.7rem 1rem 0.7rem 1.25rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  background: #fafbfc;
+  border-bottom: 1px solid #f1f5f9;
+  white-space: nowrap;
+}
+.details-grid dd {
+  margin: 0;
+  padding: 0.7rem 1.25rem;
+  color: #1e293b;
+  border-bottom: 1px solid #f1f5f9;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
+}
+.details-grid dt:last-of-type,
+.details-grid dd:last-of-type {
+  border-bottom: none;
+}
+
+.details-quote {
+  font-style: italic;
+  line-height: 1.5;
+  color: #1e293b;
+}
+.muted { color: #94a3b8; }
+
+/* Tag/category pills. */
+.pill {
+  padding: 0.1rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+}
+.pill.tag { background: #dbeafe; color: #1d4ed8; }
+.pill.cat { background: #dcfce7; color: #15803d; }
