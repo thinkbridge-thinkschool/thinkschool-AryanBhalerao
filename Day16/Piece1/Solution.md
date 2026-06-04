@@ -46,7 +46,7 @@ Run `npm run build` and confirm separate lazy chunks; run `npm test` and keep it
 ### Screenshots:
 
 1 . Lazy Chunk Log - Lazy Chink log in npm start console
-![Lazy](LazyChunks_log.png)
+![LazyLog](LazyChunks_log.png)
 
 2 . Lazy Chunk in Network: Observe the lazy chunks in Developer Tools -> Network
 ![LazyNetwork](LazyChunks_Network.png)
