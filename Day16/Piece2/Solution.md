@@ -243,44 +243,44 @@ npm test       →  4 test files · 18 tests passed
 
 ### 3.1 States and edges actually exercised
 
-1. **Loading state.** On first navigation to `/quotes`, the store is instantiated,
-   the effect fires synchronously setting `_status` to `'loading'`, and the template
-   renders `<p class="state-msg">Loading…</p>` before the HTTP response arrives.
-   Verified by throttling network in DevTools (Slow 3G) — the loading message appears
-   for the full duration of the `GET /api/quotes/with-metadata?page=1&size=10` request.
+1 . **Loading state.** On first navigation to `/quotes`, the store is instantiated,
+the effect fires synchronously setting `_status` to `'loading'`, and the template
+renders `<p class="state-msg">Loading…</p>` before the HTTP response arrives.
+Verified by throttling network in DevTools (Slow 3G) — the loading message appears
+for the full duration of the `GET /api/quotes/with-metadata?page=1&size=10` request.
 
-2. **Loaded state (real data).** With the API running and seeded, the response is an
-   array of `QuoteMetadataReadModel[]` whose id field is `quoteId` (not `id`):
-   ```json
-   [{ "quoteId": 1, "quote": "The secret of getting ahead…", "author": "Mark Twain",
-      "user": "aryan@example.com", "createdAt": "2025-06-01T09:00:00+00:00",
-      "tags": [], "categories": [] }, …]
-   ```
-   `_status` moves to `'loaded'`, the card list renders, and the `store.summary()`
-   computed shows "10 quotes · N authors on this page".
+2 . **Loaded state (real data).** With the API running and seeded, the response is an
+array of `QuoteMetadataReadModel[]` whose id field is `quoteId` (not `id`):
+```json
+[{ "quoteId": 1, "quote": "The secret of getting ahead…", "author": "Mark Twain",
+   "user": "aryan@example.com", "createdAt": "2025-06-01T09:00:00+00:00",
+   "tags": [], "categories": [] }, …]
+```
+`_status` moves to `'loaded'`, the card list renders, and the `store.summary()`
+computed shows "10 quotes · N authors on this page".
 
-3. **Empty state (page past end of data).** Clicking Next enough times reaches a page
-   beyond the data. The API returns `200 []` (empty array, not 404).
-   `_status` becomes `'empty'`, template renders "No quotes found on this page."
-   The Next button (`[disabled]="store.isEmpty()"`) disables immediately, preventing
-   further over-paging.
+3 . **Empty state (page past end of data).** Clicking Next enough times reaches a page
+beyond the data. The API returns `200 []` (empty array, not 404).
+`_status` becomes `'empty'`, template renders "No quotes found on this page."
+The Next button (`[disabled]="store.isEmpty()"`) disables immediately, preventing
+further over-paging.
 
-4. **Error state (API unreachable).** With the API stopped, the first request times
-   out through the existing `retryInterceptor` (3 retries), then the `error` callback
-   sets `_status` to `'error'`. Template renders:
-   "Could not reach the API at localhost:5051. Is the QuotesApi running?"
+4 . **Error state (API unreachable).** With the API stopped, the first request times
+out through the existing `retryInterceptor` (3 retries), then the `error` callback
+sets `_status` to `'error'`. Template renders:
+"Could not reach the API at localhost:5051. Is the QuotesApi running?"
 
-5. **Concurrent updates (page and size change together).** `setSize(25)` calls
-   `_size.set(25)` then `_page.set(1)` synchronously. Angular's signal runtime batches
-   both writes before scheduling the effect, so the effect fires ONCE (not twice) with
-   the combined new state `p=1, s=25`. Verified in DevTools Network: exactly one new
-   `GET /api/quotes/with-metadata?page=1&size=25` request, not two.
+5 . **Concurrent updates (page and size change together).** `setSize(25)` calls
+`_size.set(25)` then `_page.set(1)` synchronously. Angular's signal runtime batches
+both writes before scheduling the effect, so the effect fires ONCE (not twice) with
+the combined new state `p=1, s=25`. Verified in DevTools Network: exactly one new
+`GET /api/quotes/with-metadata?page=1&size=25` request, not two.
 
-6. **Totals from `/api/authors/with-quotes`.** The one-shot call returns
-   `AuthorWithQuotes[]`; the store computes
-   `_totalQuotes = Σ quoteCount`, `_totalAuthors = authors.length`.
-   `store.totalSummary()` shows "N quotes · M authors total" once the response lands,
-   replacing the "… total" placeholder.
+6 . **Totals from `/api/authors/with-quotes`.** The one-shot call returns
+`AuthorWithQuotes[]`; the store computes
+`_totalQuotes = Σ quoteCount`, `_totalAuthors = authors.length`.
+`store.totalSummary()` shows "N quotes · M authors total" once the response lands,
+replacing the "… total" placeholder.
 
 ### 3.2 Concrete bug caught and fixed
 
@@ -307,12 +307,12 @@ setSize(value: number): void {
 If `store.setSize(0)` is called (e.g., from a custom input that bypasses the
 select's allowed values):
 
-1. `_size.set(0)` and `_page.set(1)` fire.
-2. Effect runs: `GET /api/quotes/with-metadata?page=1&size=0`.
-3. API returns `400 {"errors":{"size":["Size must be between 1 and 100"]}}`.
-   (Source: `QuoteEndpoints.cs` line 27: `if (size < 1 || size > MaxPageSize)`)
-4. The `error` callback sets `_status` to `'error'`.
-5. Template shows "Could not reach the API at localhost:5051. Is the QuotesApi running?"
+1 . `_size.set(0)` and `_page.set(1)` fire.
+2 . Effect runs: `GET /api/quotes/with-metadata?page=1&size=0`.
+3 . API returns `400 {"errors":{"size":["Size must be between 1 and 100"]}}`.
+(Source: `QuoteEndpoints.cs` line 27: `if (size < 1 || size > MaxPageSize)`)
+4 . The `error` callback sets `_status` to `'error'`.
+5 . Template shows "Could not reach the API at localhost:5051. Is the QuotesApi running?"
 
 That message is wrong — the API IS running, the call just passed an invalid param.
 The same failure mode applies for `size=101` or `size=150`.
@@ -331,57 +331,38 @@ are rejected before they reach the network, not after they produce a confusing 4
 
 ### 3.3 What breaks if the QuotesApi contract changes
 
-1. **`quoteId` renamed on `/api/quotes/with-metadata` (e.g. → `id`, aligning with
-   the detail endpoint).** `store.quotes()` would return objects whose `quoteId`
-   field is `undefined`. The template's `track quote.quoteId`, the `[routerLink]`
-   `['/quotes', quote.quoteId]`, and the `view-transition-name` all go `undefined`.
-   Every card would link to `/quotes/undefined` → the detail resolver classifies it
-   `'invalid'` and shows "invalid quote ID." `QuoteMetadataReadModel.quoteId` in
-   `quote.model.ts` and every `quote.quoteId` reference in the template would need
-   updating — and would need to be re-reconciled with the detail endpoint's `id` field
-   (which is still a separate naming discrepancy).
+1 . **`quoteId` renamed on `/api/quotes/with-metadata` (e.g. → `id`, aligning with
+the detail endpoint).** `store.quotes()` would return objects whose `quoteId`
+field is `undefined`. The template's `track quote.quoteId`, the `[routerLink]`
+`['/quotes', quote.quoteId]`, and the `view-transition-name` all go `undefined`.
+Every card would link to `/quotes/undefined` → the detail resolver classifies it
+`'invalid'` and shows "invalid quote ID." `QuoteMetadataReadModel.quoteId` in
+`quote.model.ts` and every `quote.quoteId` reference in the template would need
+updating — and would need to be re-reconciled with the detail endpoint's `id` field
+(which is still a separate naming discrepancy).
 
-2. **`MaxPageSize` raised from 100 to 200 on the API.** The store's `setSize` guard
-   still clamps at 100, so values between 101 and 200 are silently dropped (the store
-   doesn't update). The select only shows 5/10/25, so the UI never hits this, but any
-   programmatic caller that tries `store.setSize(150)` would find it silently ignored.
-   The guard constant (100) would need to match the API's new cap.
+2 . **`MaxPageSize` raised from 100 to 200 on the API.** The store's `setSize` guard
+still clamps at 100, so values between 101 and 200 are silently dropped (the store
+doesn't update). The select only shows 5/10/25, so the UI never hits this, but any
+programmatic caller that tries `store.setSize(150)` would find it silently ignored.
+The guard constant (100) would need to match the API's new cap.
 
-3. **`/api/quotes/with-metadata` changes from returning an empty array for
-   over-paged requests to returning a 404.** The `error` callback fires instead of
-   `next`, so `_status` goes to `'error'` and the template shows "Could not reach
-   the API" instead of "No quotes found on this page." The empty-array assumption
-   is baked into `data.length === 0 ? 'empty' : 'loaded'` in the `next` callback.
+3 . **`/api/quotes/with-metadata` changes from returning an empty array for
+over-paged requests to returning a 404.** The `error` callback fires instead of
+`next`, so `_status` goes to `'error'` and the template shows "Could not reach
+the API" instead of "No quotes found on this page." The empty-array assumption
+is baked into `data.length === 0 ? 'empty' : 'loaded'` in the `next` callback.
 
-4. **`/api/authors/with-quotes` is removed (or moved behind auth).** The one-shot
-   authors call in the constructor starts returning 401/404. The `error: () => {}`
-   silently swallows it, leaving `_totalQuotes` and `_totalAuthors` permanently `null`.
-   `totalSummary()` shows "… total" forever. No error surface — a silent degradation
-   the user can't distinguish from "still loading."
+4 . **`/api/authors/with-quotes` is removed (or moved behind auth).** The one-shot
+authors call in the constructor starts returning 401/404. The `error: () => {}`
+silently swallows it, leaving `_totalQuotes` and `_totalAuthors` permanently `null`.
+`totalSummary()` shows "… total" forever. No error surface — a silent degradation
+the user can't distinguish from "still loading."
 
-5. **`GET /api/quotes/with-metadata` becomes guarded (behind `can-edit-quotes`
-   policy, like the POST endpoint).** Unauthenticated users get 401, which the
-   `retryInterceptor` retries three times, then the `error` callback sets `_status`
-   to `'error'`. The UI shows "Could not reach the API" — confusing, since the
-   correct UX would be a redirect to `/login`. The list route would need an `authGuard`
-   (like the `create` route has), and the error message would need to distinguish
-   auth failures from connectivity failures.
-
-## Screenshots
-
-No screenshots required for this piece — state transitions are verified through
-network inspection and template rendering described in §3.1 above. If you want to
-add them:
-
-1. **Loading state** — throttle network to Slow 3G in DevTools Network tab, navigate
-   to `http://localhost:4200/quotes`, screenshot before the response lands.
-
-2. **Empty state** — advance pages until the API returns an empty array; screenshot
-   the "No quotes found on this page." message with the Next button grayed out.
-
-3. **Error state** — stop the QuotesApi process, reload the quotes route, screenshot
-   the "Could not reach the API" message in the `status === 'error'` block.
-
-4. **Concurrent update** — open DevTools Network, change the per-page select from 10
-   to 25; screenshot showing exactly ONE new request (not two) to
-   `GET /api/quotes/with-metadata?page=1&size=25`.
+5 . **`GET /api/quotes/with-metadata` becomes guarded (behind `can-edit-quotes`
+policy, like the POST endpoint).** Unauthenticated users get 401, which the
+`retryInterceptor` retries three times, then the `error` callback sets `_status`
+to `'error'`. The UI shows "Could not reach the API" — confusing, since the
+correct UX would be a redirect to `/login`. The list route would need an `authGuard`
+(like the `create` route has), and the error message would need to distinguish
+auth failures from connectivity failures.
