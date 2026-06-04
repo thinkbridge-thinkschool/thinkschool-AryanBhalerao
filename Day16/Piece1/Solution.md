@@ -45,14 +45,23 @@ Run `npm run build` and confirm separate lazy chunks; run `npm test` and keep it
 
 ### Screenshots:
 
-1 . Lazy Chunk Log
+1 . Lazy Chunk Log - Lazy Chink log in npm start console
 ![Lazy](LazyChunks_log.png)
 
-2 . List 
-![List](List.png)
+2 . Lazy Chunk in Network: Observe the lazy chunks in Developer Tools -> Network
+![LazyNetwork](LazyChunks_Network.png)
 
-3 . Details
-![Details](Details.png)
+3 . Auth JWT Key - Login creates a JWT Key. Observe the JWT Key selected in the Dev Tools > Application > Local Storage
+![Auth](Auth_JWTkeyPresent.png)
+
+4 . Animation - Observe the animation tab for the Developer Tools -> List -> Details animation.
+![Animation](Animation_List_To_Details.png)
+
+5 . List - Observe adderess bar for List params
+![list](List.png)
+
+6 . Details - Observe address bar for Details params
+![details](Details.png)
 
 ### Files created / changed
 
