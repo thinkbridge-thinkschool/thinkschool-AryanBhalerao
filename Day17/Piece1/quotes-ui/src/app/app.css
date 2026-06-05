@@ -14,14 +14,17 @@ body {
 
 /* ── Header ── */
 .app-header {
-  background: #dbeafe;
-  color: #1e293b;
-  padding: 1rem 2rem;
+  background: #78909c;
+  color: white;
+  padding: 1.25rem 2rem;
   text-align: center;
-  border-bottom: 1px solid #bfdbfe;
+  border-bottom: 1px solid #607d8b;
 }
-.app-header h1 { margin: 0; font-size: 1.5rem; font-family: 'Algerian', serif; }
-.subtitle { margin: 0.25rem 0 0; font-size: 0.85rem; color: #64748b; }
+.app-header h1 { margin: 0; font-size: 3rem; font-family: 'Algerian', serif; color: white; }
+.subtitle { margin: 0.35rem 0 0; font-size: 0.85rem; color: rgba(255,255,255,0.85); }
+.source-link { margin: 0.25rem 0 0; font-size: 0.75rem; color: rgba(255,255,255,0.7); }
+.source-link a { color: rgba(255,255,255,0.85); text-decoration: underline; text-underline-offset: 2px; }
+.source-link a:hover { color: white; }
 
 /* ── Tab bar ── */
 .tab-bar {

@@ -57,16 +57,20 @@
           <span class="quote-id-badge">Quote ID: {{ quote.quoteId }}</span>
           <blockquote>{{ quote.quote }}</blockquote>
           <footer>
-            <span class="quote-author">{{ quote.author }}</span>
-            <span class="pills">
-              @for (tag of quote.tags; track tag) {
-                <span class="pill tag">{{ tag }}</span>
-              }
-              @for (cat of quote.categories; track cat) {
-                <span class="pill cat">{{ cat }}</span>
-              }
-            </span>
-            <span class="go-to-details">Go to Quote Details →</span>
+            <div class="footer-row">
+              <span class="quote-author">— {{ quote.author }}</span>
+              <span class="go-to-details">Go to Quote Details →</span>
+            </div>
+            @if (quote.tags.length || quote.categories.length) {
+              <div class="pills">
+                @for (tag of quote.tags; track tag) {
+                  <span class="pill tag">{{ tag }}</span>
+                }
+                @for (cat of quote.categories; track cat) {
+                  <span class="pill cat">{{ cat }}</span>
+                }
+              </div>
+            }
           </footer>
         </li>
       }

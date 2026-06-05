@@ -80,21 +80,50 @@
   letter-spacing: 0.02em;
 }
 
+/* Decorative large curly quotes before and after the quote text */
 .quote-card blockquote {
   margin: 0 0 0.65rem;
   padding: 0;
   font-style: italic;
+  font-weight: 700;
   color: #1e293b;
   font-size: 1.1rem;
   line-height: 1.65;
 }
+.quote-card blockquote::before {
+  content: '\201C';
+  font-size: 2.2rem;
+  color: #93c5fd;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 0;
+  vertical-align: -0.45em;
+  margin-right: 0.05em;
+}
+.quote-card blockquote::after {
+  content: '\201D';
+  font-size: 2.2rem;
+  color: #93c5fd;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 0;
+  vertical-align: -0.45em;
+  margin-left: 0.05em;
+}
 
+/* Footer: author + "go to details" on one row, pills below */
 .quote-card footer {
   display: flex;
-  align-items: center;
-  gap: 0.75rem;
+  flex-direction: column;
+  gap: 0.45rem;
   font-size: 0.85rem;
   color: #475569;
+}
+
+.footer-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .quote-author {
@@ -102,12 +131,15 @@
   font-weight: 400;
 }
 
+/* Hidden by default, revealed on card hover */
 .go-to-details {
-  margin-left: auto;
   font-size: 0.8rem;
   color: #2563eb;
   white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.15s;
 }
+.quote-card:hover .go-to-details { opacity: 1; }
 
 .pills { display: flex; gap: 0.4rem; flex-wrap: wrap; }
 
