@@ -25,36 +25,4 @@ public class Quote
 
     public ICollection<Tag> Tags { get; set; } = [];
     public ICollection<Category> Categories { get; set; } = [];
-
-    public static (Quote? Quote, Dictionary<string, string[]>? Errors) Create(
-        string author, string text, int? ownerId, DateTimeOffset createdAt)
-    {
-        var errors = new Dictionary<string, string[]>();
-
-        if (string.IsNullOrWhiteSpace(author))
-            errors["author"] = ["Author is required"];
-        else if (author.Length > AuthorMaxLength)
-            errors["author"] = [$"Author must be {AuthorMaxLength} characters or fewer"];
-
-        if (string.IsNullOrWhiteSpace(text))
-            errors["text"] = ["Text is required"];
-        else if (text.Length > TextMaxLength)
-            errors["text"] = [$"Text must be {TextMaxLength} characters or fewer"];
-
-        if (errors.Count > 0)
-            return (null, errors);
-
-        return (new Quote { Author = author, Text = text, OwnerId = ownerId, CreatedAt = createdAt }, null);
-    }
-}
-
-public class CreateQuoteDto
-{
-    [Required]
-    [MaxLength(100)]
-    public string Author { get; set; } = string.Empty;
-
-    [Required]
-    [MaxLength(1000)]
-    public string Text { get; set; } = string.Empty;
 }

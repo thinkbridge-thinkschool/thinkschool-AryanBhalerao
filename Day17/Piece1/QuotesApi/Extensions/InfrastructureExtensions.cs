@@ -38,9 +38,6 @@ public static class InfrastructureExtensions
         // Singleton: stateless time source, safe to share across all requests and threads
         services.AddSingleton<IClock, SystemClock>();
 
-        // Transient: new instance per injection — validation is stateless and cheap to allocate
-        services.AddTransient<IQuoteValidator, QuoteValidator>();
-
         // CQRS-lite: separate write handler and read query service.
         services.AddScoped<CreateQuoteCommandHandler>();
         services.AddScoped<IQuoteQueryService, EfCoreQuoteQueryService>();
