@@ -278,19 +278,19 @@ Nothing is stored — not in the repo, not in app settings, not in environment v
 
 ### 3.3 States and edges exercised
 
-1 . **Loading state.** Page first renders while `GET https://quotesapi.azurewebsites.net/api/quotes/with-metadata?page=1&size=10` is in-flight. "Loading…" shown.
+1 . **Loading State.** - Lazy loaded chunks successfully
 ![](State_loading.png)
 
-2 . **Loaded state.** API responds `200`. Quote cards rendered with `tags[]`, `categories[]`, `author`, and `createdAt` from the response.
+2 . **Concurrent State.** - Successfully loaded paginated 25 quotes.
 ![](States_Concurrent.png)
 
-3 . **Empty state.** `page=999` — API returns `200 []`. "No quotes found on this page." Next button disables immediately.
+3 . **Empty state.** - Successfully handled empty page state.
 ![](State_Empty.png)
 
-4 . **Error state.** Proxy unreachable (cold-start / API down). "Could not reach the API. Please try again later."
+4 . **Error state.** - Successfully handled invalid input.
 ![](States_ErrorState.png)
 
-5 . **401 / auth-gated.** Navigating to `/create` without a valid JWT. `authGuard` blocks the route and redirects to `/login?returnUrl=%2Fcreate` before `POST /api/quotes` is ever called.
+5 . **Auth Gated State** - Successfully handled missing auth.
 ![](State_auth.png)
 
 ### 3.4 Concrete bug caught and fixed
