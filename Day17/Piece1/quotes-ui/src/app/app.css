@@ -14,11 +14,11 @@ body {
 
 /* ── Header ── */
 .app-header {
-  background: #78909c;
+  background: #4C5C68;
   color: white;
   padding: 1.25rem 2rem;
   text-align: center;
-  border-bottom: 1px solid #607d8b;
+  border-bottom: 1px solid #3a4a55;
 }
 .app-header h1 { margin: 0; font-size: 3rem; font-family: 'Algerian', serif; color: white; }
 .subtitle { margin: 0.35rem 0 0; font-size: 0.85rem; color: rgba(255,255,255,0.85); }
@@ -30,8 +30,8 @@ body {
 .tab-bar {
   display: flex;
   align-items: stretch;
-  background: #ffffff;
-  border-bottom: 2px solid #e2e8f0;
+  background: #46494C;
+  border-bottom: 2px solid #35383b;
   padding: 0 2rem;
   position: relative;
 }
@@ -50,7 +50,7 @@ body {
   background: transparent;
   font-size: 0.9rem;
   font-weight: 500;
-  color: #64748b;
+  color: rgba(255, 255, 255, 0.65);
   cursor: pointer;
   border-bottom: 3px solid transparent;
   margin-bottom: -2px;
@@ -60,10 +60,10 @@ body {
   align-items: center;
 }
 
-.tab-btn:hover { color: #1e293b; }
+.tab-btn:hover { color: white; }
 .tab-btn.active {
-  color: #2563eb;
-  border-bottom-color: #2563eb;
+  color: white;
+  border-bottom-color: #93c5fd;
 }
 
 /* ── Nav user display — absolutely positioned so tabs stay truly centred ── */
@@ -79,19 +79,19 @@ body {
 
 .user-email {
   font-size: 0.8rem;
-  color: #475569;
+  color: rgba(255, 255, 255, 0.8);
 }
 
 .logout-btn {
   background: none;
-  border: 1px solid #cbd5e1;
+  border: 1px solid rgba(255, 255, 255, 0.35);
   border-radius: 4px;
   padding: 0.2rem 0.65rem;
   font-size: 0.8rem;
-  color: #64748b;
+  color: rgba(255, 255, 255, 0.8);
   cursor: pointer;
 }
-.logout-btn:hover { background: #f1f5f9; }
+.logout-btn:hover { background: rgba(255, 255, 255, 0.1); }
 
 .login-btn {
   background: #2563eb;
