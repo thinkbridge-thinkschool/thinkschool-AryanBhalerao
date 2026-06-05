@@ -12,8 +12,6 @@
   border-bottom: 1px solid #e2e8f0;
 }
 
-.toolbar h2 { margin: 0; flex: 1; }
-
 .page-size,
 .page-select,
 .quote-search {
@@ -61,34 +59,55 @@
 .quote-list { list-style: none; padding: 0; margin: 0; }
 
 .quote-card {
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  padding: 1rem 1.25rem;
-  margin-bottom: 0.75rem;
+  border: 1.5px solid #bfdbfe;
+  border-radius: 10px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1rem;
   cursor: pointer;
   display: block;
-  transition: border-color 0.15s, box-shadow 0.15s;
+  transition: border-color 0.15s, box-shadow 0.2s;
 }
 .quote-card:hover {
-  border-color: #93c5fd;
-  box-shadow: 0 1px 6px rgba(37, 99, 235, 0.12);
+  border-color: #60a5fa;
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.15);
+}
+
+.quote-id-badge {
+  display: block;
+  font-size: 0.7rem;
+  color: #94a3b8;
+  margin-bottom: 0.35rem;
+  letter-spacing: 0.02em;
 }
 
 .quote-card blockquote {
-  margin: 0 0 0.5rem;
+  margin: 0 0 0.65rem;
+  padding: 0;
   font-style: italic;
   color: #1e293b;
+  font-size: 1.1rem;
+  line-height: 1.65;
 }
 
 .quote-card footer {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.75rem;
   font-size: 0.85rem;
   color: #475569;
 }
 
-.quote-card footer .user { color: #94a3b8; }
+.quote-author {
+  color: #475569;
+  font-weight: 400;
+}
+
+.go-to-details {
+  margin-left: auto;
+  font-size: 0.8rem;
+  color: #2563eb;
+  white-space: nowrap;
+}
 
 .pills { display: flex; gap: 0.4rem; flex-wrap: wrap; }
 

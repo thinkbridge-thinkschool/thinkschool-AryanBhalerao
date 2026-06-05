@@ -1,24 +1,26 @@
 <div class="app-shell">
   <header class="app-header">
     <h1>Quotes Explorer</h1>
-    <p class="subtitle">Made with ASP .NET 10 . Angular 21 . Deployed with Azure Cloud</p>
+    <p class="subtitle">Made with ASP .NET 10 · Angular 21 · Deployed with Azure Cloud</p>
   </header>
 
   <nav class="tab-bar">
-    <a
-      class="tab-btn"
-      routerLink="/quotes"
-      routerLinkActive="active"
-    >
-      Quotes List
-    </a>
-    <a
-      class="tab-btn"
-      routerLink="/create"
-      routerLinkActive="active"
-    >
-      Create Quote
-    </a>
+    <div class="tab-links">
+      <a
+        class="tab-btn"
+        routerLink="/quotes"
+        routerLinkActive="active"
+      >
+        Quotes List
+      </a>
+      <a
+        class="tab-btn"
+        routerLink="/create"
+        routerLinkActive="active"
+      >
+        Create Quote
+      </a>
+    </div>
     <div class="nav-user">
       @if (svc.loggedIn()) {
         <span class="user-email">{{ svc.currentUserEmail() }}</span>
