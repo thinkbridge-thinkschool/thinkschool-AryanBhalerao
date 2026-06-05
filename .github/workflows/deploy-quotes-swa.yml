@@ -34,21 +34,14 @@ jobs:
           npm ci
           npx ng build --configuration production
 
-      - name: Install API dependencies and compile
-        working-directory: Day17/Piece1/quotes-ui/api
-        run: |
-          npm ci
-          npm run build
-
       - name: Deploy to Azure Static Web Apps
         uses: Azure/static-web-apps-deploy@v1
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: upload
-          # Pre-built; tell the action not to run its own build
+          # Angular app is pre-built above; Oryx handles the Node.js API build
           skip_app_build: true
-          skip_api_build: true
           app_location: Day17/Piece1/quotes-ui/dist/quotes-ui/browser
           api_location: Day17/Piece1/quotes-ui/api
 
