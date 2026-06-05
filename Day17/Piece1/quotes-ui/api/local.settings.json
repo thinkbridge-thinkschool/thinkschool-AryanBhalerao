@@ -1,0 +1,9 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "",
+    "FUNCTIONS_WORKER_RUNTIME": "node",
+    "QUOTES_API_URL": "http://localhost:5051",
+    "QUOTES_API_CLIENT_ID": "abb9a212-0298-4302-985a-f5be1676d00d"
+  }
+}

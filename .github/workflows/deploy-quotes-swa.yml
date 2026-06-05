@@ -1,0 +1,64 @@
+name: Deploy Quotes UI to Azure SWA
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'Day17/Piece1/quotes-ui/**'
+      - '.github/workflows/deploy-quotes-swa.yml'
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+    branches: [main]
+
+jobs:
+  build_and_deploy:
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+    runs-on: ubuntu-latest
+    name: Build and Deploy
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Set up Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: Day17/Piece1/quotes-ui/package-lock.json
+
+      - name: Install and build Angular app
+        working-directory: Day17/Piece1/quotes-ui
+        run: |
+          npm ci
+          npx ng build --configuration production
+
+      - name: Install API dependencies and compile
+        working-directory: Day17/Piece1/quotes-ui/api
+        run: |
+          npm ci
+          npm run build
+
+      - name: Deploy to Azure Static Web Apps
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: upload
+          # Pre-built; tell the action not to run its own build
+          skip_app_build: true
+          skip_api_build: true
+          app_location: Day17/Piece1/quotes-ui/dist/quotes-ui/browser
+          api_location: Day17/Piece1/quotes-ui/api
+
+  close_pull_request:
+    if: github.event_name == 'pull_request' && github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    name: Close PR environment
+    steps:
+      - name: Close staging environment
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          action: close

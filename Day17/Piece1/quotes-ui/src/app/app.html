@@ -1,0 +1,28 @@
+<div class="app-shell">
+  <header class="app-header">
+    <h1>Quotes UI</h1>
+    <p class="subtitle">signal · computed · effect · &#64;if · &#64;for · &#64;switch · inject()</p>
+  </header>
+
+  <nav class="tab-bar">
+    <a
+      class="tab-btn"
+      routerLink="/quotes"
+      routerLinkActive="active"
+    >
+      Quotes
+    </a>
+    <a
+      class="tab-btn"
+      routerLink="/create"
+      routerLinkActive="active"
+    >
+      Create
+    </a>
+    <button class="logout-btn nav-logout" (click)="logout()">Log out</button>
+  </nav>
+
+  <main class="tab-content">
+    <router-outlet />
+  </main>
+</div>
