@@ -34,7 +34,7 @@ export class LoginFormComponent {
 
     this.svc.login(this.email.value!, this.password.value!).subscribe({
       next: (res) => {
-        localStorage.setItem('jwt', res.access_token);
+        this.svc.storeToken(res.access_token);
         this.status.set('idle');
         this.loggedIn.emit();
       },

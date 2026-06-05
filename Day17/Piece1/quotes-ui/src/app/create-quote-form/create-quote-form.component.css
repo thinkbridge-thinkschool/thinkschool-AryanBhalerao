@@ -4,6 +4,7 @@
   padding: 1.25rem 1.5rem;
   background: white;
   max-width: 560px;
+  margin: 0 auto;
 }
 
 .create-form h2 {

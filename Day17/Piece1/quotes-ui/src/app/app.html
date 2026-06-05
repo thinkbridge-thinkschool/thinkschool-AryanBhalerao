@@ -1,7 +1,7 @@
 <div class="app-shell">
   <header class="app-header">
-    <h1>Quotes UI</h1>
-    <p class="subtitle">signal · computed · effect · &#64;if · &#64;for · &#64;switch · inject()</p>
+    <h1>Quotes Explorer</h1>
+    <p class="subtitle">Made with ASP .NET 10 . Angular 21 . Deployed with Azure Cloud</p>
   </header>
 
   <nav class="tab-bar">
@@ -10,19 +10,33 @@
       routerLink="/quotes"
       routerLinkActive="active"
     >
-      Quotes
+      Quotes List
     </a>
     <a
       class="tab-btn"
       routerLink="/create"
       routerLinkActive="active"
     >
-      Create
+      Create Quote
     </a>
-    <button class="logout-btn nav-logout" (click)="logout()">Log out</button>
+    <div class="nav-user">
+      @if (svc.loggedIn()) {
+        <span class="user-email">{{ svc.currentUserEmail() }}</span>
+        <button class="logout-btn" (click)="logout()">Log out</button>
+      } @else {
+        <button class="login-btn" (click)="login()">Log in</button>
+      }
+    </div>
   </nav>
 
   <main class="tab-content">
     <router-outlet />
   </main>
+
+  @if (loadingQuote()) {
+    <div class="loading-toast">
+      <span class="loading-spinner"></span>
+      Loading details…
+    </div>
+  }
 </div>
