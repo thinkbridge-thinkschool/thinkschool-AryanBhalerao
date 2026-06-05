@@ -2,7 +2,7 @@
 
 body {
   margin: 0;
-  background: #D9F0FF;
+  background: #C5C3C6;
   color: #0f172a;
 }
 
@@ -14,24 +14,24 @@ body {
 
 /* ── Header ── */
 .app-header {
-  background: #A4BEF3;
-  color: #1e293b;
+  background: #4C5C68;
+  color: white;
   padding: 1.25rem 2rem;
   text-align: center;
-  border-bottom: 1px solid #8aa5e0;
+  border-bottom: 1px solid #3a4a55;
 }
-.app-header h1 { margin: 0; font-size: 3rem; font-family: 'Algerian', serif; color: #1e293b; }
-.subtitle { margin: 0.35rem 0 0; font-size: 0.85rem; color: #374151; }
-.source-link { margin: 0.25rem 0 0; font-size: 0.75rem; color: #475569; }
-.source-link a { color: #1d4ed8; text-decoration: underline; text-underline-offset: 2px; }
-.source-link a:hover { color: #1e40af; }
+.app-header h1 { margin: 0; font-size: 3rem; font-family: 'Algerian', serif; color: white; }
+.subtitle { margin: 0.35rem 0 0; font-size: 0.85rem; color: rgba(255,255,255,0.85); }
+.source-link { margin: 0.25rem 0 0; font-size: 0.75rem; color: rgba(255,255,255,0.7); }
+.source-link a { color: rgba(255,255,255,0.9); text-decoration: underline; text-underline-offset: 2px; }
+.source-link a:hover { color: white; }
 
 /* ── Tab bar ── */
 .tab-bar {
   display: flex;
   align-items: stretch;
-  background: #96CDFF;
-  border-bottom: 2px solid #74b8f5;
+  background: #46494C;
+  border-bottom: 2px solid #333638;
   padding: 0 2rem;
   position: relative;
 }
@@ -50,7 +50,7 @@ body {
   background: transparent;
   font-size: 0.9rem;
   font-weight: 500;
-  color: #1e293b;
+  color: rgba(255,255,255,0.8);
   cursor: pointer;
   border-bottom: 3px solid transparent;
   margin-bottom: -2px;
@@ -60,10 +60,10 @@ body {
   align-items: center;
 }
 
-.tab-btn:hover { color: #0f172a; }
+.tab-btn:hover { color: white; }
 .tab-btn.active {
-  color: #1d4ed8;
-  border-bottom-color: #1d4ed8;
+  color: white;
+  border-bottom-color: white;
 }
 
 /* ── Nav user display — absolutely positioned so tabs stay truly centred ── */
@@ -79,24 +79,24 @@ body {
 
 .user-email {
   font-size: 0.8rem;
-  color: #1e293b;
+  color: rgba(255,255,255,0.9);
 }
 
 .logout-btn {
   background: none;
-  border: 1px solid #7ab8f5;
+  border: 1px solid rgba(255,255,255,0.4);
   border-radius: 4px;
   padding: 0.2rem 0.65rem;
   font-size: 0.8rem;
-  color: #1e293b;
+  color: rgba(255,255,255,0.9);
   cursor: pointer;
 }
-.logout-btn:hover { background: rgba(255,255,255,0.4); }
+.logout-btn:hover { background: rgba(255,255,255,0.1); }
 
 .login-btn {
-  background: #2563eb;
+  background: rgba(255,255,255,0.15);
   color: white;
-  border: none;
+  border: 1px solid rgba(255,255,255,0.4);
   border-radius: 4px;
   padding: 0.3rem 0.9rem;
   font-size: 0.8rem;
