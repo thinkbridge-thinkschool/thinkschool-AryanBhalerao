@@ -24,13 +24,13 @@ async function proxy(request: HttpRequest, context: InvocationContext): Promise<
 
   context.log(`[proxy] ${request.method} ${reqUrl.pathname}${reqUrl.search} → ${targetUrl}`);
 
-  // If the browser sent a user JWT (for write operations), forward it as-is so the
-  // API's LocalScheme can validate the user's identity and check the can-edit-quotes policy.
-  // For unauthenticated GET requests the header is absent; the API's public endpoints
-  // return 200 without any Authorization header.
-  // Fall back to a Managed Identity token only when no user auth is present and the SWA's
-  // system-assigned identity has been granted the Quotes.Access app role.
-  const clientAuth = request.headers.get('Authorization');
+  // Azure SWA strips the Authorization header before forwarding to managed functions.
+  // The Angular authInterceptor also sends the JWT in X-User-Authorization so it
+  // survives the SWA proxy. Prefer Authorization (local dev / direct calls) and
+  // fall back to X-User-Authorization (production SWA path).
+  // If neither is present, fall back to a Managed Identity token for anonymous GETs.
+  const clientAuth = request.headers.get('Authorization')
+    ?? request.headers.get('X-User-Authorization');
 
   let authHeader: string | undefined;
   if (clientAuth) {

@@ -5,14 +5,27 @@ import { catchError, retry } from 'rxjs/operators';
 import { toAppError } from './app-error';
 
 // ---------------------------------------------------------------------------
-// 1. Auth header — attach the stored JWT as Bearer on every outgoing request.
+// 1. Auth headers — attach the stored JWT as Bearer on every outgoing request.
 //    POST /api/quotes and POST /api/quotes/{id}/metadata are guarded by the
 //    `can-edit-quotes` policy; without the header the API answers 401.
+//    In production the Angular app is served from Azure SWA, which strips the
+//    standard Authorization header before forwarding requests to the managed
+//    Azure Function proxy. X-User-Authorization is a custom header that SWA
+//    passes through unchanged; the proxy reads it and restores Authorization
+//    when forwarding to the Container App backend.
 // ---------------------------------------------------------------------------
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const token = localStorage.getItem('jwt');
   if (!token) return next(req);
-  return next(req.clone({ setHeaders: { Authorization: `Bearer ${token}` } }));
+  // Azure SWA strips the Authorization header before forwarding to managed functions.
+  // X-User-Authorization carries the JWT through the SWA proxy so the proxy function
+  // can restore it when forwarding to the Container App backend.
+  return next(req.clone({
+    setHeaders: {
+      Authorization: `Bearer ${token}`,
+      'X-User-Authorization': `Bearer ${token}`,
+    },
+  }));
 };
 
 // ---------------------------------------------------------------------------
