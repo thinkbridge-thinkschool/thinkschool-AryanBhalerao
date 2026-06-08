@@ -1,12 +1,7 @@
 # Day 18 · Piece 1 — Moving slow work off the request thread with a `BackgroundService` queue
 
-## 1 Background Service
-
-A request thread should answer the caller and let go. When an endpoint does slow side work
-inline — indexing, sending mail, calling a third party — the caller waits for work it does not
-care about, and the thread is held hostage under load. The fix is a **producer/consumer queue**:
-the endpoint *enqueues* a work item and returns `202 Accepted` immediately; a long-running
-`BackgroundService` *drains* the queue on its own thread.
+## 1 Background Service Queue
+A request thread should answer the caller and let go. When an endpoint does slow side work inline — indexing, sending mail, calling a third party — the caller waits for work it does not care about, and the thread is held hostage under load. The fix is a **producer/consumer queue**: the endpoint *enqueues* a work item and returns `202 Accepted` immediately; a long-running `BackgroundService` *drains* the queue on its own thread.
 
 ### Pieces added
 
