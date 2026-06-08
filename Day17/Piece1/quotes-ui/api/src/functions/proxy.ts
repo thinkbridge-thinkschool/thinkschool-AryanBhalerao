@@ -24,13 +24,15 @@ async function proxy(request: HttpRequest, context: InvocationContext): Promise<
 
   context.log(`[proxy] ${request.method} ${reqUrl.pathname}${reqUrl.search} → ${targetUrl}`);
 
-  // Azure SWA strips the Authorization header before forwarding to managed functions.
-  // The Angular authInterceptor also sends the JWT in X-User-Authorization so it
-  // survives the SWA proxy. Prefer Authorization (local dev / direct calls) and
-  // fall back to X-User-Authorization (production SWA path).
+  // Azure SWA does NOT strip the Authorization header — it OVERWRITES it with its
+  // own EasyAuth bearer token before forwarding to managed functions. That value is
+  // non-null, so a `?? ` fallback on Authorization never fires. The Angular
+  // authInterceptor therefore also sends the JWT in X-User-Authorization, a custom
+  // header SWA passes through untouched. Read X-User-Authorization FIRST so the SWA
+  // path uses the real user token; fall back to Authorization for direct/local calls.
   // If neither is present, fall back to a Managed Identity token for anonymous GETs.
-  const clientAuth = request.headers.get('Authorization')
-    ?? request.headers.get('X-User-Authorization');
+  const clientAuth = request.headers.get('X-User-Authorization')
+    ?? request.headers.get('Authorization');
 
   let authHeader: string | undefined;
   if (clientAuth) {
