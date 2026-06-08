@@ -15,6 +15,7 @@ export class QuotesListStore {
   private readonly _quotes = signal<QuoteMetadataReadModel[]>([]);
   private readonly _totalQuotes = signal<number | null>(null);
   private readonly _totalAuthors = signal<number | null>(null);
+  private readonly _refreshTick = signal(0);
 
   // ── Public readonly signals ───────────────────────────────────────────────
   readonly page = this._page.asReadonly();
@@ -49,6 +50,7 @@ export class QuotesListStore {
       () => {
         const p = this._page();
         const s = this._size();
+        this._refreshTick(); // subscribe to manual refresh triggers
 
         this._status.set('loading');
 
@@ -79,6 +81,10 @@ export class QuotesListStore {
   }
 
   // ── Public actions ────────────────────────────────────────────────────────
+  refresh(): void {
+    this._refreshTick.update(n => n + 1);
+  }
+
   prevPage(): void {
     if (this._page() > 1) this._page.update((p) => p - 1);
   }

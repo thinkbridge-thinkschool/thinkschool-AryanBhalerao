@@ -1,7 +1,9 @@
 import { Component, ElementRef, computed, inject, output, signal, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { catchError, map, of, switchMap } from 'rxjs';
 import { QuotesService } from '../services/quotes.service';
+import { QuotesListStore } from '../services/quotes-list.store';
 
 type SubmitStatus = 'idle' | 'submitting' | 'success' | 'error';
 
@@ -15,9 +17,10 @@ type SubmitStatus = 'idle' | 'submitting' | 'success' | 'error';
 })
 export class CreateQuoteFormComponent {
   private readonly svc = inject(QuotesService);
+  private readonly router = inject(Router);
+  private readonly quotesListStore = inject(QuotesListStore);
 
-  // Emitted when the API rejects the stored token (401) — the access token
-  // only lives 15 minutes, so the parent must send the user back to login.
+  // Emitted when the API rejects the stored token (401).
   readonly sessionExpired = output<void>();
 
   // Signal-backed field values
@@ -128,11 +131,6 @@ export class CreateQuoteFormComponent {
         next: ({ id, metaOk }) => {
           this.newQuoteId.set(id);
           this.submitStatus.set('success');
-          if (!metaOk) {
-            this.metadataError.set(
-              'Quote created but metadata could not be saved — you can retry by re-submitting with the same ID.',
-            );
-          }
           this.authorValue.set('');
           this.textValue.set('');
           this.authorTouched.set(false);
@@ -141,13 +139,17 @@ export class CreateQuoteFormComponent {
           this.textDirty.set(false);
           this.selectedTag.set(null);
           this.selectedCategory.set(null);
+          // Refresh the list so the new quote is visible immediately, then navigate.
+          this.quotesListStore.refresh();
+          this.router.navigate(['/quotes']);
         },
         error: (err) => {
           if (err?.status === 401) {
-            // Token expired or invalid — drop it and bounce back to the login form.
+            // Token expired or invalid — drop it and send the user back to login.
             this.svc.logout();
             this.submitStatus.set('idle');
             this.sessionExpired.emit();
+            this.router.navigate(['/login'], { queryParams: { returnUrl: '/create' } });
             return;
           }
           const detail = err?.error?.errors

@@ -1,5 +1,5 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { AuthorWithQuotes, QuoteMetadataReadModel, QuoteReadModel } from '../models/quote.model';
 import { EMPTY, Observable } from 'rxjs';
 import { expand, first, map } from 'rxjs/operators';
@@ -69,16 +69,10 @@ export class QuotesService {
     );
   }
 
-  private authHeaders(): HttpHeaders | undefined {
-    const token = localStorage.getItem('jwt');
-    return token ? new HttpHeaders({ Authorization: `Bearer ${token}` }) : undefined;
-  }
-
   create(author: string, text: string): Observable<{ id: number }> {
     return this.http.post<{ id: number }>(
       `${this.base}/quotes`,
       { author, text },
-      { headers: this.authHeaders() },
     );
   }
 
@@ -86,7 +80,6 @@ export class QuotesService {
     return this.http.post<void>(
       `${this.base}/quotes/${id}/metadata`,
       { tags, categories },
-      { headers: this.authHeaders() },
     );
   }
 
