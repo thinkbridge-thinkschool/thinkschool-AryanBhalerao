@@ -6,7 +6,7 @@ A **topic** fans every message out to each **subscription** (pub/sub); within on
 
 Bring the broker up once; it loads the topic + two subscriptions from the config on boot. Everything else (publish, workers, DLQ read) talks to it over AMQP on `localhost:5672`.
 
-```powershell
+```
 cd ServiceBusDemo
 docker compose up -d        # Azure Service Bus emulator + its SQL Edge backend
 # ... run the demo (Proof, below) ...
@@ -120,13 +120,13 @@ Two competing consumers (`A`, `B`) drain the `search-index` subscription: the fi
 Bring the broker up, start both workers *before* publishing, publish one batch, then read the DLQ once the poison has exhausted its 3 deliveries — five terminals in all.
 
 **Terminal 1 — Docker** · bring up the emulator + its SQL backend
-```powershell
+```
 cd ServiceBusDemo
 docker compose up -d
 ```
 
 **Terminal 2 — Worker A** · competing consumer on `search-index`
-```powershell
+```
 dotnet run -- worker search-index 1 A
 [A] OK    q-001 (delivery#1) -> Austin Freeman
 [A] OK    q-004 (delivery#1) -> Harold Abelson
@@ -135,7 +135,7 @@ dotnet run -- worker search-index 1 A
 ```
 
 **Terminal 3 — Worker B** · competing consumer on `search-index`
-```powershell
+```
 dotnet run -- worker search-index 1 B
 [B] OK    q-002 (delivery#1) -> Kent Beck
 [B] OK    q-003 (delivery#1) -> Donald Knuth
@@ -145,12 +145,12 @@ dotnet run -- worker search-index 1 B
 ```
 
 **Terminal 4 — Publisher** · sends one batch of 7 to the topic
-```powershell
+```
 dotnet run -- publish
 ```
 
 **Terminal 5 — DLQ Reader** · reads the dead-letter queue after the poison fails 3×
-```powershell
+```
 dotnet run -- dlq search-index
 Dead-letter queue of subscription 'search-index': 1 message(s).
   - id=q-poison  deliveryCount=4
