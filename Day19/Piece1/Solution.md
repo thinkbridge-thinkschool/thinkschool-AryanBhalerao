@@ -185,4 +185,4 @@ Dead-letter queue of subscription 'search-index': 1 message(s).
 It is important to ensure that messages get delievered and senders be aware about recievers recieving them. Idempotency sents a message multiple times for redundancy. DLQ ensures that poison messages do not make the sender keep retrying forever. Poison messages are messages which will fail every single time. Usually they are bugs or an impossible request.
 
 ## What can break this?
-Consider that a reciever has recieved a message and started processing it, while it recieves another instance of the same message from a idempotency based service. Marking the work done and completing it has to be perfectly atomic. Sometimes when it is not, it may lead to double execution.
+While a process has reieved a message and started processing it, it may recieve another instance of the same message from a idempotency based service. Marking the work done and completing it has to be perfectly atomic. Sometimes when it is not, it may lead to double execution.
