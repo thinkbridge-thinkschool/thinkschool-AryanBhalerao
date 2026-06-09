@@ -1,0 +1,38 @@
+# Local Azure Service Bus, no cloud. Microsoft's official emulator is a real
+# broker (topics, subscriptions, peek-lock, delivery-count, DLQ) backed by a
+# SQL Edge container. Clients connect with UseDevelopmentEmulator=true.
+name: sbdemo
+
+services:
+  emulator:
+    container_name: sbdemo-emulator
+    image: mcr.microsoft.com/azure-messaging/servicebus-emulator:latest
+    pull_policy: always
+    volumes:
+      - "./config/servicebus-config.json:/ServiceBus_Emulator/ConfigFiles/Config.json"
+    ports:
+      - "5672:5672"   # AMQP — what the .NET SDK connects to
+      - "5300:5300"   # emulator management
+    environment:
+      SQL_SERVER: sqledge
+      MSSQL_SA_PASSWORD: "${MSSQL_SA_PASSWORD:-Str0ng!Passw0rd}"
+      ACCEPT_EULA: "Y"
+    depends_on:
+      sqledge:
+        condition: service_started
+    networks:
+      sb-emulator:
+        aliases: ["sb-emulator"]
+
+  sqledge:
+    container_name: sbdemo-sqledge
+    image: mcr.microsoft.com/azure-sql-edge:latest
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "${MSSQL_SA_PASSWORD:-Str0ng!Passw0rd}"
+    networks:
+      sb-emulator:
+        aliases: ["sqledge"]
+
+networks:
+  sb-emulator:

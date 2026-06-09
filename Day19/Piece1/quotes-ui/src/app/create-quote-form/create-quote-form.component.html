@@ -1,0 +1,117 @@
+<section class="create-form" aria-labelledby="create-form-title">
+  <h2 id="create-form-title">Create a quote</h2>
+
+  <!-- No [formGroup] or ReactiveFormsModule — submit wired directly to the method -->
+  <form (ngSubmit)="submit()" novalidate>
+
+    <!-- Author -->
+    <div class="field">
+      <label for="cf-author">Author</label>
+      <input
+        id="cf-author"
+        #authorInput
+        type="text"
+        autocomplete="off"
+        [value]="authorValue()"
+        (input)="setAuthor($any($event.target).value)"
+        (blur)="touchAuthor()"
+        [attr.aria-invalid]="authorErrors() && authorTouched() ? 'true' : null"
+        aria-describedby="cf-author-error"
+      />
+      <span id="cf-author-error" class="field-error" aria-live="polite">
+        @if (authorErrors() && authorTouched()) {
+          @if (authorErrors()?.['required']) { Author is required. }
+          @else if (authorErrors()?.['maxlength']) { Author must be 100 characters or fewer. }
+        }
+      </span>
+    </div>
+
+    <!-- Quote text -->
+    <div class="field">
+      <label for="cf-text">Quote text</label>
+      <textarea
+        id="cf-text"
+        #textInput
+        rows="4"
+        [value]="textValue()"
+        (input)="setText($any($event.target).value)"
+        (blur)="touchText()"
+        [attr.aria-invalid]="textErrors() && textTouched() ? 'true' : null"
+        aria-describedby="cf-text-error"
+      ></textarea>
+      <span id="cf-text-error" class="field-error" aria-live="polite">
+        @if (textErrors() && textTouched()) {
+          @if (textErrors()?.['required']) { Quote text is required. }
+          @else if (textErrors()?.['maxlength']) { Quote text must be 1000 characters or fewer. }
+        }
+      </span>
+    </div>
+
+    <!-- Optional metadata -->
+    <fieldset class="metadata-fieldset">
+      <legend>Metadata <span class="optional">(optional)</span></legend>
+
+      <div class="field">
+        <span class="group-label">Tag</span>
+        <div class="radio-group">
+          @for (tag of availableTags; track tag) {
+            <label class="radio-item">
+              <input
+                type="radio"
+                name="tag"
+                [value]="tag"
+                [checked]="selectedTag() === tag"
+                (change)="selectTag(tag)"
+              />
+              {{ tag }}
+            </label>
+          }
+        </div>
+      </div>
+
+      <div class="field">
+        <span class="group-label">Category</span>
+        <div class="radio-group">
+          @for (cat of availableCategories; track cat) {
+            <label class="radio-item">
+              <input
+                type="radio"
+                name="category"
+                [value]="cat"
+                [checked]="selectedCategory() === cat"
+                (change)="selectCategory(cat)"
+              />
+              {{ cat }}
+            </label>
+          }
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- Server error -->
+    @if (submitStatus() === 'error') {
+      <p class="server-error" role="alert">{{ serverError() }}</p>
+    }
+
+    <!-- Partial success (quote ok, metadata failed) -->
+    @if (metadataError()) {
+      <p class="metadata-warning" role="alert">{{ metadataError() }}</p>
+    }
+
+    <!-- Full success -->
+    @if (submitStatus() === 'success') {
+      <p class="success-msg" role="status">
+        Quote #{{ newQuoteId() }} created — paste that ID into Search Quotes to preview it.
+      </p>
+    }
+
+    <button
+      type="submit"
+      [disabled]="submitStatus() === 'submitting'"
+      [attr.aria-busy]="submitStatus() === 'submitting' ? 'true' : null"
+    >
+      @if (submitStatus() === 'submitting') { Saving… } @else { Create quote }
+    </button>
+
+  </form>
+</section>
