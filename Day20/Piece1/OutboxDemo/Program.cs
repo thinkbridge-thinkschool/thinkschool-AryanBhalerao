@@ -1,9 +1,19 @@
 using OutboxDemo;
 
-// Well-known emulator dev connection string (same as Day 19). UseDevelopmentEmulator=true
-// tells the SDK to skip TLS and use the emulator's fixed dev SAS key.
-const string ConnString =
+// Connection string resolution:
+//   * SERVICEBUS_CONNECTION_STRING env var set  -> use it (e.g. a real Azure
+//     Service Bus *Standard* namespace; Standard is required because Basic has
+//     no topics/subscriptions). Set it to the namespace's RootManageSharedAccessKey
+//     (or a less-privileged SAS) connection string from the Azure portal.
+//   * not set -> fall back to the well-known local emulator dev string.
+//     UseDevelopmentEmulator=true tells the SDK to skip TLS and use the emulator's
+//     fixed dev SAS key.
+const string EmulatorConnString =
     "Endpoint=sb://localhost;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=SAS_KEY_VALUE;UseDevelopmentEmulator=true;";
+string ConnString =
+    Environment.GetEnvironmentVariable("SERVICEBUS_CONNECTION_STRING") is { Length: > 0 } envConn
+        ? envConn
+        : EmulatorConnString;
 
 var idempotencyDbPath = Path.Combine(AppContext.BaseDirectory, "idempotency.db");
 
