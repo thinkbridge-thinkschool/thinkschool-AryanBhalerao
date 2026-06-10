@@ -1,0 +1,167 @@
+.quotes-shell {
+  max-width: 720px;
+  margin: 0 auto;
+  font-family: system-ui, sans-serif;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.page-size,
+.page-select,
+.quote-search {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  color: #475569;
+}
+
+.page-select input,
+.quote-search input {
+  width: 4rem;
+  padding: 0.2rem 0.4rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+}
+.quote-search input { width: 5.5rem; }
+
+.quote-search button {
+  padding: 0.25rem 0.6rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  background: white;
+  cursor: pointer;
+  font-size: 0.8rem;
+  color: #2563eb;
+}
+.quote-search button:hover { background: #f1f5f9; }
+
+.summary {
+  color: #64748b;
+  font-size: 0.85rem;
+  margin: 0.5rem 0;
+}
+.summary-sep { margin: 0 0.5rem; color: #cbd5e1; }
+
+.state-msg {
+  padding: 2rem;
+  text-align: center;
+  color: #64748b;
+}
+.state-msg.error { color: #dc2626; }
+
+.quote-list { list-style: none; padding: 0; margin: 0; }
+
+.quote-card {
+  border: 1.5px solid #bfdbfe;
+  border-radius: 10px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  display: block;
+  transition: border-color 0.15s, box-shadow 0.2s;
+}
+.quote-card:hover {
+  border-color: #60a5fa;
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.15);
+}
+
+.quote-id-badge {
+  display: block;
+  font-size: 0.7rem;
+  color: #94a3b8;
+  margin-bottom: 0.35rem;
+  letter-spacing: 0.02em;
+}
+
+/* Decorative large curly quotes before and after the quote text */
+.quote-card blockquote {
+  margin: 0 0 0.65rem;
+  padding: 0;
+  font-style: italic;
+  font-weight: 700;
+  color: #1e293b;
+  font-size: 1.1rem;
+  line-height: 1.65;
+}
+.quote-card blockquote::before {
+  content: '\201C';
+  font-size: 2.2rem;
+  color: #93c5fd;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 0;
+  vertical-align: -0.45em;
+  margin-right: 0.05em;
+}
+.quote-card blockquote::after {
+  content: '\201D';
+  font-size: 2.2rem;
+  color: #93c5fd;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 0;
+  vertical-align: -0.45em;
+  margin-left: 0.05em;
+}
+
+/* Footer: author + "go to details" on one row, pills below */
+.quote-card footer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  font-size: 0.85rem;
+  color: #475569;
+}
+
+.footer-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.quote-author {
+  color: #475569;
+  font-weight: 400;
+}
+
+/* Hidden by default, revealed on card hover */
+.go-to-details {
+  font-size: 0.8rem;
+  color: #2563eb;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.quote-card:hover .go-to-details { opacity: 1; }
+
+.pills { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+
+.pill {
+  padding: 0.1rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+}
+.pill.tag { background: #dbeafe; color: #1d4ed8; }
+.pill.cat { background: #dcfce7; color: #15803d; }
+
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 0;
+}
+.pagination button {
+  padding: 0.35rem 1rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  cursor: pointer;
+  background: white;
+}
+.pagination button:disabled { opacity: 0.4; cursor: not-allowed; }

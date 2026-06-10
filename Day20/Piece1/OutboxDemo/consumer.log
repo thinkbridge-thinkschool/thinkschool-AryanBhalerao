@@ -1,0 +1,3 @@
+[C1] idempotent consumer up on 'search-index'. Ctrl+C to stop.
+[C1] INDEX 61e75d59-7e5e-4e82-b39f-569d91cb61b8 (delivery#1) -> Edsger Dijkstra: "Simplicity is prerequisite for reliability."
+[C1] DUP   61e75d59-7e5e-4e82-b39f-569d91cb61b8 (delivery#1) -> already indexed, skipping side effect.

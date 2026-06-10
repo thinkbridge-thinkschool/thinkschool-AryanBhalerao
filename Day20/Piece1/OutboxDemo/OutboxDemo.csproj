@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <!-- Same Smart App Control workaround as the sibling QuotesApi: launch via
+         Microsoft-signed dotnet.exe instead of a freshly-built unsigned apphost. -->
+    <UseAppHost>false</UseAppHost>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- The queue: Microsoft's official Azure Service Bus emulator (Day 19's broker). -->
+    <PackageReference Include="Azure.Messaging.ServiceBus" Version="7.18.2" />
+    <!-- The DB: EF Core over SQLite. SQLite gives real ACID transactions, so the
+         "domain change + outbox row in ONE transaction" claim is genuine and the
+         whole demo runs with no SQL Server install — only Docker for the broker. -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.8" />
+    <!-- Raw ADO for the consumer-side idempotency dedupe store (shared with Day 19). -->
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="9.0.0" />
+  </ItemGroup>
+
+</Project>
