@@ -1,0 +1,131 @@
+PS C:\Users\aryan\repos\thinkschool-AryanBhalerao\Day21\Piece1\k6> # BEFORE — cache OFF
+PS C:\Users\aryan\repos\thinkschool-AryanBhalerao\Day21\Piece1\k6> k6 run -e BASE_URL=http://localhost:5081 quotes-loadtest.js
+
+         /\      Grafana   /‾‾/
+    /\  /  \     |\  __   /  /
+   /  \/    \    | |/ /  /   ‾‾\
+  /          \   |   (  |  (‾)  |
+ / __________ \  |_|\_\  \_____/
+
+
+     execution: local
+        script: quotes-loadtest.js
+        output: -
+
+     scenarios: (100.00%) 1 scenario, 100 max VUs, 2m30s max duration (incl. graceful stop):
+              * sustained: 10000 iterations shared among 100 VUs (maxDuration: 2m0s, gracefulStop: 30s)
+
+INFO[0006] server-side: requests=10000 dbReads=10000 cacheHits=0 hitRate=0%  source=console
+INFO[0006] -> DB queries/sec (server-side): 1580.3       source=console
+
+
+  █ TOTAL RESULTS
+
+    checks_total.......: 10000   1576.127568/s
+    checks_succeeded...: 100.00% 10000 out of 10000
+    checks_failed......: 0.00%   0 out of 10000
+
+    ✓ status is 200
+
+    HTTP
+    http_req_duration..............: avg=62.84ms min=1.39ms  med=62.42ms p(90)=66.72ms p(95)=68.93ms p(99)=76.52ms max=86.21ms
+      { expected_response:true }...: avg=62.84ms min=1.39ms  med=62.42ms p(90)=66.72ms p(95)=68.93ms p(99)=76.52ms max=86.21ms
+    http_req_failed................: 0.00%  0 out of 10002
+    http_reqs......................: 10002  1576.442794/s
+
+    EXECUTION
+    iteration_duration.............: avg=62.95ms min=51.55ms med=62.49ms p(90)=66.86ms p(95)=69.07ms p(99)=76.52ms max=86.21ms
+    iterations.....................: 10000  1576.127568/s
+    vus............................: 100    min=100        max=100
+    vus_max........................: 100    min=100        max=100
+
+    NETWORK
+    data_received..................: 2.9 MB 457 kB/s
+    data_sent......................: 820 kB 129 kB/s
+
+
+
+
+running (0m06.3s), 000/100 VUs, 10000 complete and 0 interrupted iterations
+sustained ✓ [======================================] 100 VUs  0m06.3s/2m0s  10000/10000 shared iters
+PS C:\Users\aryan\repos\thinkschool-AryanBhalerao\Day21\Piece1\k6>
+
+PowerShell 7.6.2
+PS C:\Users\aryan\repos\thinkschool-AryanBhalerao\Day21\Piece1\k6> # AFTER — cache ON
+PS C:\Users\aryan\repos\thinkschool-AryanBhalerao\Day21\Piece1\k6> k6 run -e BASE_URL=http://localhost:5080 quotes-loadtest.js
+
+         /\      Grafana   /‾‾/
+    /\  /  \     |\  __   /  /
+   /  \/    \    | |/ /  /   ‾‾\
+  /          \   |   (  |  (‾)  |
+ / __________ \  |_|\_\  \_____/
+
+
+     execution: local
+        script: quotes-loadtest.js
+        output: -
+
+     scenarios: (100.00%) 1 scenario, 100 max VUs, 2m30s max duration (incl. graceful stop):
+              * sustained: 10000 iterations shared among 100 VUs (maxDuration: 2m0s, gracefulStop: 30s)
+
+INFO[0000] server-side: requests=10000 dbReads=0 cacheHits=10000 hitRate=100%  source=console
+INFO[0000] -> DB queries/sec (server-side): 0.0          source=console
+
+
+  █ TOTAL RESULTS
+
+    checks_total.......: 10000   12774.190005/s
+    checks_succeeded...: 100.00% 10000 out of 10000
+    checks_failed......: 0.00%   0 out of 10000
+
+    ✓ status is 200
+
+    HTTP
+    http_req_duration..............: avg=7.23ms min=0s med=6.07ms p(90)=12.7ms  p(95)=15.65ms p(99)=32.12ms max=51.85ms
+      { expected_response:true }...: avg=7.23ms min=0s med=6.07ms p(90)=12.7ms  p(95)=15.65ms p(99)=32.12ms max=51.85ms
+    http_req_failed................: 0.00%  0 out of 10002
+    http_reqs......................: 10002  12776.744843/s
+
+    EXECUTION
+    iteration_duration.............: avg=7.56ms min=0s med=6.19ms p(90)=13.57ms p(95)=16.67ms p(99)=33.25ms max=51.85ms
+    iterations.....................: 10000  12774.190005/s
+
+    NETWORK
+    data_received..................: 2.9 MB 3.7 MB/s
+    data_sent......................: 820 kB 1.0 MB/s
+
+
+
+
+running (0m00.8s), 000/100 VUs, 10000 complete and 0 interrupted iterations
+sustained ✓ [======================================] 100 VUs  0m00.8s/2m0s  10000/10000 shared iters
+PS C:\Users\aryan\repos\thinkschool-AryanBhalerao\Day21\Piece1\k6>
+
+Redis
+PS C:\Users\aryan\repos\thinkschool-AryanBhalerao\Day21\Piece1> docker exec quotes-redis redis-cli --scan --pattern '*'
+quotes:quote:1
+PS C:\Users\aryan\repos\thinkschool-AryanBhalerao\Day21\Piece1> docker exec quotes-redis redis-cli TTL quotes:quote:1
+267
+PS C:\Users\aryan\repos\thinkschool-AryanBhalerao\Day21\Piece1>
+
+Swagger Before 
+curl -X 'GET' \
+  'http://localhost:5080/api/quotes/cache-stats' \
+  -H 'accept: */*'
+{
+  "requests": 0,
+  "dbReads": 0,
+  "cacheHits": 0,
+  "hitRatePercent": 0
+}
+
+Swagger AFTER
+curl -X 'GET' \
+  'http://localhost:5080/api/quotes/cache-stats' \
+  -H 'accept: */*'
+{
+  "requests": 100,
+  "dbReads": 1,
+  "cacheHits": 99,
+  "hitRatePercent": 99
+}
