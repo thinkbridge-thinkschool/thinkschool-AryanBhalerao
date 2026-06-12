@@ -1,0 +1,39 @@
+PowerShell 7.6.2
+PS C:\Users\aryan\repos\thinkschool-AryanBhalerao\Day22\Piece1> pwsh -NoProfile -File drill.ps1
+=== Phase 0: baseline (downstream healthy) ===
+GET  /api/authors/Seneca/profile                   -> 200 in   206 ms
+
+=== Phase 1: downstream now failing (HTTP 500) ===
+-- POST is NOT retried (non-idempotent):
+POST /api/authors/Seneca/profile/refresh           -> 502 in    18 ms
+   downstream hits after 1 POST: 1  (1 = no retries)
+-- GET IS retried (idempotent, 1 try + 3 retries):
+GET  /api/authors/Seneca/profile                   -> 502 in  1004 ms
+   downstream hits now: 5  (+4 = original try + 3 retries)
+
+=== Phase 2: sustained failure -> circuit should OPEN ===
+GET  /api/authors/Seneca/profile                   -> 502 in   771 ms
+GET  /api/authors/Seneca/profile                   -> 503 in     8 ms
+GET  /api/authors/Seneca/profile                   -> 503 in     7 ms
+GET  /api/authors/Seneca/profile                   -> 503 in     7 ms
+GET  /api/authors/Seneca/profile                   -> 503 in     7 ms
+GET  /api/authors/Seneca/profile                   -> 503 in    14 ms
+GET  /api/authors/Seneca/profile                   -> 503 in     7 ms
+GET  /api/authors/Seneca/profile                   -> 503 in     7 ms
+   downstream hits: 9
+
+=== Phase 3: circuit open -> fast-fail, downstream NOT touched ===
+GET  /api/authors/Seneca/profile                   -> 503 in     7 ms
+GET  /api/authors/Seneca/profile                   -> 503 in     7 ms
+GET  /api/authors/Seneca/profile                   -> 503 in     6 ms
+GET  /api/authors/Seneca/profile                   -> 503 in     7 ms
+GET  /api/authors/Seneca/profile                   -> 503 in     7 ms
+   downstream hits before/after 5 calls: 9 / 9  (unchanged = breaker shielding)
+
+=== Phase 4: downstream recovers; wait out BreakDuration (10s) ===
+-- first call after break: half-open probe should succeed and CLOSE the circuit
+GET  /api/authors/Seneca/profile                   -> 200 in    23 ms
+GET  /api/authors/Seneca/profile                   -> 200 in    10 ms
+
+Drill complete. Check the API console for retry / CIRCUIT OPENED / HALF-OPEN / CLOSED logs.
+PS C:\Users\aryan\repos\thinkschool-AryanBhalerao\Day22\Piece1>

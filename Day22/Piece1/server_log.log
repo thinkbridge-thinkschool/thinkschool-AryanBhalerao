@@ -1,0 +1,190 @@
+PowerShell 7.6.2
+PS C:\Users\aryan\repos\thinkschool-AryanBhalerao\Day22\Piece1> dotnet run --project QuotesApi --launch-profile http
+Using launch settings from QuotesApi\Properties\launchSettings.json...
+Building...
+[11:40:20 DBG]  Microsoft.EntityFrameworkCore.Database.Command: Creating DbCommand for 'ExecuteNonQuery'.
+[11:40:20 DBG]  Microsoft.EntityFrameworkCore.Database.Command: Created DbCommand for 'ExecuteNonQuery' (22ms).
+[11:40:20 DBG]  Microsoft.EntityFrameworkCore.Database.Command: Initialized DbCommand for 'ExecuteNonQuery' (29ms).
+[11:40:20 DBG]  Microsoft.EntityFrameworkCore.Database.Command: Executing DbCommand [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT 1
+[11:40:20 INF]  Microsoft.EntityFrameworkCore.Database.Command: Executed DbCommand (25ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT 1
+[11:40:20 DBG]  Microsoft.EntityFrameworkCore.Database.Command: Creating DbCommand for 'ExecuteScalar'.
+[11:40:20 DBG]  Microsoft.EntityFrameworkCore.Database.Command: Created DbCommand for 'ExecuteScalar' (1ms).
+[11:40:20 DBG]  Microsoft.EntityFrameworkCore.Database.Command: Initialized DbCommand for 'ExecuteScalar' (3ms).
+[11:40:20 DBG]  Microsoft.EntityFrameworkCore.Database.Command: Executing DbCommand [Parameters=[], CommandType='Text', CommandTimeout='30']
+DECLARE @result int;
+EXEC @result = sp_getapplock @Resource = '__EFMigrationsLock', @LockOwner = 'Session', @LockMode = 'Exclusive';
+SELECT @result
+[11:40:20 INF]  Microsoft.EntityFrameworkCore.Database.Command: Executed DbCommand (18ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+DECLARE @result int;
+EXEC @result = sp_getapplock @Resource = '__EFMigrationsLock', @LockOwner = 'Session', @LockMode = 'Exclusive';
+SELECT @result
+[11:40:20 DBG]  Microsoft.EntityFrameworkCore.Database.Command: Creating DbCommand for 'ExecuteNonQuery'.
+[11:40:20 DBG]  Microsoft.EntityFrameworkCore.Database.Command: Created DbCommand for 'ExecuteNonQuery' (1ms).
+[11:40:20 DBG]  Microsoft.EntityFrameworkCore.Database.Command: Initialized DbCommand for 'ExecuteNonQuery' (3ms).
+[11:40:20 DBG]  Microsoft.EntityFrameworkCore.Database.Command: Executing DbCommand [Parameters=[], CommandType='Text', CommandTimeout='30']
+IF OBJECT_ID(N'[__EFMigrationsHistory]') IS NULL
+BEGIN
+    CREATE TABLE [__EFMigrationsHistory] (
+        [MigrationId] nvarchar(150) NOT NULL,
+        [ProductVersion] nvarchar(32) NOT NULL,
+        CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY ([MigrationId])
+    );
+END;
+[11:40:20 INF]  Microsoft.EntityFrameworkCore.Database.Command: Executed DbCommand (3ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+IF OBJECT_ID(N'[__EFMigrationsHistory]') IS NULL
+BEGIN
+    CREATE TABLE [__EFMigrationsHistory] (
+        [MigrationId] nvarchar(150) NOT NULL,
+        [ProductVersion] nvarchar(32) NOT NULL,
+        CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY ([MigrationId])
+    );
+END;
+[11:40:20 DBG]  Microsoft.EntityFrameworkCore.Database.Command: Creating DbCommand for 'ExecuteNonQuery'.
+[11:40:20 DBG]  Microsoft.EntityFrameworkCore.Database.Command: Created DbCommand for 'ExecuteNonQuery' (1ms).
+[11:40:20 DBG]  Microsoft.EntityFrameworkCore.Database.Command: Initialized DbCommand for 'ExecuteNonQuery' (2ms).
+[11:40:20 DBG]  Microsoft.EntityFrameworkCore.Database.Command: Executing DbCommand [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT 1
+[11:40:20 INF]  Microsoft.EntityFrameworkCore.Database.Command: Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT 1
+[11:40:20 DBG]  Microsoft.EntityFrameworkCore.Database.Command: Creating DbCommand for 'ExecuteScalar'.
+[11:40:20 DBG]  Microsoft.EntityFrameworkCore.Database.Command: Created DbCommand for 'ExecuteScalar' (1ms).
+[11:40:20 DBG]  Microsoft.EntityFrameworkCore.Database.Command: Initialized DbCommand for 'ExecuteScalar' (2ms).
+[11:40:20 DBG]  Microsoft.EntityFrameworkCore.Database.Command: Executing DbCommand [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+[11:40:20 INF]  Microsoft.EntityFrameworkCore.Database.Command: Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+[11:40:20 DBG]  Microsoft.EntityFrameworkCore.Database.Command: Creating DbCommand for 'ExecuteReader'.
+[11:40:20 DBG]  Microsoft.EntityFrameworkCore.Database.Command: Created DbCommand for 'ExecuteReader' (1ms).
+[11:40:20 DBG]  Microsoft.EntityFrameworkCore.Database.Command: Initialized DbCommand for 'ExecuteReader' (2ms).
+[11:40:20 DBG]  Microsoft.EntityFrameworkCore.Database.Command: Executing DbCommand [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+[11:40:20 INF]  Microsoft.EntityFrameworkCore.Database.Command: Executed DbCommand (10ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+[11:40:20 DBG]  Microsoft.EntityFrameworkCore.Database.Command: Closing data reader to 'QuotesApi' on server '.\SQLEXPRESS'.
+[11:40:20 DBG]  Microsoft.EntityFrameworkCore.Database.Command: A data reader for 'QuotesApi' on server '.\SQLEXPRESS' is being disposed after spending 5ms reading results.
+[11:40:20 DBG]  Microsoft.EntityFrameworkCore.Database.Command: Creating DbCommand for 'ExecuteScalar'.
+[11:40:20 DBG]  Microsoft.EntityFrameworkCore.Database.Command: Created DbCommand for 'ExecuteScalar' (1ms).
+[11:40:20 DBG]  Microsoft.EntityFrameworkCore.Database.Command: Initialized DbCommand for 'ExecuteScalar' (2ms).
+[11:40:20 DBG]  Microsoft.EntityFrameworkCore.Database.Command: Executing DbCommand [Parameters=[], CommandType='Text', CommandTimeout='30']
+DECLARE @result int;
+EXEC @result = sp_releaseapplock @Resource = '__EFMigrationsLock', @LockOwner = 'Session';
+SELECT @result
+[11:40:20 INF]  Microsoft.EntityFrameworkCore.Database.Command: Executed DbCommand (4ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+DECLARE @result int;
+EXEC @result = sp_releaseapplock @Resource = '__EFMigrationsLock', @LockOwner = 'Session';
+SELECT @result
+[11:40:20 INF]  QuotesApi.Services.QueuedHostedService: Queue processor started.
+[11:40:20 INF]  Microsoft.Hosting.Lifetime: Now listening on: http://localhost:5051
+[11:40:20 INF]  Microsoft.Hosting.Lifetime: Application started. Press Ctrl+C to shut down.
+[11:40:20 INF]  Microsoft.Hosting.Lifetime: Hosting environment: Development
+[11:40:20 INF]  Microsoft.Hosting.Lifetime: Content root path: C:\Users\aryan\repos\thinkschool-AryanBhalerao\Day22\Piece1\QuotesApi
+[11:40:26 INF] 827602c00d8178ffc807465fb1b85844 Serilog.AspNetCore.RequestLoggingMiddleware: HTTP POST /downstream/fault/ok responded 200 in 38.7058 ms
+[11:40:26 INF] 8dced9e659791950fe6171973338fcc7 QuotesApi.Downstream: Downstream hit #1 (Ok) for Seneca
+[11:40:26 INF] 8dced9e659791950fe6171973338fcc7 Serilog.AspNetCore.RequestLoggingMiddleware: HTTP GET /downstream/author-profile/Seneca responded 200 in 8.5665 ms
+[11:40:26 INF] 8dced9e659791950fe6171973338fcc7 Polly: Execution attempt. Source: 'AuthorProfileClient-downstream-profile//Retry', Operation Key: 'null', Result: '200', Handled: 'False', Attempt: '0', Execution Time: 69.8984ms
+[11:40:26 INF] 8dced9e659791950fe6171973338fcc7 Serilog.AspNetCore.RequestLoggingMiddleware: HTTP GET /api/authors/Seneca/profile responded 200 in 186.3208 ms
+[11:40:26 INF] c73246cf7329baf328771970c27377e3 Serilog.AspNetCore.RequestLoggingMiddleware: HTTP POST /downstream/fault/fail responded 200 in 0.2279 ms
+[11:40:26 INF] 0f1b59cbe5e0a34053362a9847753155 QuotesApi.Downstream: Downstream POST hit #1 (Fail) for Seneca
+[11:40:26 ERR] 0f1b59cbe5e0a34053362a9847753155 Serilog.AspNetCore.RequestLoggingMiddleware: HTTP POST /downstream/author-profile/Seneca/refresh responded 500 in 2.7691 ms
+[11:40:26 INF] 0f1b59cbe5e0a34053362a9847753155 Polly: Execution attempt. Source: 'AuthorProfileClient-downstream-profile//Retry', Operation Key: 'null', Result: '500', Handled: 'False', Attempt: '0', Execution Time: 7.646ms
+[11:40:26 ERR] 0f1b59cbe5e0a34053362a9847753155 Serilog.AspNetCore.RequestLoggingMiddleware: HTTP POST /api/authors/Seneca/profile/refresh responded 502 in 13.5636 ms
+[11:40:26 INF] 67d5c30625a39084c3c32df941a43350 Serilog.AspNetCore.RequestLoggingMiddleware: HTTP GET /downstream/fault responded 200 in 2.7848 ms
+[11:40:26 INF] 099001ebd6ef374f2bb7d3e92e3b42b1 QuotesApi.Downstream: Downstream hit #2 (Fail) for Seneca
+[11:40:26 ERR] 099001ebd6ef374f2bb7d3e92e3b42b1 Serilog.AspNetCore.RequestLoggingMiddleware: HTTP GET /downstream/author-profile/Seneca responded 500 in 2.4805 ms
+[11:40:26 WRN] 099001ebd6ef374f2bb7d3e92e3b42b1 Polly: Execution attempt. Source: 'AuthorProfileClient-downstream-profile//Retry', Operation Key: 'null', Result: '500', Handled: 'True', Attempt: '0', Execution Time: 5.5476ms
+[11:40:26 WRN] 099001ebd6ef374f2bb7d3e92e3b42b1 Polly: Resilience event occurred. EventName: 'OnRetry', Source: 'AuthorProfileClient-downstream-profile//Retry', Operation Key: 'null', Result: '500'
+[11:40:26 WRN] 099001ebd6ef374f2bb7d3e92e3b42b1 QuotesApi.Resilience: Retry 1 after 176 ms (HTTP 500)
+[11:40:26 INF] 099001ebd6ef374f2bb7d3e92e3b42b1 QuotesApi.Downstream: Downstream hit #3 (Fail) for Seneca
+[11:40:26 ERR] 099001ebd6ef374f2bb7d3e92e3b42b1 Serilog.AspNetCore.RequestLoggingMiddleware: HTTP GET /downstream/author-profile/Seneca responded 500 in 2.0135 ms
+[11:40:26 WRN] 099001ebd6ef374f2bb7d3e92e3b42b1 Polly: Execution attempt. Source: 'AuthorProfileClient-downstream-profile//Retry', Operation Key: 'null', Result: '500', Handled: 'True', Attempt: '1', Execution Time: 4.6943ms
+[11:40:26 WRN] 099001ebd6ef374f2bb7d3e92e3b42b1 Polly: Resilience event occurred. EventName: 'OnRetry', Source: 'AuthorProfileClient-downstream-profile//Retry', Operation Key: 'null', Result: '500'
+[11:40:26 WRN] 099001ebd6ef374f2bb7d3e92e3b42b1 QuotesApi.Resilience: Retry 2 after 298 ms (HTTP 500)
+[11:40:27 INF] 099001ebd6ef374f2bb7d3e92e3b42b1 QuotesApi.Downstream: Downstream hit #4 (Fail) for Seneca
+[11:40:27 ERR] 099001ebd6ef374f2bb7d3e92e3b42b1 Serilog.AspNetCore.RequestLoggingMiddleware: HTTP GET /downstream/author-profile/Seneca responded 500 in 2.2521 ms
+[11:40:27 WRN] 099001ebd6ef374f2bb7d3e92e3b42b1 Polly: Execution attempt. Source: 'AuthorProfileClient-downstream-profile//Retry', Operation Key: 'null', Result: '500', Handled: 'True', Attempt: '2', Execution Time: 5.3032ms
+[11:40:27 WRN] 099001ebd6ef374f2bb7d3e92e3b42b1 Polly: Resilience event occurred. EventName: 'OnRetry', Source: 'AuthorProfileClient-downstream-profile//Retry', Operation Key: 'null', Result: '500'
+[11:40:27 WRN] 099001ebd6ef374f2bb7d3e92e3b42b1 QuotesApi.Resilience: Retry 3 after 436 ms (HTTP 500)
+[11:40:27 INF] 099001ebd6ef374f2bb7d3e92e3b42b1 QuotesApi.Downstream: Downstream hit #5 (Fail) for Seneca
+[11:40:27 ERR] 099001ebd6ef374f2bb7d3e92e3b42b1 Serilog.AspNetCore.RequestLoggingMiddleware: HTTP GET /downstream/author-profile/Seneca responded 500 in 2.8503 ms
+[11:40:27 ERR] 099001ebd6ef374f2bb7d3e92e3b42b1 Polly: Execution attempt. Source: 'AuthorProfileClient-downstream-profile//Retry', Operation Key: 'null', Result: '500', Handled: 'True', Attempt: '3', Execution Time: 5.6432ms
+[11:40:27 ERR] 099001ebd6ef374f2bb7d3e92e3b42b1 Serilog.AspNetCore.RequestLoggingMiddleware: HTTP GET /api/authors/Seneca/profile responded 502 in 999.4267 ms
+[11:40:27 INF] 740c47e7444346928bd1b06fb2fa8bb9 Serilog.AspNetCore.RequestLoggingMiddleware: HTTP GET /downstream/fault responded 200 in 0.1443 ms
+[11:40:27 INF] 0c2112d89379df7fc438be357d78d51d QuotesApi.Downstream: Downstream hit #6 (Fail) for Seneca
+[11:40:27 ERR] 0c2112d89379df7fc438be357d78d51d Serilog.AspNetCore.RequestLoggingMiddleware: HTTP GET /downstream/author-profile/Seneca responded 500 in 1.9606 ms
+[11:40:27 WRN] 0c2112d89379df7fc438be357d78d51d Polly: Execution attempt. Source: 'AuthorProfileClient-downstream-profile//Retry', Operation Key: 'null', Result: '500', Handled: 'True', Attempt: '0', Execution Time: 4.3264ms
+[11:40:27 WRN] 0c2112d89379df7fc438be357d78d51d Polly: Resilience event occurred. EventName: 'OnRetry', Source: 'AuthorProfileClient-downstream-profile//Retry', Operation Key: 'null', Result: '500'
+[11:40:27 WRN] 0c2112d89379df7fc438be357d78d51d QuotesApi.Resilience: Retry 1 after 113 ms (HTTP 500)
+[11:40:27 INF] 0c2112d89379df7fc438be357d78d51d QuotesApi.Downstream: Downstream hit #7 (Fail) for Seneca
+[11:40:27 ERR] 0c2112d89379df7fc438be357d78d51d Serilog.AspNetCore.RequestLoggingMiddleware: HTTP GET /downstream/author-profile/Seneca responded 500 in 1.7368 ms
+[11:40:27 WRN] 0c2112d89379df7fc438be357d78d51d Polly: Execution attempt. Source: 'AuthorProfileClient-downstream-profile//Retry', Operation Key: 'null', Result: '500', Handled: 'True', Attempt: '1', Execution Time: 4.2958ms
+[11:40:27 WRN] 0c2112d89379df7fc438be357d78d51d Polly: Resilience event occurred. EventName: 'OnRetry', Source: 'AuthorProfileClient-downstream-profile//Retry', Operation Key: 'null', Result: '500'
+[11:40:27 WRN] 0c2112d89379df7fc438be357d78d51d QuotesApi.Resilience: Retry 2 after 364 ms (HTTP 500)
+[11:40:28 INF] 0c2112d89379df7fc438be357d78d51d QuotesApi.Downstream: Downstream hit #8 (Fail) for Seneca
+[11:40:28 ERR] 0c2112d89379df7fc438be357d78d51d Serilog.AspNetCore.RequestLoggingMiddleware: HTTP GET /downstream/author-profile/Seneca responded 500 in 1.9769 ms
+[11:40:28 WRN] 0c2112d89379df7fc438be357d78d51d Polly: Execution attempt. Source: 'AuthorProfileClient-downstream-profile//Retry', Operation Key: 'null', Result: '500', Handled: 'True', Attempt: '2', Execution Time: 5.0614ms
+[11:40:28 WRN] 0c2112d89379df7fc438be357d78d51d Polly: Resilience event occurred. EventName: 'OnRetry', Source: 'AuthorProfileClient-downstream-profile//Retry', Operation Key: 'null', Result: '500'
+[11:40:28 WRN] 0c2112d89379df7fc438be357d78d51d QuotesApi.Resilience: Retry 3 after 223 ms (HTTP 500)
+[11:40:28 INF] 0c2112d89379df7fc438be357d78d51d QuotesApi.Downstream: Downstream hit #9 (Fail) for Seneca
+[11:40:28 ERR] 0c2112d89379df7fc438be357d78d51d Serilog.AspNetCore.RequestLoggingMiddleware: HTTP GET /downstream/author-profile/Seneca responded 500 in 2.7573 ms
+[11:40:28 ERR] 0c2112d89379df7fc438be357d78d51d Polly: Resilience event occurred. EventName: 'OnCircuitOpened', Source: 'AuthorProfileClient-downstream-profile//CircuitBreaker', Operation Key: 'null', Result:'500'
+[11:40:28 ERR] 8dced9e659791950fe6171973338fcc7 QuotesApi.Resilience: CIRCUIT OPENED for 10s — downstream failing (HTTP 500)
+[11:40:28 ERR] 0c2112d89379df7fc438be357d78d51d Polly: Execution attempt. Source: 'AuthorProfileClient-downstream-profile//Retry', Operation Key: 'null', Result: '500', Handled: 'True', Attempt: '3', Execution Time: 22.2865ms
+[11:40:28 ERR] 0c2112d89379df7fc438be357d78d51d Serilog.AspNetCore.RequestLoggingMiddleware: HTTP GET /api/authors/Seneca/profile responded 502 in 766.8360 ms
+[11:40:28 INF] 60147ebfcbce1a134ad7ab9f7a9a9b25 Polly: Execution attempt. Source: 'AuthorProfileClient-downstream-profile//Retry', Operation Key: 'null', Result: 'The circuit is now open and is not allowing calls.', Handled: 'False', Attempt: '0', Execution Time: 0.9625ms
+Polly.CircuitBreaker.BrokenCircuitException: The circuit is now open and is not allowing calls.
+[11:40:28 ERR] 60147ebfcbce1a134ad7ab9f7a9a9b25 Serilog.AspNetCore.RequestLoggingMiddleware: HTTP GET /api/authors/Seneca/profile responded 503 in 4.1126 ms
+[11:40:28 INF] 1ef7f55dfaa73d55708da1f1269bd8c0 Polly: Execution attempt. Source: 'AuthorProfileClient-downstream-profile//Retry', Operation Key: 'null', Result: 'The circuit is now open and is not allowing calls.', Handled: 'False', Attempt: '0', Execution Time: 0.0164ms
+Polly.CircuitBreaker.BrokenCircuitException: The circuit is now open and is not allowing calls.
+[11:40:28 ERR] 1ef7f55dfaa73d55708da1f1269bd8c0 Serilog.AspNetCore.RequestLoggingMiddleware: HTTP GET /api/authors/Seneca/profile responded 503 in 3.4695 ms
+[11:40:28 INF] cc4c44830ef79f3c515258c1808bdc63 Polly: Execution attempt. Source: 'AuthorProfileClient-downstream-profile//Retry', Operation Key: 'null', Result: 'The circuit is now open and is not allowing calls.', Handled: 'False', Attempt: '0', Execution Time: 0.016ms
+Polly.CircuitBreaker.BrokenCircuitException: The circuit is now open and is not allowing calls.
+[11:40:28 ERR] cc4c44830ef79f3c515258c1808bdc63 Serilog.AspNetCore.RequestLoggingMiddleware: HTTP GET /api/authors/Seneca/profile responded 503 in 3.4714 ms
+[11:40:28 INF] b3cf84d3b2d12800a4e2b71acbb20323 Polly: Execution attempt. Source: 'AuthorProfileClient-downstream-profile//Retry', Operation Key: 'null', Result: 'The circuit is now open and is not allowing calls.', Handled: 'False', Attempt: '0', Execution Time: 0.0183ms
+Polly.CircuitBreaker.BrokenCircuitException: The circuit is now open and is not allowing calls.
+[11:40:28 ERR] b3cf84d3b2d12800a4e2b71acbb20323 Serilog.AspNetCore.RequestLoggingMiddleware: HTTP GET /api/authors/Seneca/profile responded 503 in 3.4281 ms
+[11:40:28 INF] a52426fd4e3f189f33c93154885ca696 Polly: Execution attempt. Source: 'AuthorProfileClient-downstream-profile//Retry', Operation Key: 'null', Result: 'The circuit is now open and is not allowing calls.', Handled: 'False', Attempt: '0', Execution Time: 0.018ms
+Polly.CircuitBreaker.BrokenCircuitException: The circuit is now open and is not allowing calls.
+[11:40:28 ERR] a52426fd4e3f189f33c93154885ca696 Serilog.AspNetCore.RequestLoggingMiddleware: HTTP GET /api/authors/Seneca/profile responded 503 in 2.9667 ms
+[11:40:28 INF] 5786d800d83b5b7a540e94b3a204e91c Polly: Execution attempt. Source: 'AuthorProfileClient-downstream-profile//Retry', Operation Key: 'null', Result: 'The circuit is now open and is not allowing calls.', Handled: 'False', Attempt: '0', Execution Time: 0.0242ms
+Polly.CircuitBreaker.BrokenCircuitException: The circuit is now open and is not allowing calls.
+[11:40:28 ERR] 5786d800d83b5b7a540e94b3a204e91c Serilog.AspNetCore.RequestLoggingMiddleware: HTTP GET /api/authors/Seneca/profile responded 503 in 3.1368 ms
+[11:40:28 INF] 5afe270665b26bf5f996e0130f8440f9 Polly: Execution attempt. Source: 'AuthorProfileClient-downstream-profile//Retry', Operation Key: 'null', Result: 'The circuit is now open and is not allowing calls.', Handled: 'False', Attempt: '0', Execution Time: 0.0172ms
+Polly.CircuitBreaker.BrokenCircuitException: The circuit is now open and is not allowing calls.
+[11:40:28 ERR] 5afe270665b26bf5f996e0130f8440f9 Serilog.AspNetCore.RequestLoggingMiddleware: HTTP GET /api/authors/Seneca/profile responded 503 in 3.4108 ms
+[11:40:28 INF] bc16ae43d00743d8577a9efda259e5ad Serilog.AspNetCore.RequestLoggingMiddleware: HTTP GET /downstream/fault responded 200 in 0.1320 ms
+[11:40:28 INF] eddbcb640bc0c17b0805141c1e7c65e8 Serilog.AspNetCore.RequestLoggingMiddleware: HTTP GET /downstream/fault responded 200 in 0.1172 ms
+[11:40:28 INF] e47ecad498b5b44db5dc64187317cb5f Polly: Execution attempt. Source: 'AuthorProfileClient-downstream-profile//Retry', Operation Key: 'null', Result: 'The circuit is now open and is not allowing calls.', Handled: 'False', Attempt: '0', Execution Time: 0.017ms
+Polly.CircuitBreaker.BrokenCircuitException: The circuit is now open and is not allowing calls.
+[11:40:28 ERR] e47ecad498b5b44db5dc64187317cb5f Serilog.AspNetCore.RequestLoggingMiddleware: HTTP GET /api/authors/Seneca/profile responded 503 in 3.2428 ms
+[11:40:28 INF] d656c156434be154734d1235d59d49e7 Polly: Execution attempt. Source: 'AuthorProfileClient-downstream-profile//Retry', Operation Key: 'null', Result: 'The circuit is now open and is not allowing calls.', Handled: 'False', Attempt: '0', Execution Time: 0.0184ms
+Polly.CircuitBreaker.BrokenCircuitException: The circuit is now open and is not allowing calls.
+[11:40:28 ERR] d656c156434be154734d1235d59d49e7 Serilog.AspNetCore.RequestLoggingMiddleware: HTTP GET /api/authors/Seneca/profile responded 503 in 3.4219 ms
+[11:40:28 INF] dc3d02693e5c8e38456372c8b768cb45 Polly: Execution attempt. Source: 'AuthorProfileClient-downstream-profile//Retry', Operation Key: 'null', Result: 'The circuit is now open and is not allowing calls.', Handled: 'False', Attempt: '0', Execution Time: 0.0158ms
+Polly.CircuitBreaker.BrokenCircuitException: The circuit is now open and is not allowing calls.
+[11:40:28 ERR] dc3d02693e5c8e38456372c8b768cb45 Serilog.AspNetCore.RequestLoggingMiddleware: HTTP GET /api/authors/Seneca/profile responded 503 in 2.9776 ms
+[11:40:28 INF] 4afe0e2ab4ae5bb999d314c02c27be13 Polly: Execution attempt. Source: 'AuthorProfileClient-downstream-profile//Retry', Operation Key: 'null', Result: 'The circuit is now open and is not allowing calls.', Handled: 'False', Attempt: '0', Execution Time: 0.02ms
+Polly.CircuitBreaker.BrokenCircuitException: The circuit is now open and is not allowing calls.
+[11:40:28 ERR] 4afe0e2ab4ae5bb999d314c02c27be13 Serilog.AspNetCore.RequestLoggingMiddleware: HTTP GET /api/authors/Seneca/profile responded 503 in 3.2293 ms
+[11:40:28 INF] 25bfebc2f5c0d82ee358c0165ed29c23 Polly: Execution attempt. Source: 'AuthorProfileClient-downstream-profile//Retry', Operation Key: 'null', Result: 'The circuit is now open and is not allowing calls.', Handled: 'False', Attempt: '0', Execution Time: 0.0163ms
+Polly.CircuitBreaker.BrokenCircuitException: The circuit is now open and is not allowing calls.
+[11:40:28 ERR] 25bfebc2f5c0d82ee358c0165ed29c23 Serilog.AspNetCore.RequestLoggingMiddleware: HTTP GET /api/authors/Seneca/profile responded 503 in 3.3429 ms
+[11:40:28 INF] d563c0817e7304751505e7d15d524969 Serilog.AspNetCore.RequestLoggingMiddleware: HTTP GET /downstream/fault responded 200 in 0.1181 ms
+[11:40:28 INF] 90378e3139cbe63bf79c83d8a9bc1264 Serilog.AspNetCore.RequestLoggingMiddleware: HTTP POST /downstream/fault/ok responded 200 in 0.2059 ms
+[11:40:39 WRN] 6d327dd829a738c9f4593c063ae4eb2e Polly: Resilience event occurred. EventName: 'OnCircuitHalfOpened', Source: 'AuthorProfileClient-downstream-profile//CircuitBreaker', Operation Key: 'null', Result: 'null'
+[11:40:39 WRN] 8dced9e659791950fe6171973338fcc7 QuotesApi.Resilience: CIRCUIT HALF-OPEN — sending probe request downstream
+[11:40:39 INF] 6d327dd829a738c9f4593c063ae4eb2e QuotesApi.Downstream: Downstream hit #1 (Ok) for Seneca
+[11:40:39 INF] 6d327dd829a738c9f4593c063ae4eb2e Serilog.AspNetCore.RequestLoggingMiddleware: HTTP GET /downstream/author-profile/Seneca responded 200 in 1.6442 ms
+[11:40:39 INF] 6d327dd829a738c9f4593c063ae4eb2e Polly: Resilience event occurred. EventName: 'OnCircuitClosed', Source: 'AuthorProfileClient-downstream-profile//CircuitBreaker', Operation Key: 'null', Result:'200'
+[11:40:39 INF] 8dced9e659791950fe6171973338fcc7 QuotesApi.Resilience: CIRCUIT CLOSED — downstream healthy again
+[11:40:39 INF] 6d327dd829a738c9f4593c063ae4eb2e Polly: Execution attempt. Source: 'AuthorProfileClient-downstream-profile//Retry', Operation Key: 'null', Result: '200', Handled: 'False', Attempt: '0', Execution Time: 16.3987ms
+[11:40:39 INF] 6d327dd829a738c9f4593c063ae4eb2e Serilog.AspNetCore.RequestLoggingMiddleware: HTTP GET /api/authors/Seneca/profile responded 200 in 19.1258 ms
+[11:40:39 INF] 8b36f02a4c72148806548d4af55174ca QuotesApi.Downstream: Downstream hit #2 (Ok) for Seneca
+[11:40:39 INF] 8b36f02a4c72148806548d4af55174ca Serilog.AspNetCore.RequestLoggingMiddleware: HTTP GET /downstream/author-profile/Seneca responded 200 in 1.6488 ms
+[11:40:39 INF] 8b36f02a4c72148806548d4af55174ca Polly: Execution attempt. Source: 'AuthorProfileClient-downstream-profile//Retry', Operation Key: 'null', Result: '200', Handled: 'False', Attempt: '0', Execution Time: 1.9374ms
+[11:40:39 INF] 8b36f02a4c72148806548d4af55174ca Serilog.AspNetCore.RequestLoggingMiddleware: HTTP GET /api/authors/Seneca/profile responded 200 in 6.4061 ms
